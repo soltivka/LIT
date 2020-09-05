@@ -1,9 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import s from './App.module.css';
 import Header from "./Components/Header/Header";
-import CasesBlock from "./Components/CasesBlock/CasesBlock";
-import {HashRouter, Route} from "react-router-dom";
 import JointScreen from "./Components/JointScreen/JointScreen";
 
 
@@ -15,7 +12,8 @@ function App(props) {
             return(
                 <div>
                 <JointScreen dispatch={props.dispatch}
-                             database={props.state.main.database}/>
+                             database={props.state.main.database}
+                state={props.state}/>
             </div>
             )
         }else if (props.state.main.currentNav ==='scan'){
@@ -39,7 +37,7 @@ function App(props) {
     return (
         <div className={s.App}>
             <Header dispatch={props.dispatch}
-                state={props.state.header}
+                state={props.state}
             />
 
             <div>

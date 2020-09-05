@@ -2,6 +2,7 @@
   "name": "lit",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://soltivka.ho.ua/projects/training/lit",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
