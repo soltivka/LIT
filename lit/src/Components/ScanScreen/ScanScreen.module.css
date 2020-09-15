@@ -8,67 +8,9 @@
 .jointListWrapper {
     display: flex;
     flex-direction: column;
-    height: 500px;
+    height: 100%;
     width: 60%;
-    margin: 0 0 0 10px;
-    box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.75);
 
-}
-
-.jointHead {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-}
-
-.headBlock {
-    height: 50px;
-    width: 100%;
-    border: solid 1px grey;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.75);
-
-}
-
-.jointPage {
-    display: flex;
-    flex-direction: column;
-    height: 500px;
-    overflow-y: auto;
-}
-
-.jointPage::-webkit-scrollbar {
-    width: 2px;
-}
-
-.jointPage::-webkit-scrollbar-track {
-    background-color: gray;
-
-}
-
-/* Handle */
-.jointPage::-webkit-scrollbar-thumb {
-    background: black;
-    width: 20px;
-}
-
-.jointString {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-}
-
-.block {
-
-    width: 100%;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow: inset 0 0 8px grey;
 }
 
 .choosenWrapper{

@@ -2,6 +2,7 @@ import React from 'react';
 import s from './Choosen.module.css';
 import {defineColor} from "../../Global/Functions";
 import CancelButton from "../CancelButton/CancelButton";
+import Input from "../Input/Input";
 
 const Choosen = function (props) {
 
@@ -12,7 +13,7 @@ const Choosen = function (props) {
         boxShadow: "inset 0 0 40px " + defineColor(props.state.main.currentNav),
     }
 
-    let createChoosenString = (el,i) => {
+    let createChoosenString = (el, i) => {
         return (
             <div className={s.string}>
                 <div className={s.block}>{el.incomeDate}</div>
@@ -20,27 +21,28 @@ const Choosen = function (props) {
                 <div className={s.block}>{el.number}</div>
                 <CancelButton
                     id={el.id}
-                dispatch={props.dispatch}/>
+                    dispatch={props.dispatch}/>
             </div>
         )
     };
     let choosenContent = (data) => {
-        return data.map((el,i)=>{
-            if (el.choosen===true){
-                return createChoosenString(el,i);
+        return data.map((el, i) => {
+            if (el.choosen === true) {
+                return createChoosenString(el, i);
             }
         })
     }
-    let counter = (data)=>{
-        let count=0;
-        data.map((el)=>{
-            if (el.choosen===true){
+    let counter = (data) => {
+        let count = 0;
+        data.map((el) => {
+            if (el.choosen === true) {
                 count++
             }
 
         })
         return count;
     }
+    let date = new Date().toDateString();
 
 
     return (
@@ -49,18 +51,18 @@ const Choosen = function (props) {
             <div className={s.header}
                  style={headerstyle}>
                 <div> Operator:
-                    <input type={'number'}/>
-                    </div>
-                <div> Date:
-                    <input type={'number'}/>
+                    <Input type={'number'}
+                           field={props.state.main.operator}
+                           state={props.state}
+                           dispatch={props.dispatch}/>
+                </div>
+                <div>
+                    Date: {date}
                 </div>
 
             </div>
             <div className={s.body}>
                 {choosenContent(props.state.main.database)}
-
-
-
 
 
             </div>

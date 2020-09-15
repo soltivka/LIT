@@ -20,7 +20,6 @@ const JointScreen = function (props) {
             }
 
         }
-        console.log(jointArray.length)
         return jointArray
     };
 
