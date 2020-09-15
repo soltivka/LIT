@@ -4,7 +4,6 @@ import headerIcon from "../../img/logo.png"
 import HeaderLink from "./HeaderLink/HeaderLink";
 
 const Header = function (props) {
-    console.log(props)
     return (
         <div className={s.header_wrapper}>
             <header className={s.header_container}>
