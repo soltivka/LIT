@@ -3,14 +3,17 @@ import {database} from '../database'
 const SET_CURRENT_NAV = 'SET_CURRENT_NAV';
 const CHOOSE_CASE = 'CHOOSE_CASE';
 const CANCEL_CHOOSE_CASE = 'CANCEL_CHOOSE_CASE';
-const SET_OPERATOR='SET_OPERATOR'
+const SET_OPERATOR = 'SET_OPERATOR';
+const SET_ACT_FILTER='SET_ACT_FILTER';
+const SET_CASE_FILTER='SET_CASE_FILTER';
 
 
 const initialState = {
     database: database,
     currentNav: 'joint',
-    choosen: [],
-    operator: 0,
+    operator:'',
+    actFilter: '',
+    caseFilter: '',
 }
 
 
@@ -25,13 +28,11 @@ const main_reducer = function (state, action) {
                 })
                 element.choosen = true;
                 element.visible = false;
-
                 break;
 
             case  CANCEL_CHOOSE_CASE:
                 state.database[action.id].choosen = false;
                 state.database[action.id].visible = true;
-
                 break;
 
 
@@ -40,8 +41,18 @@ const main_reducer = function (state, action) {
                 break;
 
             case SET_OPERATOR:
-                state.operator = action.operator;
-                console.log(state.operator)
+                state.operator = action.value
+                console.log(state);
+                break;
+
+            case SET_CASE_FILTER:
+                console.log(state);
+                state.caseFilter = action.value
+                break;
+
+            case SET_ACT_FILTER:
+                state.actFilter = action.value
+                console.log(state);
                 break;
         }
         return state

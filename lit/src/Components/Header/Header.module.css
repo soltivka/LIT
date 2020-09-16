@@ -1,8 +1,8 @@
 .header_wrapper{
     display: flex;
-    position: fixed;
+    position: relative;
     width: 100%;
-    height: 7%;
+    height: 45px;
 }
 .header_container{
     display: flex;

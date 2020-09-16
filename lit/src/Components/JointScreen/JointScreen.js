@@ -7,8 +7,9 @@ const JointScreen = function (props) {
 
 
     let getJointElement = (el) => {
-        if (el.jointer === 0 && el.scaner === 0 && el.stitcher === 0 && el.visible === true) {
-            return el
+        if (el.jointer === 0 && el.scaner === 0 && el.stitcher === 0 && el.visible === true) { //filter by case state
+            if(props.state.main.actFilter==='' && props.state.main.caseFilter===''){return el}else                              //filter by filters :)
+                if(props.state.main.actFilter==el.act||props.state.main.caseFilter==el.number){return el}
         } else return false
     };
     let getJointArray = function(){

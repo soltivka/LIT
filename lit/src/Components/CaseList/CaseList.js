@@ -5,19 +5,20 @@ import Input from "../Input/Input";
 
 const CaseList = function (props) {
     let createString = function (el) {
+        if (el !== undefined) {
+            return (
+                <div className={s.stringWrapper}>
+                    <div className={s.stringElement}>{el.incomeDate}</div>
+                    <div className={s.stringElement}>{el.act}</div>
+                    <div className={s.stringElement}>{el.number}</div>
+                    <div className={s.smallStringElement}>
+                        <ChooseButton dispatch={props.dispatch}
+                                      state={props.state}
+                                      id={el.id}/>
+                    </div>
 
-        return (
-            <div className={s.stringWrapper}>
-                <div className={s.stringElement}>{el.incomeDate}</div>
-                <div className={s.stringElement}>{el.act}</div>
-                <div className={s.stringElement}>{el.number}</div>
-                <div className={s.smallStringElement}>
-                    <ChooseButton dispatch={props.dispatch}
-                                  state={props.state}
-                                  id={el.id}/>
-                </div>
-
-            </div>)
+                </div>)
+        }
 
 
     }
@@ -31,10 +32,17 @@ const CaseList = function (props) {
                 <div className={s.headerElement}>Акт №
                     <Input dispatch={props.dispatch}
                            state={props.state}
-                           field={props.state.main.operator}
+                           field={props.state.main.actFilter}
+                           fieldType={'actFilter'}
                            type={'number'}/>
                 </div>
-                <div className={s.headerElement}>Дело №</div>
+                <div className={s.headerElement}>Дело №
+                    <Input dispatch={props.dispatch}
+                           state={props.state}
+                           field={props.state.main.caseFilter}
+                           fieldType={'caseFilter'}
+                           type={'number'}/>
+                </div>
                 <div className={s.smallHeaderElement}/>
             </div>
             <div className={s.body}>

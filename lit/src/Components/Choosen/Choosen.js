@@ -53,6 +53,7 @@ const Choosen = function (props) {
                 <div> Operator:
                     <Input type={'number'}
                            field={props.state.main.operator}
+                           fieldType={'operator'}
                            state={props.state}
                            dispatch={props.dispatch}/>
                 </div>
