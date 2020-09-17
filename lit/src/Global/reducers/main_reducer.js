@@ -42,17 +42,14 @@ const main_reducer = function (state, action) {
 
             case SET_OPERATOR:
                 state.operator = action.value
-                console.log(state);
                 break;
 
             case SET_CASE_FILTER:
-                console.log(state);
                 state.caseFilter = action.value
                 break;
 
             case SET_ACT_FILTER:
                 state.actFilter = action.value
-                console.log(state);
                 break;
         }
         return state

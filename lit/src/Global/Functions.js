@@ -12,3 +12,11 @@ export const  defineColor=function(currentNav){
         return "#e0654c"
     }
 }
+
+export const applyFilters=function(el,state){
+    if (state.actFilter==''||state.actFilter==el.act){
+        if(state.caseFilter==''||state.caseFilter==el.number){
+            return el
+        }else return false
+    }
+}

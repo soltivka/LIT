@@ -5,8 +5,11 @@ import {setActFilter_action, setCaseFilter_action, setOperator_action} from "../
 const Input = function (props) {
     let onChange = function (event) {
         props.dispatch(chooseAction(event.target.value));
-
-
+    }
+    let handleEnter = (event) => {
+        if(event.key === 'Enter'){
+            console.log('enter press here! ')
+        }
     }
     let chooseAction = (event_target_value) => {
         if (props.fieldType === 'operator') {
@@ -28,7 +31,8 @@ const Input = function (props) {
             <input type={props.type}
                    value={props.field}
                    onChange={onChange}
-                   className={s.input}/>
+                   className={s.input}
+                   onKeyPress={handleEnter}/>
         </div>
 
     );

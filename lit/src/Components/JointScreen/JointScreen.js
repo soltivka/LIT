@@ -2,14 +2,14 @@ import React from 'react';
 import s from './JointScreen.module.css';
 import Choosen from "../Choosen/Choosen";
 import CaseList from "../CaseList/CaseList";
+import {applyFilters} from "../../Global/Functions";
 
 const JointScreen = function (props) {
 
 
     let getJointElement = (el) => {
         if (el.jointer === 0 && el.scaner === 0 && el.stitcher === 0 && el.visible === true) { //filter by case state
-            if(props.state.main.actFilter==='' && props.state.main.caseFilter===''){return el}else                              //filter by filters :)
-                if(props.state.main.actFilter==el.act||props.state.main.caseFilter==el.number){return el}
+            return applyFilters(el,props.state.main);
         } else return false
     };
     let getJointArray = function(){
