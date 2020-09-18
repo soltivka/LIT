@@ -1,9 +1,11 @@
 const SET_CURRENT_NAV = 'SET_CURRENT_NAV';
 const CHOOSE_CASE = 'CHOOSE_CASE';
 const CANCEL_CHOOSE_CASE = 'CANCEL_CHOOSE_CASE';
-const SET_OPERATOR='SET_OPERATOR';
-const SET_CASE_FILTER='SET_CASE_FILTER';
+const SET_OPERATOR = 'SET_OPERATOR';
+const SET_CASE_FILTER = 'SET_CASE_FILTER';
 const SET_ACT_FILTER = 'SET_ACT_FILTER';
+const TRANSFER_CASES ='TRANSFER_CASES';
+const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
 
 export const setCurrentNav_action = (button_nav) => (
     {
@@ -24,22 +26,30 @@ export const cancelChooseCase_action = (id) => (
         id: id
     }
 )
-export const setOperator_action=(value)=>(
+export const setOperator_action = (value) => (
     {
-        type:SET_OPERATOR,
-        value:value,
+        type: SET_OPERATOR,
+        value: value,
     }
 )
-export const setCaseFilter_action=(value)=>(
+export const setCaseFilter_action = (value) => (
     {
-        type:SET_CASE_FILTER,
-        value:value,
+        type: SET_CASE_FILTER,
+        value: value,
     }
 )
-export const setActFilter_action=(value)=>(
+export const setActFilter_action = (value) => (
     {
-        type:SET_ACT_FILTER,
-        value:value,
+        type: SET_ACT_FILTER,
+        value: value,
+    }
+)
+export const transferCases_action = () => ({
+    type: TRANSFER_CASES
+})
+export const chooseCaseByEnter_action=()=>(
+    {
+        type: CHOOSE_CASE_BY_ENTER
     }
 )
 

@@ -2,11 +2,12 @@ import React from 'react';
 import s from './ScanScreen.module.css';
 import Choosen from "../Choosen/Choosen";
 import CaseList from "../CaseList/CaseList";
+import {applyFilters} from "../../Global/Functions";
 
 const ScanScreen = function (props) {
     let getScanElement = (el, i) => {
         if (el.jointer !== 0 && el.scaner === 0 && el.stitcher === 0 && el.visible === true) {
-            return el
+            return applyFilters(el,props.state.main)
         } else return
 
     };

@@ -3,6 +3,7 @@ import s from './Choosen.module.css';
 import {defineColor} from "../../Global/Functions";
 import CancelButton from "../CancelButton/CancelButton";
 import Input from "../Input/Input";
+import TransferButton from "../TransferButton/TransferButton";
 
 const Choosen = function (props) {
 
@@ -32,7 +33,7 @@ const Choosen = function (props) {
             }
         })
     }
-    let counter = (data) => {
+    let counter = (data) => { // счетчик отобранных элементов
         let count = 0;
         data.map((el) => {
             if (el.choosen === true) {
@@ -69,7 +70,8 @@ const Choosen = function (props) {
             </div>
             <div className={s.footer}>
                 <div>отобрано дел: {counter(props.state.main.database)}</div>
-                <div className={s.button}>Передать</div>
+                <TransferButton
+                dispatch={props.dispatch}/>
             </div>
 
         </div>

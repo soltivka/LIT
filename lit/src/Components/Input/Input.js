@@ -1,6 +1,11 @@
 import React from 'react';
 import s from './Input.module.css';
-import {setActFilter_action, setCaseFilter_action, setOperator_action} from "../../Global/Actions";
+import {
+    chooseCaseByEnter_action,
+    setActFilter_action,
+    setCaseFilter_action,
+    setOperator_action
+} from "../../Global/Actions";
 
 const Input = function (props) {
     let onChange = function (event) {
@@ -9,6 +14,10 @@ const Input = function (props) {
     let handleEnter = (event) => {
         if(event.key === 'Enter'){
             console.log('enter press here! ')
+            props.dispatch(chooseCaseByEnter_action())
+        }
+        if(event.key === ','){
+            event.preventDefault();
         }
     }
     let chooseAction = (event_target_value) => {

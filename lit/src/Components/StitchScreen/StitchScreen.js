@@ -2,11 +2,12 @@ import React from 'react';
 import s from './StitchScreen.module.css';
 import Choosen from "../Choosen/Choosen";
 import CaseList from "../CaseList/CaseList";
+import {applyFilters} from "../../Global/Functions";
 
 const StitchScreen = function (props) {
     let getStitchElement = (el) => {
         if (el.jointer !== 0 && el.scaner !== 0 && el.stitcher === 0 && el.visible === true) {
-            return el
+            return applyFilters(el,props.state.main)
         } else return
 
     };
