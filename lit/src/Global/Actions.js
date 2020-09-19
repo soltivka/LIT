@@ -6,6 +6,8 @@ const SET_CASE_FILTER = 'SET_CASE_FILTER';
 const SET_ACT_FILTER = 'SET_ACT_FILTER';
 const TRANSFER_CASES ='TRANSFER_CASES';
 const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
+const SET_SCAN_INDEX='SET_SCAN_INDEX';
+const SET_PAGES='SET_PAGES';
 
 export const setCurrentNav_action = (button_nav) => (
     {
@@ -52,6 +54,17 @@ export const chooseCaseByEnter_action=()=>(
         type: CHOOSE_CASE_BY_ENTER
     }
 )
+export const setScanIndex_action=(value,id)=>({
+    type:SET_SCAN_INDEX,
+    value:value,
+    id:id,
+})
+export const setPages_action=(value,id)=>({
+    type:SET_PAGES,
+    value:value,
+    id:id,
+})
+
 
 
 

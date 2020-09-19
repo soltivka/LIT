@@ -7,8 +7,10 @@ const CANCEL_CHOOSE_CASE = 'CANCEL_CHOOSE_CASE';
 const SET_OPERATOR = 'SET_OPERATOR';
 const SET_ACT_FILTER = 'SET_ACT_FILTER';
 const SET_CASE_FILTER = 'SET_CASE_FILTER';
-const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
+const CHOOSE_CASE_BY_ENTER = 'CHOOSE_CASE_BY_ENTER';
 const TRANSFER_CASES = 'TRANSFER_CASES';
+const SET_SCAN_INDEX = 'SET_SCAN_INDEX';
+const SET_PAGES='SET_PAGES';
 
 
 const initialState = {
@@ -23,6 +25,7 @@ const initialState = {
 const main_reducer = function (state, action) {
     if (state) {
         switch (action.type) {
+
             case  CHOOSE_CASE:
                 let element = state.database.find((el) => {
                     if (el.id === action.id) {
@@ -60,13 +63,15 @@ const main_reducer = function (state, action) {
                 break;
 
             case CHOOSE_CASE_BY_ENTER:
-                if(state.caseFilter!==''){
-                    let filtred = state.database.find((el)=>{
-                        if (el.visible===true){return applyFilters(el,state);}
+                if (state.caseFilter !== '') {
+                    let filtred = state.database.find((el) => {
+                        if (el.visible === true) {
+                            return applyFilters(el, state);
+                        }
                     })
-                    filtred.choosen=true;
-                    filtred.visible=false;
-                    state.caseFilter='';
+                    filtred.choosen = true;
+                    filtred.visible = false;
+                    state.caseFilter = '';
                 }
 
 
@@ -75,24 +80,34 @@ const main_reducer = function (state, action) {
             case TRANSFER_CASES:
                 state.database.map((el) => {
                     // проверка выбранных дел и заполненности поля оператора
-                    if (el.choosen === true && state.operator!=='') {
+                    if (el.choosen === true && state.operator !== '') {
 
                         //отобрать необходимое поле оператора и заполнить. очистить отобранное
                         if (state.currentNav === 'joint') {
                             el.jointer = state.operator
-                            el.choosen=false
+                            el.choosen = false
 
                         }
                         if (state.currentNav === 'scan') {
                             el.scaner = state.operator
-                            el.choosen=false
+                            el.choosen = false
                         }
                         if (state.currentNav === 'stitch') {
                             el.stitcher = state.operator
-                            el.choosen=false
+                            el.choosen = false
                         }
                     }
                 })
+                break;
+
+            case SET_SCAN_INDEX:
+                let elem=state.database.find((el)=>{return (el.id===action.id)});
+                elem.scanIndex=action.value;
+                break;
+
+            case SET_PAGES:
+                let ele=state.database.find((el)=>{return (el.id===action.id)});
+                ele.pages=action.value;
 
         }
         return state

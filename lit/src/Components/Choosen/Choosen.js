@@ -4,6 +4,7 @@ import {defineColor} from "../../Global/Functions";
 import CancelButton from "../CancelButton/CancelButton";
 import Input from "../Input/Input";
 import TransferButton from "../TransferButton/TransferButton";
+import InputSmall from "../InputSmall/InputSmall";
 
 const Choosen = function (props) {
 
@@ -15,7 +16,36 @@ const Choosen = function (props) {
     }
 
     let createChoosenString = (el, i) => {
-        return (
+        if (props.state.main.currentNav === 'scan') {
+            return (
+                <div className={s.string}>
+                    <div className={s.block}>{el.incomeDate}</div>
+                    <div className={s.block}>{el.act}</div>
+                    <div className={s.block}>{el.number}</div>
+                    <div className={s.block}>
+                        <InputSmall
+                        dispatch={props.dispatch}
+                        id={el.id}
+                        field={el.scanIndex}
+                        fieldType={'scanIndex'}
+                        placeholder={'инд.'}/>
+                    </div>
+                    <div className={s.block}>
+                        <InputSmall
+                        dispatch={props.dispatch}
+                        id={el.id}
+                        field={el.pages}
+                        fieldType={'pages'}
+                        placeholder={'стр'}/>
+                    </div>
+
+
+                    <CancelButton
+                        id={el.id}
+                        dispatch={props.dispatch}/>
+                </div>
+            )
+        } else return (
             <div className={s.string}>
                 <div className={s.block}>{el.incomeDate}</div>
                 <div className={s.block}>{el.act}</div>
@@ -71,7 +101,7 @@ const Choosen = function (props) {
             <div className={s.footer}>
                 <div>отобрано дел: {counter(props.state.main.database)}</div>
                 <TransferButton
-                dispatch={props.dispatch}/>
+                    dispatch={props.dispatch}/>
             </div>
 
         </div>
