@@ -2,7 +2,6 @@ import React from 'react';
 import s from './App.module.css';
 import Header from "./Components/Header/Header";
 import JointScreen from "./Components/JointScreen/JointScreen";
-import Choosen from "./Components/Choosen/Choosen";
 import ScanScreen from "./Components/ScanScreen/ScanScreen";
 import StitchScreen from "./Components/StitchScreen/StitchScreen";
 

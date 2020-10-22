@@ -20,3 +20,19 @@ export const applyFilters=function(el,state){
         }else return false
     }
 }
+export const getData= async function(){
+    let response = await fetch('http://localhost:3001/',{
+        method: "POST",
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+                "Content-Type": "text/plain"
+        }});
+        if (response.ok) {
+            let json = await response.json();
+            return json;
+        } else {
+
+            alert("Ошибка HTTP: " + response.status);
+            return []
+        }
+}

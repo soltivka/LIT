@@ -1,5 +1,5 @@
 import {database} from '../database'
-import {applyFilters} from "../Functions";
+import {applyFilters, getData} from "../Functions";
 
 const SET_CURRENT_NAV = 'SET_CURRENT_NAV';
 const CHOOSE_CASE = 'CHOOSE_CASE';
@@ -14,7 +14,7 @@ const SET_PAGES='SET_PAGES';
 
 
 const initialState = {
-    database: database,
+    database: [],
     currentNav: 'joint',
     operator: '',
     actFilter: '',

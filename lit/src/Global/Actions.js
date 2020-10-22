@@ -8,6 +8,7 @@ const TRANSFER_CASES ='TRANSFER_CASES';
 const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
 const SET_SCAN_INDEX='SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
+const GET_DATA='GET_DATA';
 
 export const setCurrentNav_action = (button_nav) => (
     {
@@ -64,6 +65,7 @@ export const setPages_action=(value,id)=>({
     value:value,
     id:id,
 })
+
 
 
 
