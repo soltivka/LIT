@@ -21,18 +21,18 @@ export const applyFilters=function(el,state){
     }
 }
 export const getData= async function(){
-    let response = await fetch('http://localhost:3001/',{
-        method: "POST",
-            headers: {
-            "Access-Control-Allow-Origin": "*",
-                "Content-Type": "text/plain"
-        }});
-        if (response.ok) {
-            let json = await response.json();
-            return json;
-        } else {
+    let response = await fetch('http://localhost:3001/1',{
+        method: "GET",
+        headers: {
+            "user":"1",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
 
+    });
+        if (response.ok) {
+            console.log(await response.json())
+        } else {
             alert("Ошибка HTTP: " + response.status);
-            return []
         }
 }

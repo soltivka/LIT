@@ -5,8 +5,13 @@ import CancelButton from "../CancelButton/CancelButton";
 import Input from "../Input/Input";
 import TransferButton from "../TransferButton/TransferButton";
 import InputSmall from "../InputSmall/InputSmall";
+import {get_data_action, transferCases_action} from "../../Global/Actions";
 
 const Choosen = function (props) {
+
+    let onClick = function () {                   //удалить это
+        props.dispatch(get_data_action())
+    }
 
     let headerstyle = {
         boxShadow: "inset 0 1px 20px " + defineColor(props.state.main.currentNav),
@@ -100,6 +105,7 @@ const Choosen = function (props) {
             </div>
             <div className={s.footer}>
                 <div>отобрано дел: {counter(props.state.main.database)}</div>
+                <button onClick={onClick}>zapros</button>
                 <TransferButton
                     dispatch={props.dispatch}/>
             </div>

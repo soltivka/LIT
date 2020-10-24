@@ -11,6 +11,7 @@ const CHOOSE_CASE_BY_ENTER = 'CHOOSE_CASE_BY_ENTER';
 const TRANSFER_CASES = 'TRANSFER_CASES';
 const SET_SCAN_INDEX = 'SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
+const GET_DATA='GET_DATA';
 
 
 const initialState = {
@@ -108,7 +109,11 @@ const main_reducer = function (state, action) {
             case SET_PAGES:
                 let ele=state.database.find((el)=>{return (el.id===action.id)});
                 ele.pages=action.value;
+                break;
 
+            case GET_DATA:
+                let data=getData();
+                console.log(data)
         }
         return state
     } else

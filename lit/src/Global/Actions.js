@@ -65,8 +65,9 @@ export const setPages_action=(value,id)=>({
     value:value,
     id:id,
 })
-
-
+export const get_data_action=()=>({
+    type:GET_DATA,
+})
 
 
 
