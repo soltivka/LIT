@@ -25,8 +25,6 @@ export const getData= async function(){
         method: "GET",
         headers: {
             "user":"1",
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
         },
 
     });

@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = {
     createCaseObjects: function ({freshJson, actNumber, incomeDate}) {
         let cases = freshJson.map((el, i) => {
@@ -16,7 +18,7 @@ module.exports = {
                 elem.jointer = 0
                 elem.scanDate = ''
                 elem.scaner = 0
-                elem.pages = ''  // надо будет поменять на пустую строку
+                elem.pages = ''
                 elem.stitchDate = ''
                 elem.stitcher = 0
             }
@@ -25,4 +27,19 @@ module.exports = {
         return cases
     },
 
+
+    checkForNewActs: async function () {
+            let i;
+            let excels = await fs.readdir('./excels', (err, files) => {
+                console.log(files.length)
+                i=files.length
+            });
+
+             let acts = await fs.readdir('./acts', (err, files) => {
+                return files
+            });
+        console.log(i);
+
+
+    }
 }
