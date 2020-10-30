@@ -9,6 +9,7 @@ const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
 const SET_SCAN_INDEX='SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
 const GET_DATA='GET_DATA';
+const SET_USER='SET_USER'
 
 export const setCurrentNav_action = (button_nav) => (
     {
@@ -67,6 +68,10 @@ export const setPages_action=(value,id)=>({
 })
 export const get_data_action=()=>({
     type:GET_DATA,
+})
+export const set_user_action=(user)=>({
+    type:SET_USER,
+    user:user,
 })
 
 

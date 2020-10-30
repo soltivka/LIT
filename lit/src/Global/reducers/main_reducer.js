@@ -12,14 +12,16 @@ const TRANSFER_CASES = 'TRANSFER_CASES';
 const SET_SCAN_INDEX = 'SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
 const GET_DATA='GET_DATA';
+const SET_USER='SET_USER';
 
 
 const initialState = {
     database: [],
-    currentNav: 'joint',
+    currentNav: 'auth',
     operator: '',
     actFilter: '',
     caseFilter: '',
+    user:'',
 }
 
 
@@ -113,7 +115,10 @@ const main_reducer = function (state, action) {
 
             case GET_DATA:
                 let data=getData();
-                console.log(data)
+                console.log(data);
+                break;
+            case SET_USER:
+                state.user=action.value
         }
         return state
     } else

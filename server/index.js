@@ -7,25 +7,31 @@ const cors = require('cors');
 const fs = require('fs');
 const port = 3001;
 app.use(cors());
+
+app.listen(port, () => {
+    console.log(`server starting at ${port}`)
+})
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));
 })
 
 
 const serverStarting =  async function () {
-    let result = await Functions.checkForNewActs();
+    console.log('looking for new acts.xml in ./excels')
+    let newActs = await Functions.getNewActs();
+    console.log(newActs.length + '  new acts found: ' +newActs)
+    newActs.forEach(Functions.createActObject)
 
 }
-serverStarting().then(()=>console.log('done'))
+serverStarting().then(()=>console.log('server works, congrats!'))
 
 
 app.get('/1', (req, res) => {
     res.send({sometext: 'sometext'});
 });
 
-app.listen(port, () => {
-    console.log(`server starting at ${port}`)
-})
+
 
 app.use(express.static('build'));
 
