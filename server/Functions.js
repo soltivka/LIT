@@ -21,6 +21,7 @@ module.exports = {
                 elem.pages = ''
                 elem.stitchDate = ''
                 elem.stitcher = 0
+                elem.comment = ''
             }
             return elem
         })
@@ -29,16 +30,29 @@ module.exports = {
 
 
     checkForNewActs: async function () {
-            let i;
-            let excels = await fs.readdir('./excels', (err, files) => {
-                console.log(files.length)
-                i=files.length
-            });
 
-             let acts = await fs.readdir('./acts', (err, files) => {
-                return files
-            });
-        console.log(i);
+        let loadScriptPromise = function () {
+            return new Promise((resolve, reject) => {
+
+                fs.readdir('./excels', (err, excels) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        fs.readdir('./acts', (err, acts) => {
+                            if (err) {
+                                reject(err)
+                            } else {
+                                resolve([excels, acts])
+                            }
+                        })
+                    }
+                })
+            })
+        }
+        let promise = loadScriptPromise().then((resolve) => {
+            console.log(resolve[0]);
+            console.log(resolve[1]);
+        });
 
 
     }
