@@ -1,5 +1,5 @@
 import {database} from '../database'
-import {applyFilters, getData} from "../Functions";
+import {applyFilters, getData, requestData} from "../Functions";
 
 const SET_CURRENT_NAV = 'SET_CURRENT_NAV';
 const CHOOSE_CASE = 'CHOOSE_CASE';
@@ -11,8 +11,8 @@ const CHOOSE_CASE_BY_ENTER = 'CHOOSE_CASE_BY_ENTER';
 const TRANSFER_CASES = 'TRANSFER_CASES';
 const SET_SCAN_INDEX = 'SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
-const GET_DATA='GET_DATA';
-const SET_USER='SET_USER';
+const SET_USERHASH='SET_USERHASH';
+const USERHASH_REQUEST='USERHASH_REQUEST';
 
 
 const initialState = {
@@ -22,6 +22,7 @@ const initialState = {
     actFilter: '',
     caseFilter: '',
     user:'',
+    userhash:'',
 }
 
 
@@ -113,12 +114,16 @@ const main_reducer = function (state, action) {
                 ele.pages=action.value;
                 break;
 
-            case GET_DATA:
-                let data=getData();
-                console.log(data);
+            case SET_USERHASH:
+                state.userhash=action.userhash
                 break;
-            case SET_USER:
-                state.user=action.value
+            case USERHASH_REQUEST:
+                let requestedData = requestData(state.userhash);
+                console.log(requestedData)
+
+
+
+
         }
         return state
     } else

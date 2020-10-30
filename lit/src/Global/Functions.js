@@ -20,17 +20,19 @@ export const applyFilters=function(el,state){
         }else return false
     }
 }
-export const getData= async function(){
+
+
+export const requestData= async function(userhash){
     let response = await fetch('http://localhost:3001/1',{
         method: "GET",
-        headers: {
-            "user":"1",
-        },
-
-    });
-        if (response.ok) {
-            console.log(await response.json())
-        } else {
-            alert("Ошибка HTTP: " + response.status);
+        headers:{
+            "user":'1',
         }
+    })
+    if (response.ok){
+        let requestedData =  JSON.parse(await response.json())
+        console.log(requestedData)
+    }else{
+        alert(response.status)
+    }
 }

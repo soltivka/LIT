@@ -17,16 +17,16 @@ const Header = function (props) {
                     </div>
                 </div>
                 <div className={s.navbar}>
-                    <HeaderLink nav={'stitch'}
-                                text={'Сшивка'}
+                    <HeaderLink nav={'work'}
+                                text={'Обработка'}
                                 dispatch={props.dispatch}
                                 state={props.state}/>
-                    <HeaderLink nav={'scan'}
-                                text={'Сканировка'}
+                    <HeaderLink nav={'search'}
+                                text={'Поиск'}
                                 dispatch={props.dispatch}
                                 state={props.state}/>
-                    <HeaderLink nav={'joint'}
-                                text={'Расшивка'}
+                    <HeaderLink nav={'stats'}
+                                text={'Статистика'}
                                 dispatch={props.dispatch}
                                 state={props.state}/>
                 </div>

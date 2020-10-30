@@ -1,22 +1,22 @@
 import React from 'react';
-import s from './ScanScreen.module.css';
+import s from './WorkScreen.css';
 import Choosen from "../Choosen/Choosen";
 import CaseList from "../CaseList/CaseList";
 import {applyFilters} from "../../Global/Functions";
 
-const ScanScreen = function (props) {
-    let getScanElement = (el, i) => {
-        if (el.jointer !== 0 && el.scaner === 0 && el.stitcher === 0 && el.visible === true) {
+const WorkScreen = function (props) {
+    let getStitchElement = (el) => {
+        if (el.jointer !== 0 && el.scaner !== 0 && el.stitcher === 0 && el.visible === true) {
             return applyFilters(el,props.state.main)
         } else return
 
     };
-    let getContent = (data) => {
-        return data.filter((el, i) => {
-            return getScanElement(el);
+    let getStitchContent = (data) => {
+        return data.filter((el) => {
+            return getStitchElement(el);
         })
     }
-    let content = getContent(props.state.main.database);
+    let content = getStitchContent(props.state.main.database);
 
     return (
         <div className={s.wrapper}>
@@ -25,7 +25,6 @@ const ScanScreen = function (props) {
                 <CaseList dispatch={props.dispatch}
                           content={content}
                           state={props.state}/>
-
 
             </div>
             <div className={s.choosenWrapper}>
@@ -39,4 +38,4 @@ const ScanScreen = function (props) {
         </div>
     );
 }
-export default ScanScreen
+export default WorkScreen

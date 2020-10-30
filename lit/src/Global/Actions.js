@@ -9,7 +9,8 @@ const CHOOSE_CASE_BY_ENTER='CHOOSE_CASE_BY_ENTER';
 const SET_SCAN_INDEX='SET_SCAN_INDEX';
 const SET_PAGES='SET_PAGES';
 const GET_DATA='GET_DATA';
-const SET_USER='SET_USER'
+const SET_USERHASH='SET_USERHASH';
+const USERHASH_REQUEST="USERHASH_REQUEST";
 
 export const setCurrentNav_action = (button_nav) => (
     {
@@ -69,9 +70,14 @@ export const setPages_action=(value,id)=>({
 export const get_data_action=()=>({
     type:GET_DATA,
 })
-export const set_user_action=(user)=>({
-    type:SET_USER,
-    user:user,
+export const set_userhash_action=(userhash)=>({
+    type:SET_USERHASH,
+    userhash:userhash,
+})
+export const userHash_request_action=(userhash)=>({
+    type:USERHASH_REQUEST,
+    userhash:userhash,
+
 })
 
 

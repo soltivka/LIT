@@ -11,8 +11,8 @@ const HeaderLink = function (props) {
 
 
     let style = function(){
-        if (props.nav===props.state.main.currentNav){
-            return ({borderBottom: 'solid 5px '+defineColor(props.state.main.currentNav)})
+        if (props.nav===props.state.currentNav){
+            return ({borderBottom: 'solid 5px '+defineColor(props.state.currentNav)})
         }
         else return
     };

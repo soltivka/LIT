@@ -28,7 +28,7 @@ serverStarting().then(()=>console.log('server works, congrats!'))
 
 
 app.get('/1', (req, res) => {
-    res.send({sometext: 'sometext'});
+    res.send({data: fs.readFileSync(path.join(__dirname + '/acts/121.json'),'utf8')});
 });
 
 

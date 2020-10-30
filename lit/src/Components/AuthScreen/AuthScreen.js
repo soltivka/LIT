@@ -1,13 +1,23 @@
 import React from 'react';
 import s from './AuthScreen.module.css';
-import {get_data_action, set_user_action} from "../../Global/Actions";
+import {
+     set_userhash_action,
+    userHash_request_action
+} from "../../Global/Actions";
 
 const AuthScreen = function (props) {
-    let change=function(event){
-        props.dispatch(set_user_action(event.target.value))
+    let change = function (event) {
+        props.dispatch(set_userhash_action(event.target.value))
     }
-
-
+    let handleEnter = (event) => {
+        if (event.key === 'Enter') {
+            console.log('authorisation ' + props.state.user)
+            props.dispatch(userHash_request_action(props.state.user))
+        }
+        if (event.key === ',') {
+            event.preventDefault();
+        }
+    }
 
 
     return (
@@ -15,7 +25,8 @@ const AuthScreen = function (props) {
             <div className={s.window}>
                 Choose your destiny
                 <input placeholder={'enter code here'}
-                onChange={change}></input>
+                       onChange={change}
+                       onKeyPress={handleEnter}/>
 
 
             </div>

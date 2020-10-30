@@ -8,7 +8,7 @@ import App from "./App";
 const render = (state) => {
     ReactDOM.render(
         <React.StrictMode>
-                <App state={state}
+                <App state={state.main}
                      dispatch={store.dispatch.bind(store)}
                 />
         </React.StrictMode>,
