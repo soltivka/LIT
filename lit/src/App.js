@@ -13,7 +13,6 @@ function App(props) {
             return (
                 <div>
                     <WorkScreen dispatch={props.dispatch}
-                                  database={props.state.main.database}
                                   state={props.state}/>
                 </div>
             )
@@ -24,7 +23,6 @@ function App(props) {
                     <AuthScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
-
                 </div>
             )
         }

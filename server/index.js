@@ -17,20 +17,31 @@ app.get('/', (req, res) => {
 })
 
 
-const serverStarting =  async function () {
+const serverStarting = async function () {
     console.log('looking for new acts.xml in ./excels')
     let newActs = await Functions.getNewActs();
-    console.log(newActs.length + '  new acts found: ' +newActs)
+    console.log(newActs.length + '  new acts found: ' + newActs)
     newActs.forEach(Functions.createActObject)
 
 }
-serverStarting().then(()=>console.log('server works, congrats!'))
+serverStarting().then(() => console.log('server works, congrats!'))
 
 
-app.get('/1', (req, res) => {
-    res.send({data: fs.readFileSync(path.join(__dirname + '/acts/121.json'),'utf8')});
+app.get('/getCases', (req, res) => {
+    let userhash = req.headers.userhash
+    console.log(userhash)
+    let userInfo = Functions.getUserInfo(userhash)
+    let casesForUser=Functions.getCasesForUser(userInfo);
+    res.send({casesForUser,userInfo});
 });
 
+app.get('/postChangedCases',(req,res)=>{
+    let userhash = req.headers.userhash
+    console.log(userhash)
+    res.send({somedata:"somedata"})
+    let changedCases = req.headers.changedcases
+    console.log(changedCases)
+});
 
 
 app.use(express.static('build'));

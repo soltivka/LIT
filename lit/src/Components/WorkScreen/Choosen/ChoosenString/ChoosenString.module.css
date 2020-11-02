@@ -1,0 +1,15 @@
+.wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.cell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+}
+.input{
+    width: 100%;
+}

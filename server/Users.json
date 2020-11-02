@@ -1,5 +1,18 @@
-{
-  "firsthash": {
 
+[
+  {
+    "userhash": "1",
+    "id": "11",
+    "operation": "stitcher"
   },
-}
+  {
+    "userhash": "2",
+    "id": "22",
+    "operation": "scanner"
+  },
+  {
+    "userhash": "3",
+    "id": "35",
+    "operation": "jointer"
+  }
+]

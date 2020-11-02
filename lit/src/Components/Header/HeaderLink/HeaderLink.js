@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './HeaderLink.module.css';
 import {setCurrentNav_action} from "../../../Global/Actions";
-import {defineColor} from "../../../Global/Functions";
+
 
 
 const HeaderLink = function (props) {
@@ -10,17 +10,10 @@ const HeaderLink = function (props) {
     }
 
 
-    let style = function(){
-        if (props.nav===props.state.currentNav){
-            return ({borderBottom: 'solid 5px '+defineColor(props.state.currentNav)})
-        }
-        else return
-    };
     return (
         <div className={s.buttonWrapper}>
             <button className={s.headerButton}
-                    onClick={click}
-                    style={style()}>
+                    onClick={click}>
                 {props.text}
             </button>
 

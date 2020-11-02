@@ -1,37 +1,34 @@
-export const findDate = function (element) {
-};
 
-export const  defineColor=function(currentNav){
-    if(currentNav==="stitch"){
-        return "#44ad50"
-    }
-    if(currentNav==="scan"){
-        return "#bdab46"
-    }
-    if(currentNav==="joint"){
-        return "#e0654c"
-    }
-}
-
-export const applyFilters=function(el,state){
-    if (state.actFilter==''||state.actFilter==el.act){
-        if(state.caseFilter==''||state.caseFilter==el.number){
-            return el
-        }else return false
-    }
-}
-
-
-export const requestData= async function(userhash){
-    let response = await fetch('http://localhost:3001/1',{
+export const request_operator_cases= async function(userhash){
+    let response = await fetch('http://localhost:3001/getCases',{
         method: "GET",
         headers:{
-            "user":'1',
+            "userhash":userhash,
         }
     })
     if (response.ok){
-        let requestedData =  JSON.parse(await response.json())
-        console.log(requestedData)
+        let requestedData = await response.json()
+        return requestedData
+    }else{
+        alert(response.status)
+    }
+}
+
+export const post_case_changes= async function(userhash,changedCases){
+
+    console.log(changedCases)
+    let response = await fetch('http://localhost:3001/postChangedCases',{
+        method: "GET",
+
+        headers:{
+            'Content-Type': 'charset=utf-8',
+            "userhash":userhash,
+            "changedCases":{changedCases},
+        },
+    })
+    if (response.ok){
+
+        return
     }else{
         alert(response.status)
     }

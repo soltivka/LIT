@@ -24,12 +24,12 @@ module.exports = {
                     elem.expectedPages = el.G
                     elem.outDate = ''
                     elem.jointDate = ''
-                    elem.jointer = 0
+                    elem.jointer = ''
                     elem.scanDate = ''
-                    elem.scaner = 0
+                    elem.scaner = ''
                     elem.pages = ''
                     elem.stitchDate = ''
-                    elem.stitcher = 0
+                    elem.stitcher = ''
                     elem.comment = ''
                 }
                 return elem
@@ -64,20 +64,49 @@ module.exports = {
         }
         let lostActNames = promisificate().then((resolve) => {
             let excels = resolve.excels;
-            let excelNames=excels.map((el)=>el.split('.')[0]);
+            let excelNames = excels.map((el) => el.split('.')[0]);
             let acts = resolve.acts;
-            let actNames = acts.map((el)=>el.split('.')[0]);
+            let actNames = acts.map((el) => el.split('.')[0]);
 
-            const diff = function(a1, a2) {
-                return a1.filter(i=>!a2.includes(i))
-                    .concat(a2.filter(i=>!a1.includes(i)))
+            const diff = function (a1, a2) {
+                return a1.filter(i => !a2.includes(i))
+                    .concat(a2.filter(i => !a1.includes(i)))
             }
-            let lostActNames = diff(excelNames,actNames);
-
+            let lostActNames = diff(excelNames, actNames);
 
 
             return lostActNames
         });
         return lostActNames
+    },
+
+    getUserInfo: function (userhash) {                                                                     // вся инфа о пользователе  из users.json
+        let userInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8')).filter((el) => el.userhash === userhash)
+        return userInfo[0];
+
+    },
+
+    getCasesForUser: function (userInfo) {
+        if (userInfo) {
+            let operation = userInfo["operation"];
+            let fileNames = fs.readdirSync('./acts');
+            let casesForUser = [];
+            fileNames.forEach((el) => {
+                let act = JSON.parse(fs.readFileSync(path.join(__dirname + '/acts/' + el), 'utf8'))
+                act.forEach((el)=>{
+                    if(operation==="stitcher"&&el.stitcher===''){
+
+                        casesForUser.push(el);
+                    }
+                })
+
+
+            })
+            return casesForUser
+        }else return [];
+
+
     }
+
+
 }
