@@ -10,6 +10,7 @@ const render = (state) => {
         <React.StrictMode>
                 <App state={state.main}
                      dispatch={store.dispatch.bind(store)}
+                     key={"reactApp"}
                 />
         </React.StrictMode>,
         document.getElementById('root')

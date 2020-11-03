@@ -11,7 +11,7 @@ const WorkScreen = function (props) {
             return (props.state.operator_cases.data.map((el) => {
                 if (el.choosen === false) {                                // check for not-choosen cases (display only not-choosen)
                     return (
-                        <div>
+                        <div key={el.index}>
                             <CaseString datacase={el}
                                         dispatch={props.dispatch}/>
                         </div>
@@ -25,10 +25,19 @@ const WorkScreen = function (props) {
         <div className={s.wrapper}>
             <div className={s.caseList}>
                 <div className={s.header}>
-                    <div className={s.cell}>Акт</div>
-                    <div className={s.cell}>Номер дела</div>
-                    <div className={s.cell}>Адрес</div>
-                    <div className={s.cell}>Добавить</div>
+                    <div className={s.topSide}>
+                        <div className={s.cell}>Акт</div>
+                        <div className={s.cell}>Номер дела</div>
+                        <div className={s.cell}>Адрес</div>
+                        <div className={s.cell}>Добавить</div>
+                    </div>
+                    <div className={s.bottomSide}>
+                        <div className={s.cell}><input className={s.searchInput} type={'number'}/></div>
+                        <div className={s.cell}><input className={s.searchInput} type={'number'}/></div>
+                        <div className={s.cell}><input className={s.searchInput} type={'text'}/></div>
+                        <div className={s.cell}></div>
+                    </div>
+
                 </div>
                 <div className={s.content}>{content()}</div>
             </div>

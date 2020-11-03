@@ -4,7 +4,7 @@ const excelToJson = require("convert-excel-to-json");
 
 module.exports = {
 
-    createActObject: function (el) {
+    createActObject: function (el) {                                                                        //парсит новый акт в excel , сохраняет его в JSON
         console.log('parcing new excel: ' + el + '.xls');
         let freshJson = excelToJson({
             sourceFile: path.join(__dirname + `/excels/${el}.xls`)
@@ -23,13 +23,21 @@ module.exports = {
                     elem.incomeDate = date
                     elem.expectedPages = el.G
                     elem.outDate = ''
-                    elem.jointDate = ''
-                    elem.jointer = ''
-                    elem.scanDate = ''
-                    elem.scaner = ''
-                    elem.pages = ''
+
                     elem.stitchDate = ''
                     elem.stitcher = ''
+                    elem.stitcherhash=''
+
+                    elem.scanDate = ''
+                    elem.scaner = ''
+                    elem.scanerhash=''
+                    elem.pages = ''
+                    elem.scanNumber = ''
+
+                    elem.jointDate = ''
+                    elem.jointer = ''
+                    elem.jointerhash=''
+
                     elem.comment = ''
                 }
                 return elem
@@ -42,9 +50,10 @@ module.exports = {
     },
 
 
-    getNewActs: async function () {
 
-        let promisificate = function () {
+
+    getNewActs: async function () {
+        let promisificate = function () {                                                                       //отслеживает добавление нового акта и возвращает его название
             return new Promise((resolve, reject) => {
 
                 fs.readdir('./excels', (err, excels) => {
@@ -62,7 +71,7 @@ module.exports = {
                 })
             })
         }
-        let lostActNames = promisificate().then((resolve) => {
+        return promisificate().then((resolve) => {
             let excels = resolve.excels;
             let excelNames = excels.map((el) => el.split('.')[0]);
             let acts = resolve.acts;
@@ -72,39 +81,88 @@ module.exports = {
                 return a1.filter(i => !a2.includes(i))
                     .concat(a2.filter(i => !a1.includes(i)))
             }
-            let lostActNames = diff(excelNames, actNames);
-
-
-            return lostActNames
-        });
-        return lostActNames
+            return diff(excelNames, actNames)
+        })
+    },
+    getAllUsersInfo:function(){                                                          //прочитать из файла все данные о всех пользователях
+        let allUsersInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8'))
+        return allUsersInfo
     },
 
-    getUserInfo: function (userhash) {                                                                     // вся инфа о пользователе  из users.json
-        let userInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8')).filter((el) => el.userhash === userhash)
+
+    getUserInfo: function (userhash) {                                                    // вся инфа о пользователе  из users.json
+        let userInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8'))
+            .filter((el) => el.userhash === userhash)
+        console.log(userInfo)
         return userInfo[0];
 
     },
 
-    getCasesForUser: function (userInfo) {
+
+
+    getCasesForUser: function (userInfo) {                                                                 //отобрать дела, предназначенные пользователю.
         if (userInfo) {
             let operation = userInfo["operation"];
             let fileNames = fs.readdirSync('./acts');
             let casesForUser = [];
             fileNames.forEach((el) => {
                 let act = JSON.parse(fs.readFileSync(path.join(__dirname + '/acts/' + el), 'utf8'))
-                act.forEach((el)=>{
-                    if(operation==="stitcher"&&el.stitcher===''){
-
+                act.forEach((el) => {
+                    if (operation === "stitcher" && el.stitcher === '') {
+                        casesForUser.push(el);
+                    }else if(operation==="scaner" && el.stitcher &&el.scaner===''){
+                        casesForUser.push(el);
+                    }else if(operation==="jointer" && el.stitcher&& el.scaner && el.scanDate && el.jointer===''){
                         casesForUser.push(el);
                     }
                 })
-
-
             })
             return casesForUser
-        }else return [];
+        } else{
+            console.log("ERROR: no such user");
+            return []
+        }
+    },
 
+
+    applyChangesToCases: function(userhash,changedCases){
+        let userInfo = this.getUserInfo(userhash)
+        let allUsersInfo = this.getAllUsersInfo()
+        let fileNames = fs.readdirSync('./acts');
+        fileNames.forEach((actNumber) => {
+            let act = JSON.parse(fs.readFileSync(path.join(__dirname + '/acts/' + actNumber), 'utf8'))
+            act.forEach((fileCase) => {                                                                     //перебираем каждый элемент из каждого акта
+                changedCases.forEach((changedCase)=>{                                                       //сравниваем с каждым элементом измененного списка
+                    if(fileCase.index===changedCase.index){                                                 //<<===получили нужное дело
+                        if(userInfo["operation"]==="stitcher"){                                             //вносим изменения, если юзер расшивка
+                            fileCase.stitcher=userInfo["id"];
+                            fileCase.stitcherhash=userInfo["userhash"];
+                            userInfo["acts"]++;
+
+                        }else if(userInfo["operation"]==="scaner"){                                       // вносим изменения, если юзер сканировщик
+                            fileCase.scaner=userInfo["id"];
+                            fileCase.scanerhash=userInfo["userhash"];
+                            fileCase.pages=changedCase.pages;
+                            fileCase.scanNumber=changedCase.scanNumber;
+                            userInfo["acts"]++;
+
+                            let stitcher=allUsersInfo.find((el)=>el["operation"]==="stitcher");             //добавляем данные к другим пользователям (кол-во страниц)
+                            stitcher["pages"]=stitcher["pages"]+Number(changedCase.pages);
+
+                        }else if(userInfo["operation"]==="jointer"){                                        //вносим изменения, если юзер сшивка
+                            fileCase.jointer=userInfo["id"];
+                            fileCase.jointerhash=userInfo["userhash"];
+                            userInfo["acts"]++;
+
+                        }
+
+
+                    }
+                })
+                fs.deleteFileSync()
+                fs.writeFileSync(`acts/${actNumber}`, JSON.stringify(act));//сохранить акт здеся
+            })
+        })
 
     }
 

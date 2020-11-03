@@ -3,16 +3,22 @@
   {
     "userhash": "1",
     "id": "11",
-    "operation": "stitcher"
+    "operation": "stitcher",
+    "acts": 0,
+    "pages": 0
   },
   {
     "userhash": "2",
     "id": "22",
-    "operation": "scanner"
+    "operation": "scaner",
+    "acts": 0,
+    "pages": 0
   },
   {
     "userhash": "3",
     "id": "35",
-    "operation": "jointer"
+    "operation": "jointer",
+    "acts": 0,
+    "pages": 0
   }
 ]

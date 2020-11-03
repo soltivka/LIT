@@ -4,16 +4,17 @@ import ChoosenString from "./ChoosenString/ChoosenString";
 import {post_changes_action} from "../../../Global/Actions";
 
 const Choosen = function (props) {
-    let content = function(){
+    let content = function () {
         return props.caseList.map((el) => {
             return (
-                <div>
-                    <ChoosenString el={el}></ChoosenString>
+                <div key={el.index}>
+                    <ChoosenString el={el}
+                                   dispatch={props.dispatch}/>
                 </div>
             )
         })
     }
-    let postChanges=function(){
+    let postChanges = function () {
         props.dispatch(post_changes_action())
 
     }
@@ -32,7 +33,8 @@ const Choosen = function (props) {
             </div>
             <div className={s.footer}>
                 <div className={s.postButton}
-                onClick={postChanges}>передать на сервер</div>
+                     onClick={postChanges}>передать на сервер
+                </div>
             </div>
 
         </div>

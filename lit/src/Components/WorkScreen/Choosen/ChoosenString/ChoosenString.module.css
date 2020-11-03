@@ -10,6 +10,19 @@
     justify-content: center;
     width:100%;
 }
+.cancelButton{
+    display: flex;
+    background-color: red;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    transform:rotate(45deg);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+
+}
 .input{
     width: 100%;
 }

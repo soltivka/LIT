@@ -15,21 +15,24 @@ export const request_operator_cases= async function(userhash){
 }
 
 export const post_case_changes= async function(userhash,changedCases){
-
-    console.log(changedCases)
+    let casesWithNoCirillic = changedCases.map((el)=>{
+        delete el.street;
+        delete el.adress;
+        return el;
+    })
     let response = await fetch('http://localhost:3001/postChangedCases',{
         method: "GET",
-
         headers:{
             'Content-Type': 'charset=utf-8',
             "userhash":userhash,
-            "changedCases":{changedCases},
+            "changedCases":JSON.stringify(casesWithNoCirillic),
         },
     })
     if (response.ok){
-
-        return
+        let requestedData = await response.json()
+        return requestedData
     }else{
-        alert(response.status)
+        alert(response.status + 'не удалось отправить данные на сервер')
+        return undefined
     }
 }

@@ -2,7 +2,6 @@ const Functions = require('./Functions.js');
 const express = require('express');
 const path = require('path');
 const app = express();
-const excelToJson = require('convert-excel-to-json');
 const cors = require('cors');
 const fs = require('fs');
 const port = 3001;
@@ -31,16 +30,17 @@ app.get('/getCases', (req, res) => {
     let userhash = req.headers.userhash
     console.log(userhash)
     let userInfo = Functions.getUserInfo(userhash)
-    let casesForUser=Functions.getCasesForUser(userInfo);
-    res.send({casesForUser,userInfo});
+    let casesForUser = Functions.getCasesForUser(userInfo);
+    res.send({casesForUser, userInfo});
 });
 
-app.get('/postChangedCases',(req,res)=>{
+app.get('/postChangedCases', (req, res) => {
     let userhash = req.headers.userhash
-    console.log(userhash)
-    res.send({somedata:"somedata"})
-    let changedCases = req.headers.changedcases
-    console.log(changedCases)
+    let changedCases = JSON.parse(req.headers["changedcases"])
+    Functions.applyChangesToCases(userhash,changedCases)
+    let userInfo = Functions.getUserInfo(userhash)
+    let casesForUser = Functions.getCasesForUser(userInfo);
+    res.send({casesForUser});
 });
 
 
