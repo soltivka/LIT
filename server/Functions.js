@@ -112,15 +112,16 @@ module.exports = {
                         casesForUser.push(el);
                     }else if(operation==="scaner" && el.stitcher &&el.scaner===''){
                         casesForUser.push(el);
-                    }else if(operation==="jointer" && el.stitcher&& el.scaner && el.scanDate && el.jointer===''){
+                    }else if(operation==="jointer" && el.stitcher&& el.scaner  && el.jointer===''){
                         casesForUser.push(el);
                     }
                 })
             })
+            console.log("operator "+userInfo["id"]+" got caseList   (getCasesForUser)")
             return casesForUser
         } else{
-            console.log("ERROR: no such user");
-            return []
+            console.log("Error: getCasesForUser(server/Functions.js) -- userInfo not match");
+            return ['Error: getCasesForUser(server/Functions.js) -- userInfo not match']
         }
     },
 
@@ -159,7 +160,7 @@ module.exports = {
 
                     }
                 })
-                fs.deleteFileSync()
+                fs.unlinkSync(`acts/${actNumber}`); //удалить старый экземпляр акта
                 fs.writeFileSync(`acts/${actNumber}`, JSON.stringify(act));//сохранить акт здеся
             })
         })

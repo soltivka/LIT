@@ -3,15 +3,16 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const cors = require('cors');
-const fs = require('fs');
 const port = 3001;
 app.use(cors());
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0',() => {
     console.log(`server starting at ${port}`)
 })
 
+
 app.get('/', (req, res) => {
+    console.log("new user conected")
     res.sendFile(path.join(__dirname + '/build/index.html'));
 })
 
@@ -26,9 +27,8 @@ const serverStarting = async function () {
 serverStarting().then(() => console.log('server works, congrats!'))
 
 
-app.get('/getCases', (req, res) => {
+app.get('/getCases',(req, res) => {
     let userhash = req.headers.userhash
-    console.log(userhash)
     let userInfo = Functions.getUserInfo(userhash)
     let casesForUser = Functions.getCasesForUser(userInfo);
     res.send({casesForUser, userInfo});

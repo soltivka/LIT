@@ -1,6 +1,7 @@
-
+const serverUrl = 'http://room50:3001/'       //
 export const request_operator_cases= async function(userhash){
-    let response = await fetch('http://localhost:3001/getCases',{
+
+    let response = await fetch(`${serverUrl}getCases`,{
         method: "GET",
         headers:{
             "userhash":userhash,
@@ -20,7 +21,7 @@ export const post_case_changes= async function(userhash,changedCases){
         delete el.adress;
         return el;
     })
-    let response = await fetch('http://localhost:3001/postChangedCases',{
+    let response = await fetch(`${serverUrl}postChangedCases`,{
         method: "GET",
         headers:{
             'Content-Type': 'charset=utf-8',
