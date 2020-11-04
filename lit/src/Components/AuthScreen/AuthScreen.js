@@ -6,12 +6,12 @@ import {
 } from "../../Global/Actions";
 
 const AuthScreen = function (props) {
+
     let change = function (event) {
         props.dispatch(set_userhash_action(event.target.value))
     }
     let handleEnter = (event) => {
         if (event.key === 'Enter') {
-            console.log('authorisation ' + props.state.user)
             props.dispatch(userHash_request_action(props.state.user))
         }
         if (event.key === ',') {

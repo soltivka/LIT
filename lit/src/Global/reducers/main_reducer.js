@@ -11,6 +11,8 @@ const POST_CHANGES = 'POST_CHANGES';
 const UNCHOOSE_CASE = 'UNCHOOSE_CASE';
 const SET_SCAN_NUMBER = 'SET_SCAN_NUMBER';
 const SET_SCAN_PAGES = 'SET_SCAN_PAGES';
+const SET_FILTER_INDEX='SET_FILTER_INDEX';
+const SET_FILTER_ADRESS='SET_FILTER_ADRESS';
 
 
 const initialState = {
@@ -19,11 +21,15 @@ const initialState = {
         data: [],
     },
     choosen_cases: [],
+    filters:{
+        index:'',
+        adress:'',
+    },
 
     currentNav: 'auth',
     user: '',
     userhash: '',
-    userInfo: '',
+    userInfo: {},
 }
 
 
@@ -65,6 +71,7 @@ const main_reducer = function (state, action) {
                 })
                 console.log(state.choosen_cases)
                 break;
+
             case UNCHOOSE_CASE:                                                             // отменить выбранное дело.
                 state.operator_cases.data.map((el) => {
                     if (el.index === action.index) {
@@ -75,6 +82,14 @@ const main_reducer = function (state, action) {
                 console.log(state.choosen_cases)
                 break;
 
+            case SET_FILTER_INDEX:                                                                  //фильтры
+                state.filters.index=action.value
+                break;
+
+            case SET_FILTER_ADRESS:
+                state.filters.adress=action.value
+                break;
+
             case SET_SCAN_NUMBER:                                                               // вписать сканировочный индекс в дело
                 state.operator_cases.data.map((el) => {
                     if (el.index === action.index) {
@@ -82,6 +97,7 @@ const main_reducer = function (state, action) {
                     }
                 })
                 break;
+
             case SET_SCAN_PAGES:                                                           //вписать количество страниц в дело
                 state.operator_cases.data.map((el) => {
                     if (el.index === action.index) {

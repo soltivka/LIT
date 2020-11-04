@@ -7,14 +7,13 @@ const POST_CHANGES='POST_CHANGES';
 const UNCHOOSE_CASE ='UNCHOOSE_CASE';
 const SET_SCAN_NUMBER='SET_SCAN_NUMBER';
 const SET_SCAN_PAGES='SET_SCAN_PAGES';
+const SET_FILTER_INDEX='SET_FILTER_INDEX';
+const SET_FILTER_ADRESS='SET_FILTER_ADRESS';
 
-export const setCurrentNav_action = (button_nav) => (
-    {
+export const setCurrentNav_action = (button_nav) => ({
         type: SET_CURRENT_NAV,
         nav: button_nav,
-    }
-)
-
+    })
 export const set_userhash_action=(userhash)=>({
     type:SET_USERHASH,
     userhash:userhash,
@@ -45,6 +44,14 @@ export const set_scan_pages_action=(index,value)=>({
     type:SET_SCAN_PAGES,
     value:value,
     index:index,
+})
+export const set_filter_index_action=(value)=>({
+    type:SET_FILTER_INDEX,
+    value:value,
+})
+export const set_filter_adress_action=(value)=>({
+    type:SET_FILTER_ADRESS,
+    value:value,
 })
 
 

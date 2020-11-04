@@ -6,7 +6,6 @@ import AuthScreen from "./Components/AuthScreen/AuthScreen";
 
 
 function App(props) {
-    console.log(props)
 
     let setCurrentNavScreen = function () {
         if (props.state.currentNav === 'work') {

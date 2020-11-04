@@ -1,13 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const excelToJson = require("convert-excel-to-json");
+const pathes={
+    excels: path.join(__dirname + `/../../data/excels`),
+    acts: path.join(__dirname + `/../../data/acts`),
+    users: path.join(__dirname + `/../../data/users.json`)
+}
 
 module.exports = {
 
     createActObject: function (el) {                                                                        //парсит новый акт в excel , сохраняет его в JSON
         console.log('parcing new excel: ' + el + '.xls');
+        console.log(path.join(pathes.excels + `/${el}.xls`))
         let freshJson = excelToJson({
-            sourceFile: path.join(__dirname + `/excels/${el}.xls`)
+            sourceFile: path.join(pathes.excels + `/${el}.xls`)
         })['Аркуш1'];
         let date = Date.now()
         const createCaseObjects = function ({freshJson, actNumber, date}) {
@@ -45,7 +51,7 @@ module.exports = {
             return cases
         }
         let actObject = createCaseObjects({freshJson, actNumber: el, date})
-        fs.writeFileSync(`acts/${el}.json`, JSON.stringify(actObject));
+        fs.writeFileSync(path.join(pathes.acts+`/${el}.json`), JSON.stringify(actObject));
 
     },
 
@@ -56,11 +62,11 @@ module.exports = {
         let promisificate = function () {                                                                       //отслеживает добавление нового акта и возвращает его название
             return new Promise((resolve, reject) => {
 
-                fs.readdir('./excels', (err, excels) => {
+                fs.readdir(pathes.excels, (err, excels) => {
                     if (err) {
                         reject(err)
                     } else {
-                        fs.readdir('./acts', (err, acts) => {
+                        fs.readdir(pathes.acts, (err, acts) => {
                             if (err) {
                                 reject(err)
                             } else {
@@ -79,34 +85,34 @@ module.exports = {
 
             const diff = function (a1, a2) {
                 return a1.filter(i => !a2.includes(i))
-                    .concat(a2.filter(i => !a1.includes(i)))
             }
             return diff(excelNames, actNames)
         })
     },
     getAllUsersInfo:function(){                                                          //прочитать из файла все данные о всех пользователях
-        let allUsersInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8'))
-        return allUsersInfo
+        return JSON.parse(fs.readFileSync(pathes.users, 'utf8'))
     },
 
 
-    getUserInfo: function (userhash) {                                                    // вся инфа о пользователе  из users.json
-        let userInfo = JSON.parse(fs.readFileSync(path.join(__dirname + '/users.json'), 'utf8'))
+    getUserInfoFromJSON: function (userhash) {                                                    // вся инфа о пользователе  из users.json
+        let userInfo = JSON.parse(fs.readFileSync(pathes.users, 'utf8'))
             .filter((el) => el.userhash === userhash)
-        console.log(userInfo)
         return userInfo[0];
-
+    },
+    getUserInfo: function(userhash,allUsersInfo){
+        return allUsersInfo.filter((el)=>el.userhash===userhash)[0]
     },
 
 
 
-    getCasesForUser: function (userInfo) {                                                                 //отобрать дела, предназначенные пользователю.
+    getCasesForUser: function (userInfo) {
         if (userInfo) {
             let operation = userInfo["operation"];
-            let fileNames = fs.readdirSync('./acts');
+            let fileNames = fs.readdirSync(pathes.acts);
             let casesForUser = [];
             fileNames.forEach((el) => {
-                let act = JSON.parse(fs.readFileSync(path.join(__dirname + '/acts/' + el), 'utf8'))
+                console.log(path.join(pathes.acts + el))
+                let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${el}`), 'utf8'))
                 act.forEach((el) => {
                     if (operation === "stitcher" && el.stitcher === '') {
                         casesForUser.push(el);
@@ -117,7 +123,7 @@ module.exports = {
                     }
                 })
             })
-            console.log("operator "+userInfo["id"]+" got caseList   (getCasesForUser)")
+            console.log("operator "+userInfo["id"]+" got caseList = " + casesForUser.length +" cases")
             return casesForUser
         } else{
             console.log("Error: getCasesForUser(server/Functions.js) -- userInfo not match");
@@ -127,15 +133,20 @@ module.exports = {
 
 
     applyChangesToCases: function(userhash,changedCases){
-        let userInfo = this.getUserInfo(userhash)
-        let allUsersInfo = this.getAllUsersInfo()
-        let fileNames = fs.readdirSync('./acts');
-        fileNames.forEach((actNumber) => {
-            let act = JSON.parse(fs.readFileSync(path.join(__dirname + '/acts/' + actNumber), 'utf8'))
+        console.log("looking for changes (applyChangesToCases)")
+        let allUsersInfo = this.getAllUsersInfo();
+        console.log(allUsersInfo)
+        let userInfo = this.getUserInfo(userhash,allUsersInfo);
+        console.log(userInfo)
+        let fileNames = fs.readdirSync(pathes.acts);
+        console.log("acts to redact " + fileNames)
+        fileNames.forEach((act_json) => {
+            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${act_json}`), 'utf8'))
             act.forEach((fileCase) => {                                                                     //перебираем каждый элемент из каждого акта
                 changedCases.forEach((changedCase)=>{                                                       //сравниваем с каждым элементом измененного списка
                     if(fileCase.index===changedCase.index){                                                 //<<===получили нужное дело
                         if(userInfo["operation"]==="stitcher"){                                             //вносим изменения, если юзер расшивка
+                            console.log("apply changes, user STITCHER")
                             fileCase.stitcher=userInfo["id"];
                             fileCase.stitcherhash=userInfo["userhash"];
                             userInfo["acts"]++;
@@ -154,14 +165,12 @@ module.exports = {
                             fileCase.jointer=userInfo["id"];
                             fileCase.jointerhash=userInfo["userhash"];
                             userInfo["acts"]++;
-
+                            userInfo["pages"]= userInfo["pages"]+fileCase.pages
                         }
-
-
                     }
                 })
-                fs.unlinkSync(`acts/${actNumber}`); //удалить старый экземпляр акта
-                fs.writeFileSync(`acts/${actNumber}`, JSON.stringify(act));//сохранить акт здеся
+                fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), { flag : 'w' });    //сохранить новую версию акта здеся
+                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), { flag : 'w' });                       // обновить статы юзера
             })
         })
 

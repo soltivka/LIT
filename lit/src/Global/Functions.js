@@ -1,7 +1,7 @@
-const serverUrl = 'http://room50:3001/'       //
+const serverURL =  'http://room50:3001/';                                 //switch to empty string to build
 export const request_operator_cases= async function(userhash){
 
-    let response = await fetch(`${serverUrl}getCases`,{
+    let response = await fetch(`${serverURL}getCases`,{
         method: "GET",
         headers:{
             "userhash":userhash,
@@ -21,7 +21,7 @@ export const post_case_changes= async function(userhash,changedCases){
         delete el.adress;
         return el;
     })
-    let response = await fetch(`${serverUrl}postChangedCases`,{
+    let response = await fetch(`${serverURL}postChangedCases`,{
         method: "GET",
         headers:{
             'Content-Type': 'charset=utf-8',
@@ -36,4 +36,21 @@ export const post_case_changes= async function(userhash,changedCases){
         alert(response.status + 'не удалось отправить данные на сервер')
         return undefined
     }
+}
+export const indexFilter=function(value,el){
+    if(value===''){return el}
+    else if(value===el.index){
+        return el
+    }
+}
+export const adressFilter=function(value,el){
+    value=value.toLowerCase();
+    let fullAdress = (el.street+' '+ el.adress).toLowerCase()
+    if(value===''){
+        return el
+    }else if(fullAdress.indexOf(value)!==-1){
+        return el
+    }
+
+
 }
