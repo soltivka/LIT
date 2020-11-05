@@ -2,31 +2,62 @@ import React from 'react';
 import s from './WorkScreen.module.css';
 import CaseString from "./CaseString/CaseString";
 import Choosen from "./Choosen/Choosen";
-import {adressFilter, indexFilter} from "../../Global/Functions";
-import {set_filter_adress_action, set_filter_index_action} from "../../Global/Actions";
+import {actFilter, adressFilter, idFilter, indexFilter} from "../../Global/Functions";
+import {
+    change_admin_operation_action,
+    set_filter_act_action,
+    set_filter_adress_action,
+    set_filter_id_action,
+    set_filter_index_action
+} from "../../Global/Actions";
 
 const WorkScreen = function (props) {
+
+    let casesToView = 0;
     const setFilterIndex = function (event) {
         props.dispatch(set_filter_index_action(event.target.value))
     }
     const setFilterAdress = function (event) {
         props.dispatch(set_filter_adress_action(event.target.value))
     }
+    const setFilterAct = function (event) {
+        props.dispatch(set_filter_act_action(event.target.value))
+    }
+    const setFilterId = function (event) {
+        props.dispatch(set_filter_id_action(event.target.value))
+    }
+    const changeAdminOperation = function(event){
+        let value = event.target.getAttribute('value');
+        props.dispatch(change_admin_operation_action(value))
+    }
+
+    let adminWindow=function(){
+        if(props.state.userInfo){
+            return(<div>
+                    <div className={s.changeOperation} value={"stitcher"} onClick={changeAdminOperation}>Стать расшивщиком</div>
+                    <div className={s.changeOperation} value={"scaner"} onClick={changeAdminOperation}>Стать сканировщиком</div>
+                    <div className={s.changeOperation} value={"jointer"} onClick={changeAdminOperation}>Стать сшивщиком</div>
+            </div>
+            )
+        }
+    }
 
 
     let content = function () {
-        let totalCases = 0;
         if (props.state.operator_cases.isFetching) {
             return (<div>загрузка....</div>)                           // display load screen
         } else {
             return (props.state.operator_cases.data.map((el) => {
 
-                totalCases++;
                 if (el.choosen === false) {                                // check for not-choosen cases (display only not-choosen)
-                    let filtredElement = indexFilter(props.state.filters.index, el)
-                    filtredElement = adressFilter(props.state.filters.adress,filtredElement)
+                    let filtredElement = indexFilter(props.state.filters.index, el);
+                        filtredElement = adressFilter(props.state.filters.adress, filtredElement);
+                        filtredElement = idFilter(props.state.filters.id,filtredElement);
+                        filtredElement = actFilter(props.state.filters.act,filtredElement);
 
                     if (filtredElement) {
+                        casesToView++;
+
                         return (
                             <div key={el.index + '' + el.act}>
                                 <CaseString datacase={el}
@@ -51,6 +82,7 @@ const WorkScreen = function (props) {
                     <p className={s.midText}>дел выполнено: {props.state.userInfo["acts"]}</p>
                     <p className={s.midText}>страниц выполнено: {props.state.userInfo["pages"]}</p>
                 </div>
+                <div>{adminWindow()}</div>
             </div>
             <div className={s.body}>
                 <div className={s.caseList}>
@@ -63,10 +95,16 @@ const WorkScreen = function (props) {
                         </div>
                         <div className={s.bottomSide}>
                             <div className={s.cell}>
-                                <input className={s.searchInput} type={'number'}/>
+                                <input className={s.searchInput}
+                                       type={'number'}
+                                       value={props.state.filters.act}
+                                       onChange={setFilterAct}/>
                             </div>
                             <div className={s.cell}>
-                                <input className={s.searchInput} type={'number'}/>
+                                <input className={s.searchInput}
+                                       type={'number'}
+                                       value={props.state.filters.id}
+                                       onChange={setFilterId}/>
                             </div>
                             <div className={s.cell}>
                                 <input className={s.searchInput}
@@ -79,8 +117,10 @@ const WorkScreen = function (props) {
                     </div>
                     <div className={s.content}>{content()}</div>
                     <div className={s.footer}>
-                        {props.state.userInfo["operation"]}
-                        дел в списке : {props.state.operator_cases.data.length}
+                        <div>Всего дел на {props.state.userInfo["operation"] === "stitcher" ? "расшивке : " :
+                            (props.state.userInfo["operation"] === "scaner" ? "сканировке : " : "сшивке : ")}
+                            {props.state.operator_cases.data.length}</div>
+                        <div>Подходит под фильтры: {casesToView}</div>
                         <input type={'number'} onChange={setFilterIndex} value={props.state.filters.index}/>
                     </div>
                 </div>

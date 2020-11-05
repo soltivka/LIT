@@ -6,7 +6,7 @@ const cors = require('cors');
 const port = 3001;
 app.use(cors());
 
-app.listen(port, '0.0.0.0',() => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`server starting at ${port}`)
 })
 
@@ -26,23 +26,35 @@ const serverStarting = async function () {
 }
 serverStarting().then(() => {
     console.log('server works, congrats!');
-    console.log("___________________________________")})
+    console.log("___________________________________")
+})
 
 
-app.get('/getCases',(req, res) => {
-    let userhash = req.headers.userhash;
-    let userInfo = Functions.getUserInfoFromJSON(userhash);
+app.get('/getCases', (req, res) => {
+    let userInfo = Functions.getUserInfoFromJSON(req.headers.userhash);
     let casesForUser = Functions.getCasesForUser(userInfo);
     res.send({casesForUser, userInfo});
+});
+
+
+app.get('/changeAdminOperation', (req, res) => {
+    console.log(req.headers.newoperation)
+    if (Functions.changeAdminOperation(req.headers.userhash, req.headers.newoperation)) {
+        let userInfo = Functions.getUserInfoFromJSON(req.headers.userhash);
+        let casesForUser = Functions.getCasesForUser(userInfo)
+        res.send({casesForUser, userInfo})
+    }else{
+        res.send(["ERROR:__you have no access"])
+    }
 });
 
 app.get('/postChangedCases', (req, res) => {
     let userhash = req.headers.userhash
     let changedCases = JSON.parse(req.headers["changedcases"])
-    Functions.applyChangesToCases(userhash,changedCases)
+    Functions.applyChangesToCases(userhash, changedCases)
     let userInfo = Functions.getUserInfoFromJSON(userhash)
     let casesForUser = Functions.getCasesForUser(userInfo);
-    res.send({casesForUser});
+    res.send({casesForUser, userInfo});
 });
 
 

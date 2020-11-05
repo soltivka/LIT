@@ -1,4 +1,4 @@
-import {post_case_changes, request_operator_cases} from "../Functions";
+import {change_admin_operation, post_case_changes, request_operator_cases} from "../Functions";
 import {userHash_response_action} from "../Actions";
 import store from "../redux-store";
 
@@ -13,6 +13,9 @@ const SET_SCAN_NUMBER = 'SET_SCAN_NUMBER';
 const SET_SCAN_PAGES = 'SET_SCAN_PAGES';
 const SET_FILTER_INDEX='SET_FILTER_INDEX';
 const SET_FILTER_ADRESS='SET_FILTER_ADRESS';
+const SET_FILTER_ACT = 'SET_FILTER_ACT';
+const SET_FILTER_ID = 'SET_FILTER_ID';
+const CHANGE_ADMIN_OPERATION='CHANGE_ADMIN_OPERATION';
 
 
 const initialState = {
@@ -24,6 +27,8 @@ const initialState = {
     filters:{
         index:'',
         adress:'',
+        act:'',
+        id:'',
     },
 
     currentNav: 'auth',
@@ -89,6 +94,12 @@ const main_reducer = function (state, action) {
             case SET_FILTER_ADRESS:
                 state.filters.adress=action.value
                 break;
+            case SET_FILTER_ACT:
+                state.filters.act=action.value
+                break;
+            case SET_FILTER_ID:
+                state.filters.id=action.value
+                break;
 
             case SET_SCAN_NUMBER:                                                               // вписать сканировочный индекс в дело
                 state.operator_cases.data.map((el) => {
@@ -118,6 +129,22 @@ const main_reducer = function (state, action) {
                         });
                         state.choosen_cases=[];
                     }
+                    state.userInfo=data.userInfo;
+                    store.dispatch(userHash_response_action())
+                });
+                break;
+
+
+            case CHANGE_ADMIN_OPERATION:
+                change_admin_operation(state.userhash,action.value).then((data)=>{
+                    if (data.casesForUser) {
+                        state.operator_cases.data = data.casesForUser.map((el) => {
+                            el.choosen = false
+                            return el
+                        });
+                        state.choosen_cases=[];
+                    }
+                    state.userInfo=data.userInfo;
                     store.dispatch(userHash_response_action())
                 });
                 break;

@@ -66,6 +66,7 @@ const Choosen = function (props) {
                 <div className={s.postButton}
                      onClick={props.caseList.length>0?postChanges:emptyClick}>передать на сервер
                 </div>
+                <div>Дел отобрано : {props.caseList.length}</div>
             </div>
 
         </div>

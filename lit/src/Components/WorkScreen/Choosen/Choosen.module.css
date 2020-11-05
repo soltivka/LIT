@@ -12,6 +12,7 @@
     width: 100%;
     height:60px;
     justify-content: space-between;
+    box-shadow: inset 0 0 12px 2px darkgrey;
     align-items: center;
 }
 .body{
@@ -39,7 +40,9 @@
 
 .footer{
     display: flex;
+    justify-content: space-around;
     width: 100%;
+    padding: 3%;
 }
 
 .postButton{

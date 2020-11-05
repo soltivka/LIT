@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const excelToJson = require("convert-excel-to-json");
-const pathes={
+const pathes = {
     excels: path.join(__dirname + `/../../data/excels`),
     acts: path.join(__dirname + `/../../data/acts`),
     users: path.join(__dirname + `/../../data/users.json`)
@@ -32,17 +32,17 @@ module.exports = {
 
                     elem.stitchDate = ''
                     elem.stitcher = ''
-                    elem.stitcherhash=''
+                    elem.stitcherhash = ''
 
                     elem.scanDate = ''
                     elem.scaner = ''
-                    elem.scanerhash=''
+                    elem.scanerhash = ''
                     elem.pages = ''
                     elem.scanNumber = ''
 
                     elem.jointDate = ''
                     elem.jointer = ''
-                    elem.jointerhash=''
+                    elem.jointerhash = ''
 
                     elem.comment = ''
                 }
@@ -51,11 +51,9 @@ module.exports = {
             return cases
         }
         let actObject = createCaseObjects({freshJson, actNumber: el, date})
-        fs.writeFileSync(path.join(pathes.acts+`/${el}.json`), JSON.stringify(actObject));
+        fs.writeFileSync(path.join(pathes.acts + `/${el}.json`), JSON.stringify(actObject));
 
     },
-
-
 
 
     getNewActs: async function () {
@@ -89,7 +87,7 @@ module.exports = {
             return diff(excelNames, actNames)
         })
     },
-    getAllUsersInfo:function(){                                                          //прочитать из файла все данные о всех пользователях
+    getAllUsersInfo: function () {                                                          //прочитать из файла все данные о всех пользователях
         return JSON.parse(fs.readFileSync(pathes.users, 'utf8'))
     },
 
@@ -99,10 +97,9 @@ module.exports = {
             .filter((el) => el.userhash === userhash)
         return userInfo[0];
     },
-    getUserInfo: function(userhash,allUsersInfo){
-        return allUsersInfo.filter((el)=>el.userhash===userhash)[0]
+    getUserInfo: function (userhash, allUsersInfo) {
+        return allUsersInfo.filter((el) => el.userhash === userhash)[0]
     },
-
 
 
     getCasesForUser: function (userInfo) {
@@ -111,70 +108,99 @@ module.exports = {
             let fileNames = fs.readdirSync(pathes.acts);
             let casesForUser = [];
             fileNames.forEach((el) => {
-                console.log(path.join(pathes.acts + el))
                 let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${el}`), 'utf8'))
                 act.forEach((el) => {
                     if (operation === "stitcher" && el.stitcher === '') {
                         casesForUser.push(el);
-                    }else if(operation==="scaner" && el.stitcher &&el.scaner===''){
+                    } else if (operation === "scaner" && el.stitcher && el.scaner === '') {
                         casesForUser.push(el);
-                    }else if(operation==="jointer" && el.stitcher&& el.scaner  && el.jointer===''){
+                    } else if (operation === "jointer" && el.stitcher && el.scaner && el.jointer === '') {
                         casesForUser.push(el);
                     }
                 })
             })
-            console.log("operator "+userInfo["id"]+" got caseList = " + casesForUser.length +" cases")
+            console.log("operator " + userInfo["id"] + " got caseList = " + casesForUser.length + " cases")
             return casesForUser
-        } else{
+        } else {
             console.log("Error: getCasesForUser(server/Functions.js) -- userInfo not match");
             return ['Error: getCasesForUser(server/Functions.js) -- userInfo not match']
         }
     },
 
 
-    applyChangesToCases: function(userhash,changedCases){
-        console.log("looking for changes (applyChangesToCases)")
+    applyChangesToCases: function (userhash, changedCases) {
+        console.log("applyChanges started")
+        let actsToChange = 0;
         let allUsersInfo = this.getAllUsersInfo();
-        console.log(allUsersInfo)
-        let userInfo = this.getUserInfo(userhash,allUsersInfo);
-        console.log(userInfo)
+        let userInfo = this.getUserInfo(userhash, allUsersInfo);
         let fileNames = fs.readdirSync(pathes.acts);
-        console.log("acts to redact " + fileNames)
-        fileNames.forEach((act_json) => {
+        let actNames = fileNames.map((el) => el.split('.')[0])
+        let fileNamesToChange = [];
+        actNames.forEach((actName) => {
+            changedCases.forEach((changedCase) => {
+                if (Number(actName) === Number(changedCase.act)) {
+                    let alreadyExists = false;
+                    fileNamesToChange.forEach((existName) => {
+                        if (Number(existName.split('.')[0]) === Number(changedCase.act)) {
+                            alreadyExists = true;
+                        }
+                    })
+                    if (alreadyExists) {
+                    } else {
+                        fileNamesToChange.push(actName + ".json");
+                        actsToChange++
+                    }
+                }
+            })
+        });
+        console.log("Оператор " + userInfo["id"] + " вносит изменения в " + actsToChange + " актов : " + fileNamesToChange.join(' | '))
+        fileNamesToChange.forEach((act_json) => {
             let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${act_json}`), 'utf8'))
             act.forEach((fileCase) => {                                                                     //перебираем каждый элемент из каждого акта
-                changedCases.forEach((changedCase)=>{                                                       //сравниваем с каждым элементом измененного списка
-                    if(fileCase.index===changedCase.index){                                                 //<<===получили нужное дело
-                        if(userInfo["operation"]==="stitcher"){                                             //вносим изменения, если юзер расшивка
-                            console.log("apply changes, user STITCHER")
-                            fileCase.stitcher=userInfo["id"];
-                            fileCase.stitcherhash=userInfo["userhash"];
+                changedCases.forEach((changedCase) => {                                                       //сравниваем с каждым элементом измененного списка
+                    if (fileCase.index === changedCase.index) {                                                 //<<===получили нужное дело
+                        if (userInfo["operation"] === "stitcher") {
+                            fileCase.stitcher = userInfo["id"];
+                            fileCase.stitcherhash = userInfo["userhash"];
                             userInfo["acts"]++;
+                            userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.expectedPages)
 
-                        }else if(userInfo["operation"]==="scaner"){                                       // вносим изменения, если юзер сканировщик
-                            fileCase.scaner=userInfo["id"];
-                            fileCase.scanerhash=userInfo["userhash"];
-                            fileCase.pages=changedCase.pages;
-                            fileCase.scanNumber=changedCase.scanNumber;
+                        } else if (userInfo["operation"] === "scaner") {                                       // вносим изменения, если юзер сканировщик
+                            fileCase.scaner = userInfo["id"];
+                            fileCase.scanerhash = userInfo["userhash"];
+                            fileCase.pages = changedCase.pages;
+                            fileCase.scanNumber = changedCase.scanNumber;
                             userInfo["acts"]++;
+                            userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages);
 
-                            let stitcher=allUsersInfo.find((el)=>el["operation"]==="stitcher");             //добавляем данные к другим пользователям (кол-во страниц)
-                            stitcher["pages"]=stitcher["pages"]+Number(changedCase.pages);
+                            let stitcherhash = fileCase.stitcherhash;
+                            let stitcher = allUsersInfo.find((el) => el["userhash"] === stitcherhash);             //добавляем данные к другим пользователям (кол-во страниц)
+                            stitcher["pages"] = Number(stitcher["pages"])
+                                + Number(fileCase.pages)
+                                - Number(fileCase.expectedPages);
 
-                        }else if(userInfo["operation"]==="jointer"){                                        //вносим изменения, если юзер сшивка
-                            fileCase.jointer=userInfo["id"];
-                            fileCase.jointerhash=userInfo["userhash"];
+                        } else if (userInfo["operation"] === "jointer") {                                        //вносим изменения, если юзер сшивка
+                            fileCase.jointer = userInfo["id"];
+                            fileCase.jointerhash = userInfo["userhash"];
                             userInfo["acts"]++;
-                            userInfo["pages"]= userInfo["pages"]+fileCase.pages
+                            userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages)
                         }
                     }
                 })
-                fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), { flag : 'w' });    //сохранить новую версию акта здеся
-                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), { flag : 'w' });                       // обновить статы юзера
+                fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), {flag: 'w'});    //сохранить новую версию акта здеся
+                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});                       // обновить статы юзера
             })
         })
+    },
 
+    changeAdminOperation: function (userhash, newOperation) {
+        let allUsersInfo = this.getAllUsersInfo();
+        let userInfo = this.getUserInfo(userhash, allUsersInfo);
+        if (userInfo["isAdmin"] === true) {
+            userInfo["operation"] = newOperation;
+            console.log(userInfo["id"] + " сменил профессию на " + newOperation)
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
+            return true
+        } else return false
     }
-
-
 }
