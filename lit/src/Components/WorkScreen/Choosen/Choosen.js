@@ -1,7 +1,8 @@
 import React from 'react';
 import s from './Choosen.module.css';
 import ChoosenString from "./ChoosenString/ChoosenString";
-import {post_changes_action} from "../../../Global/Actions";
+import {post_changes_action, set_date_day_action} from "../../../Global/Actions";
+
 
 const Choosen = function (props) {
     let content = function () {
@@ -54,6 +55,9 @@ const Choosen = function (props) {
     let emptyClick=function(){
         console.log("no cases to change")
     }
+    let set_date_day= function(event){
+        props.dispatch(set_date_day_action(event.target.value))
+    }
 
 
     return (
@@ -67,6 +71,9 @@ const Choosen = function (props) {
                      onClick={props.caseList.length>0?postChanges:emptyClick}>передать на сервер
                 </div>
                 <div>Дел отобрано : {props.caseList.length}</div>
+                <div>Дата : {props.date}<input type={'number'}
+                                   placeholder={"день месяца"}
+                                   onChange={set_date_day}/></div>
             </div>
 
         </div>

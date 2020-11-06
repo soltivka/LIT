@@ -35,6 +35,11 @@ app.get('/getCases', (req, res) => {
     let casesForUser = Functions.getCasesForUser(userInfo);
     res.send({casesForUser, userInfo});
 });
+app.get('/casesForSearch',(req,res)=>{
+    let userInfo=Functions.getUserInfoFromJSON(req.headers.userhash);
+    let casesForSearch=Functions.getCasesForSearch(userInfo);
+    res.send({casesForSearch,userInfo})
+})
 
 
 app.get('/changeAdminOperation', (req, res) => {

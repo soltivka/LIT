@@ -31,33 +31,59 @@ const ChoosenString = function (props) {
             </div>
         )
     } else if (props.user["operation"] === "scaner") {
-        return (
-            <div className={s.wrapper}>
-                <div className={s.smallcell}>
-                    <div className={s.cancelButton}
-                         onClick={deleteChoosenString}>
-                        <div>+</div>
+        if(props.el.scanDateStart===''){
+            return (
+                <div className={s.wrapper}>
+                    <div className={s.smallcell}>
+                        <div className={s.cancelButton}
+                             onClick={deleteChoosenString}>
+                            <div>+</div>
+                        </div>
+                    </div>
+                    <div className={s.cell}>
+                        {props.el.act}
+                    </div>
+                    <div className={s.cell}>{props.el.id}</div>
+                    <div className={s.cell}>
+                        -----
+                    </div>
+                    <div className={s.cell}>
+                        -----
+                    </div>
+                    <div className={s.cell}>
+                        {props.el.stitcher}
                     </div>
                 </div>
-                <div className={s.cell}>
-                    {props.el.act}
-                </div>
-                <div className={s.cell}>{props.el.id}</div>
-                <div className={s.cell}>
-                    <input className={s.input} type={'number'}
-                           onChange={set_scanPages} value={props.el.pages}/>
-                </div>
-                <div className={s.cell}>
-                    <input className={s.input} type={'number'}
-                           onChange={set_scanNumber} value={props.el.scanNumber}/>
-                </div>
-                <div className={s.cell}>
-                    {props.el.stitcher}
-                </div>
+            )
+        }else{
+            return (
+                <div className={s.wrapper}>
+                    <div className={s.smallcell}>
+                        <div className={s.cancelButton}
+                             onClick={deleteChoosenString}>
+                            <div>+</div>
+                        </div>
+                    </div>
+                    <div className={s.cell}>
+                        {props.el.act}
+                    </div>
+                    <div className={s.cell}>{props.el.id}</div>
+                    <div className={s.cell}>
+                        <input className={s.input} type={'number'}
+                               onChange={set_scanPages} value={props.el.pages}/>
+                    </div>
+                    <div className={s.cell}>
+                        <input className={s.input} type={'number'}
+                               onChange={set_scanNumber} value={props.el.scanNumber}/>
+                    </div>
+                    <div className={s.cell}>
+                        {props.el.stitcher}
+                    </div>
 
+                </div>
+            )
+        }
 
-            </div>
-        )
     } else if (props.user["operation"] === "jointer") {
         return (
             <div className={s.wrapper}>

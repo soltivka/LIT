@@ -47,7 +47,7 @@ const WorkScreen = function (props) {
         if (props.state.operator_cases.isFetching) {
             return (<div>загрузка....</div>)                           // display load screen
         } else {
-            return (props.state.operator_cases.data.map((el) => {
+            return (props.state.operator_cases.data.map((el,i,arr) => {
 
                 if (el.choosen === false) {                                // check for not-choosen cases (display only not-choosen)
                     let filtredElement = indexFilter(props.state.filters.index, el);
@@ -57,13 +57,15 @@ const WorkScreen = function (props) {
 
                     if (filtredElement) {
                         casesToView++;
+                        if(casesToView<200){
+                            return (
+                                <div key={el.index + '' + el.act}>
+                                    <CaseString datacase={el}
+                                                dispatch={props.dispatch}/>
+                                </div>
+                            )
+                        }
 
-                        return (
-                            <div key={el.index + '' + el.act}>
-                                <CaseString datacase={el}
-                                            dispatch={props.dispatch}/>
-                            </div>
-                        )
                     }
 
                 }
@@ -75,7 +77,11 @@ const WorkScreen = function (props) {
         <div className={s.wrapper}>
             <div className={s.header}>
                 <div>
-                    <p className={s.bigText}>Оперотор : {props.state.userInfo["name"]}</p>
+                    <p className={s.bigText}>Оперотор : {props.state.userInfo["name"]} , 
+                    {props.state.userInfo["operation"] === "stitcher" ? "расшивщик " :
+                        (props.state.userInfo["operation"] === "scaner" ? "сканировщик " : "сшивщик ")}
+                    </p>
+
                     <p className={s.midText}>Личный номер : {props.state.userInfo["id"]}</p>
                 </div>
                 <div>
@@ -127,6 +133,7 @@ const WorkScreen = function (props) {
                 <div className={s.choosen}>
                     <Choosen
                         user={props.state.userInfo}
+                        date={props.state.date}
                         caseList={props.state.choosen_cases}
                         dispatch={props.dispatch}/>
                 </div>

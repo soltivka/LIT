@@ -4,9 +4,14 @@ import AddButton from "../addButton/AddButton";
 
 const CaseString = function (props) {
     let el= props.datacase;
+    let defineClass = function(){
+        if(el.scanDateFinish===''&&el.scanDateStart){
+            return s.wrapperOnScan
+        }else return s.wrapper
+    }
 
     return (
-        <div className={s.wrapper}>
+        <div className={defineClass()}>
             <div className={s.cell}>{el.act}</div>
             <div className={s.cell}>{el.id}</div>
             <div className={s.cell}>{el.street +'  '+ el.adress}</div>

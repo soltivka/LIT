@@ -1,0 +1,76 @@
+.wrapper_new{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 20px 2px white;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wraper_stitch{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 12px 2px goldenrod;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_scanStart{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 10px 2px blueviolet;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_scanFinish{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 10px 2px blue;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_joined{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 12px 2px forestgreen;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_isDone{
+    display: flex;
+    width: 100%;
+    height: 7vh;
+    box-shadow: inset 0 0 12px 2px black;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+
+.bigcell{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: inset 0 0 12px 2px grey;
+    padding: 0 10px 0 10px;
+}
+.cell{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items:center;
+    justify-content: center;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    margin: 0 2px 0 2px;
+}
+

@@ -12,6 +12,8 @@ const SET_FILTER_ADRESS = 'SET_FILTER_ADRESS';
 const SET_FILTER_ACT = 'SET_FILTER_ACT';
 const SET_FILTER_ID = 'SET_FILTER_ID';
 const CHANGE_ADMIN_OPERATION = 'CHANGE_ADMIN_OPERATION';
+const SET_DATE_DAY = 'SET_DATE_DAY';
+const GET_CASESFORSEARCH = 'GET_CASESFORSEARCH';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -68,6 +70,13 @@ export const change_admin_operation_action=(value)=>({
     type: CHANGE_ADMIN_OPERATION,
     value:value,
 })
+export const set_date_day_action=(value)=>({
+    type: SET_DATE_DAY,
+    value:value,
+})
+export const get_casesForSearch_action=()=>({
+    type: GET_CASESFORSEARCH,
+});
 
 
 

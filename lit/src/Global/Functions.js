@@ -91,3 +91,29 @@ export const idFilter = function (value, el) {
         return el
     }
 }
+export const setDateToChoosen=function(choosen_cases, operation, date){
+    choosen_cases.forEach((el)=>{
+        if(operation==="stitcher"){
+            el.stitchDate=date;
+        }else if(operation==="scaner"){
+            el.scanDate=date;
+        }else if(operation==="jointer"){
+            el.jointDate=date;
+        }
+    })
+}
+export const request_casesForSearch = async function (userhash) {
+
+    let response = await fetch(`${serverURL}casesForSearch`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+        }
+    })
+    if (response.ok) {
+        let requestedData = await response.json()
+        return requestedData
+    } else {
+        alert(response.status)
+    }
+}
