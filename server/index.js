@@ -52,6 +52,15 @@ app.get('/changeAdminOperation', (req, res) => {
         res.send(["ERROR:__you have no access"])
     }
 });
+app.get('/handOverCases', (req, res) => {
+    let userhash = req.headers.userhash
+    let changedCases = JSON.parse(req.headers["changedcases"])
+    let wrongCaseList = Functions.handOverCases(userhash, changedCases)
+    //функция вносит изменения в сделанные дела, возвращает те, отметить сделанными которые невозможно.
+    let userInfo = Functions.getUserInfoFromJSON(userhash);
+    res.send({wrongCaseList, userInfo});
+});
+
 
 app.get('/postChangedCases', (req, res) => {
     let userhash = req.headers.userhash
@@ -60,6 +69,13 @@ app.get('/postChangedCases', (req, res) => {
     let userInfo = Functions.getUserInfoFromJSON(userhash)
     let casesForUser = Functions.getCasesForUser(userInfo);
     res.send({casesForUser, userInfo});
+});
+
+app.get('/resetUserStats', (req, res) => {
+    let userhash = req.headers.userhash
+    let message=Functions.resetUserStats(userhash);
+    console.log("пользователь "+ userhash + "сбросил статистику всех юзеров");
+    res.send({message});
 });
 
 

@@ -33,6 +33,10 @@ const Header = function (props) {
                                 text={'Поиск'}
                                 dispatch={props.dispatch}
                                 state={props.state}/>
+                    <HeaderLink nav={'handOver'}
+                                text={'Сдать дела'}
+                                dispatch={props.dispatch}
+                                state={props.state}/>
                 </div>
             </header>
 

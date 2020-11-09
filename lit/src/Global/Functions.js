@@ -91,6 +91,42 @@ export const idFilter = function (value, el) {
         return el
     }
 }
+export const stitcherFilter=function(value,el){
+    if(el&&value===''){
+        return el
+    }else if(el&&value===el.stitcher){
+        return el
+    }else if(el&&value==='0'&&el.stitcher&&el.scaner===''&&el.jointer===''){
+        return el
+    }
+}
+export const scanerFilter=function(value,el){
+    if(el&&value===''){
+        return el
+    }else if(el&&value===el.scaner){
+        return el
+    }else if(el&&value==='0'&&el.scaner&&el.jointer===''){
+        return el
+    }
+}
+export const jointerFilter=function(value,el){
+    if(el&&value===''){
+        return el
+    }else if(el&&value===el.jointer){
+        return el
+    }else if(el&&value==='0'&&el.jointer!==''){
+        return el
+    }
+}
+export const isDoneFilter=function(value,el){
+    if(el&&value===''){
+        return el
+    }else if(el&&value==='0'&&el.isDone){
+        return el
+    }else if(el&&value==='-1'&&el.isDone===false){
+        return el
+    }
+}
 export const setDateToChoosen=function(choosen_cases, operation, date){
     choosen_cases.forEach((el)=>{
         if(operation==="stitcher"){
@@ -115,5 +151,39 @@ export const request_casesForSearch = async function (userhash) {
         return requestedData
     } else {
         alert(response.status)
+    }
+}
+export const post_done_cases= async function(userhash,caseList){
+    let casesWithNoCirillic = caseList.map((el) => {
+        delete el.street;
+        delete el.adress;
+        return el;
+    })
+    let response=await fetch(`${serverURL}handOverCases`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+            "changedCases": JSON.stringify(casesWithNoCirillic),
+        },
+    });
+    if (response.ok) {
+        return await response.json()
+    } else {
+        alert(response.status + 'не удалось отправить данные на сервер')
+        return undefined
+    }
+}
+export const reset_userstats = async function(userhash){
+    let response=await fetch(`${serverURL}resetUserStats`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+        },
+    });
+    if (response.ok) {
+       alert("статистика всех пользователей сброшена")
+        return response.json()
+    } else {
+        alert(response.status + 'не удалось отправить данные на сервер')
     }
 }

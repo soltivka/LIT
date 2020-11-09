@@ -7,10 +7,8 @@ import {get_casesForSearch_action, setCurrentNav_action} from "../../../Global/A
 const HeaderLink = function (props) {
     let click = function () {
         props.dispatch(setCurrentNav_action(props.nav))
-        if(props.nav==="search"){
+        if(props.nav==="search"||props.nav==="handOver"){
             props.dispatch(get_casesForSearch_action(props.state.userhash))
-            console.log(click);
-            console.log(props.state.casesForSearch);
         }
     }
 

@@ -6,6 +6,7 @@ import AuthScreen from "./Components/AuthScreen/AuthScreen";
 import UserScreen from "./Components/UserScreen/UserScreen";
 import ProjectScreen from "./Components/ProjectScreen/ProjectScreen";
 import SearchScreen from "./Components/SearchScreen/SearchScreen";
+import HandOverScreen from "./Components/HandOverScreen/HandOverScreen";
 
 
 function App(props) {
@@ -48,6 +49,15 @@ function App(props) {
             return (
                 <div>
                     <SearchScreen
+                        dispatch={props.dispatch}
+                        state={props.state}/>
+                </div>
+            )
+        }
+        else if (props.state.currentNav === 'handOver') {
+            return (
+                <div>
+                    <HandOverScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
                 </div>

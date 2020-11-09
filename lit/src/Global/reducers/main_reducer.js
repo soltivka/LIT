@@ -1,8 +1,8 @@
 import {
     change_admin_operation,
     dayJoiner,
-    post_case_changes, request_casesForSearch,
-    request_operator_cases,
+    post_case_changes, post_done_cases, request_casesForSearch,
+    request_operator_cases, reset_userstats,
     setDateToChoosen
 } from "../Functions";
 import {userHash_response_action} from "../Actions";
@@ -24,7 +24,14 @@ const SET_FILTER_ACT = 'SET_FILTER_ACT';
 const SET_FILTER_ID = 'SET_FILTER_ID';
 const CHANGE_ADMIN_OPERATION = 'CHANGE_ADMIN_OPERATION';
 const SET_DATE_DAY = 'SET_DATE_DAY';
-const GET_CASESFORSEARCH='GET_CASESFORSEARCH';
+const GET_CASESFORSEARCH = 'GET_CASESFORSEARCH';
+const PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST = 'PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST';
+const POST_ISDONE_CASES = 'POST_ISDONE_CASES';
+const SET_FILTER_STITCHER = 'SET_FILTER_STITCHER';
+const RESET_USERSTATS = 'RESET_USERSTATS';
+const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
+const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
+const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
 
 
 const initialState = {
@@ -32,10 +39,11 @@ const initialState = {
         isFetching: false,
         data: [],
     },
-    casesForSearch:{
+    casesForSearch: {
         isFetching: false,
-        data:[],
+        data: [],
     },
+    casesForHandOver: [],
     date: '',
     choosen_cases: [],
     filters: {
@@ -43,11 +51,17 @@ const initialState = {
         adress: '',
         act: '',
         id: '',
+        stitcher: '',
+        scaner: '',
+        jointer: '',
+        isDone:'',
     },
 
     currentNav: 'auth',
     userhash: '',
-    userInfo: {},
+    userInfo: {
+        isAdmin: false,
+    },
 }
 
 
@@ -78,7 +92,7 @@ const main_reducer = function (state, action) {
 
             case USERHASH_RESPONSE:
                 state.operator_cases.isFetching = false
-                state.casesForSearch.isFetching=false
+                state.casesForSearch.isFetching = false
                 break;
 
             case CHOOSE_CASE:                                                               // отобрать дело
@@ -86,6 +100,7 @@ const main_reducer = function (state, action) {
                     if (el.index === action.index) {
                         state.choosen_cases.push(el);
                         el.choosen = true
+                        state.filters.index = '';
                     }
                 })
                 console.log(state.choosen_cases)
@@ -114,6 +129,18 @@ const main_reducer = function (state, action) {
             case SET_FILTER_ID:
                 state.filters.id = action.value
                 break;
+            case SET_FILTER_STITCHER:
+                state.filters.stitcher = action.value
+                break;
+            case SET_FILTER_SCANER:
+                state.filters.scaner = action.value
+                break;
+            case SET_FILTER_JOINTER:
+                state.filters.jointer = action.value
+                break;
+            case SET_FILTER_ISDONE:
+                state.filters.isDone=action.value
+                break;
 
             case SET_SCAN_NUMBER:                                                               // вписать сканировочный индекс в дело
                 state.operator_cases.data.map((el) => {
@@ -132,11 +159,22 @@ const main_reducer = function (state, action) {
                 break;
 
             case SET_DATE_DAY:
-                if(action.value!==''){
-                    let date = moment().date(action.value).format("MMM Do YY");
-                    state.date=date;
-                }else{state.date=''}
-                console.log(state.date);
+                if (action.value.length < 6) {
+                    if (action.value !== '') {
+                        let split = action.value.split('.')
+                        let day = split[0];
+                        let date = moment().date(day)
+                        if (split[1]) {
+                            console.log(split[1])
+                            date.month(Number(split[1]) - 1)
+                        }
+                        date = date.format("MMM Do YY");
+                        console.log(date)
+                        state.date = date;
+                    } else {
+                        state.date = ''
+                    }
+                }
                 break;
 
 
@@ -184,6 +222,38 @@ const main_reducer = function (state, action) {
                 });
 
                 break;
+            case PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST:
+                state.casesForSearch.data.map((el) => {
+                    if (el.index === state.filters.index) {
+                        state.casesForHandOver.push(el)
+                        state.filters.index = '';
+                    }
+                })
+                console.log(state.casesForHandOver)
+                break;
+
+            case POST_ISDONE_CASES:
+                state.casesForSearch.isFetching = true;
+                post_done_cases(state.userhash, state.casesForHandOver).then((data) => {
+                    if (data.wrongCaseList) {
+                        state.casesForHandOver = [];
+                        data.wrongCaseList.forEach((el) => {
+                            state.casesForHandOver.push(el);
+                        })
+                    }
+                    state.userInfo = data.userInfo;
+                    store.dispatch(userHash_response_action())
+                });
+                console.log("post isDone_cases");
+                break;
+
+            case RESET_USERSTATS:
+                reset_userstats(state.userhash).then((data) => {
+                    console.log(data)
+                })
+                break;
+
+
 
 
         }

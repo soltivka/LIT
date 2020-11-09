@@ -1,13 +1,24 @@
 import React from 'react';
 import s from './SearchScreen.module.css';
 import SearchString from "./SearchString/SearchString";
-import {actFilter, adressFilter, idFilter, indexFilter} from "../../Global/Functions";
 import {
-    change_admin_operation_action,
+    actFilter,
+    adressFilter,
+    idFilter,
+    indexFilter, isDoneFilter,
+    jointerFilter,
+    scanerFilter,
+    stitcherFilter
+} from "../../Global/Functions";
+import {
     set_filter_act_action,
     set_filter_adress_action,
     set_filter_id_action,
-    set_filter_index_action
+    set_filter_index_action,
+    set_filter_isDone_action,
+    set_filter_jointer_action,
+    set_filter_scaner_action,
+    set_filter_stitcher_action
 } from "../../Global/Actions";
 
 const SearchScreen = function (props) {
@@ -24,39 +35,54 @@ const SearchScreen = function (props) {
     const setFilterId = function (event) {
         props.dispatch(set_filter_id_action(event.target.value))
     }
-
+    const setFilterStitcher = function (event) {
+        props.dispatch(set_filter_stitcher_action(event.target.value))
+    }
+    const setFilterScaner = function (event) {
+        props.dispatch(set_filter_scaner_action(event.target.value))
+    }
+    const setFilterJointer = function (event) {
+        props.dispatch(set_filter_jointer_action(event.target.value))
+    }
+    const setFilterIsDone=function(event){
+        props.dispatch(set_filter_isDone_action(event.target.value))
+    }
 
     let maxCounter = 0;
-    let suitableWithFilters=0;
-    let content = function(caseList){
-        if(props.state.casesForSearch.isFetching){
-                    return(<div>LOADING ...................................</div>)
+    let suitableWithFilters = 0;
+    let content = function (caseList) {
+        if (props.state.casesForSearch.isFetching) {
+            return (<div>LOADING ...................................</div>)
         }
-        if(Array.isArray(caseList)){
-           return caseList.map((el)=>{
+        if (Array.isArray(caseList)) {
+            return caseList.map((el) => {
 
-               let filtredElement = indexFilter(props.state.filters.index,el);
-               filtredElement = adressFilter(props.state.filters.adress,filtredElement);
-               filtredElement = idFilter(props.state.filters.id,filtredElement);
-               filtredElement = actFilter(props.state.filters.act,filtredElement);
-               if(filtredElement){
-                   suitableWithFilters++
-                   if(maxCounter<500){
-                       maxCounter++
-                       return(
-                           <SearchString el={el}
-                                         key={el.index+''+el.act}/>
-                       )}
+                let filtredElement = indexFilter(props.state.filters.index, el);
+                filtredElement = adressFilter(props.state.filters.adress, filtredElement);
+                filtredElement = idFilter(props.state.filters.id, filtredElement);
+                filtredElement = actFilter(props.state.filters.act, filtredElement);
+                filtredElement = stitcherFilter(props.state.filters.stitcher, filtredElement);
+                filtredElement = scanerFilter(props.state.filters.scaner, filtredElement);
+                filtredElement = jointerFilter(props.state.filters.jointer, filtredElement);
+                filtredElement = isDoneFilter(props.state.filters.isDone, filtredElement);
+                if (filtredElement) {
+                    suitableWithFilters++
+                    if (maxCounter < 500) {
+                        maxCounter++
+                        return (
+                            <SearchString el={el}
+                                          key={el.index + '' + el.act}/>
+                        )
+                    }
 
-               }
+                }
 
 
-           })
-        }else console.log(caseList)
+            })
+        } else console.log(caseList)
 
     }
-    let defineClass = function () {
-    }
+
 
     return (
         <div className={s.wrapper}>
@@ -65,7 +91,7 @@ const SearchScreen = function (props) {
                     <div className={s.bigcell}>
                         <div className={s.cell}>Акт
                             <input type={'number'} className={s.input}
-                            value={props.state.filters.act} onChange={setFilterAct}/>
+                                   value={props.state.filters.act} onChange={setFilterAct}/>
                         </div>
                         <div className={s.cell}>Дата получения
                             <input type={'number'} className={s.input}/>
@@ -87,7 +113,10 @@ const SearchScreen = function (props) {
                     </div>
                     <div className={s.bigcell}>
                         <div className={s.cell}>Расшивщик
-                            <input type={'number'} className={s.input}/>
+                            <input type={'number'}
+                                   className={s.input}
+                                   value={props.state.filters.stitcher}
+                                   onChange={setFilterStitcher}/>
                         </div>
                         <div className={s.cell}>дата расшивки
                             <input type={'number'} className={s.input}/>
@@ -96,7 +125,10 @@ const SearchScreen = function (props) {
 
                     <div className={s.bigcell}>
                         <div className={s.cell}>Сканировщик
-                            <input type={'number'} className={s.input}/>
+                            <input type={'number'}
+                                   className={s.input}
+                                   value={props.state.filters.scaner}
+                                   onChange={setFilterScaner}/>
                         </div>
                         <div className={s.cell}>Дата начала
                             <input type={'number'} className={s.input}/>
@@ -113,7 +145,10 @@ const SearchScreen = function (props) {
 
                     <div className={s.bigcell}>
                         <div className={s.cell}>Сшивщик
-                            <input type={'number'} className={s.input}/>
+                            <input type={'number'}
+                                   className={s.input}
+                                   value={props.state.filters.jointer}
+                                   onChange={setFilterJointer}/>
                         </div>
                         <div className={s.cell}>Дата сшивки
                             <input type={'number'} className={s.input}/>
@@ -121,6 +156,10 @@ const SearchScreen = function (props) {
                     </div>
                     <div className={s.bigcell}>
                         Дата сдачи
+                        <input type={'number'}
+                               className={s.input}
+                               value={props.state.filters.isDone}
+                               onChange={setFilterIsDone}/>
                     </div>
 
 

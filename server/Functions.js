@@ -34,18 +34,15 @@ module.exports = {
 
                     elem.stitchDate = ''
                     elem.stitcher = ''
-                    elem.stitcherhash = ''
 
                     elem.scanDateStart=''
                     elem.scanDateFinish = ''
                     elem.scaner = ''
-                    elem.scanerhash = ''
                     elem.pages = ''
                     elem.scanNumber = ''
 
                     elem.jointDate = ''
                     elem.jointer = ''
-                    elem.jointerhash = ''
 
                     elem.comment = ''
                     elem.isDone= false
@@ -125,7 +122,7 @@ module.exports = {
                         casesForUser.push(el);
                     } else if (operation === "scaner" && el.stitcher && el.scanDateFinish === '') {
                         casesForUser.push(el);
-                    } else if (operation === "jointer" && el.stitcher && el.scaner && el.jointer === '') {
+                    } else if (operation === "jointer" && el.stitcher && el.scanDateFinish && el.jointer === '') {
                         casesForUser.push(el);
                     }
                 })
@@ -137,15 +134,7 @@ module.exports = {
             return ['Error: getCasesForUser(server/Functions.js) -- userInfo not match']
         }
     },
-
-
-    applyChangesToCases: function (userhash, changedCases) {
-        console.log("applyChanges started")
-        let actsToChange = 0;
-        let allUsersInfo = this.getAllUsersInfo();
-        let userInfo = this.getUserInfo(userhash, allUsersInfo);
-        let fileNames = fs.readdirSync(pathes.acts);
-        let actNames = fileNames.map((el) => el.split('.')[0])
+    checkActsWhatNeedToParse:function(actNames,changedCases){
         let fileNamesToChange = [];
         actNames.forEach((actName) => {
             changedCases.forEach((changedCase) => {
@@ -159,11 +148,23 @@ module.exports = {
                     if (alreadyExists) {
                     } else {
                         fileNamesToChange.push(actName + ".json");
-                        actsToChange++
                     }
                 }
             })
         });
+        return fileNamesToChange
+    },
+
+
+    applyChangesToCases: function (userhash, changedCases) {
+        console.log("applyChanges started")
+        let allUsersInfo = this.getAllUsersInfo();
+        let userInfo = this.getUserInfo(userhash, allUsersInfo);
+        let fileNames = fs.readdirSync(pathes.acts);
+        let actNames = fileNames.map((el) => el.split('.')[0])
+        let fileNamesToChange = this.checkActsWhatNeedToParse(actNames,changedCases)
+        let actsToChange = fileNamesToChange.length;
+
         console.log("Оператор " + userInfo["id"] + " вносит изменения в " + actsToChange + " актов : " + fileNamesToChange.join(' | '))
         fileNamesToChange.forEach((act_json) => {
             let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${act_json}`), 'utf8'))
@@ -173,13 +174,12 @@ module.exports = {
                         if (userInfo["operation"] === "stitcher") {
                             fileCase.stitcher = userInfo["id"];
                             fileCase.stitchDate=changedCase.stitchDate===''?moment().format("MMM Do YY"):changedCase.stitchDate
-                            fileCase.stitcherhash = userInfo["userhash"];
-                            userInfo["acts"]++;
+
+                            userInfo["cases"]++;
                             userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.expectedPages)
 
                         } else if (userInfo["operation"] === "scaner") {                                       // вносим изменения, если юзер сканировщик
                             fileCase.scaner = userInfo["id"];
-                            fileCase.scanerhash = userInfo["userhash"];
                             if(fileCase.scanDateStart===''){
                                 fileCase.scanDateStart=changedCase.scanDateStart===''?
                                     moment().format("MMM Do YY"):changedCase.scanDateStart
@@ -188,11 +188,11 @@ module.exports = {
                                 fileCase.scanNumber = changedCase.scanNumber;
                                 fileCase.scanDateFinish=changedCase.scanDateFinish===''?
                                     moment().format("MMM Do YY"):changedCase.scanDateStart
-                                userInfo["acts"]++;
+                                userInfo["cases"]++;
                                 userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages);
 
-                                let stitcherhash = fileCase.stitcherhash;
-                                let stitcher = allUsersInfo.find((el) => el["userhash"] === stitcherhash);             //добавляем данные к другим пользователям (кол-во страниц)
+                                let stitcherId = fileCase.stitcher;
+                                let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);             //добавляем данные к другим пользователям (кол-во страниц)
                                 stitcher["pages"] = Number(stitcher["pages"])
                                     + Number(fileCase.pages)
                                     - Number(fileCase.expectedPages);
@@ -200,9 +200,8 @@ module.exports = {
 
                         } else if (userInfo["operation"] === "jointer") {                                        //вносим изменения, если юзер сшивка
                             fileCase.jointer = userInfo["id"];
-                            fileCase.jointerhash = userInfo["userhash"];
                             fileCase.jointDate=changedCase.jointDate===''?moment().format("MMM Do YY"):changedCase.jointDate
-                            userInfo["acts"]++;
+                            userInfo["cases"]++;
                             userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages)
                         }
                     }
@@ -226,11 +225,32 @@ module.exports = {
 
 
     //actName : type === "123.json"
-    markActAsDone: function (userhash, actName){
+    handOverCases: function (userhash, changedCases){
+        let wrongCases=[];
         if(this.checkUserIsAdmin(userhash)){
-            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))
 
+            let fileNames = fs.readdirSync(pathes.acts);
+            let actNames = fileNames.map((el) => el.split('.')[0])
+            let fileNamesToChange = this.checkActsWhatNeedToParse(actNames,changedCases);
+            fileNamesToChange.forEach((act_json) => {
+                let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${act_json}`), 'utf8'))
+                act.forEach((fileCase) => {                                                                     //перебираем каждый элемент из каждого акта
+                    changedCases.forEach((changedCase) => {                                                       //сравниваем с каждым элементом измененного списка
+                        if (fileCase.index === changedCase.index) {                                             //<<===получили нужное дело
+
+                            if(fileCase.stitcher!==''&&fileCase.scanDateFinish!==''&&fileCase.jointer!==''&&fileCase.isDone===false){            //проверка, что дело расшито, отсканено, сшито.
+                                fileCase.isDone=true;
+                                fileCase.isDoneDate=moment().format("MMM Do YY");
+                            }else{
+                                wrongCases.push(changedCase);
+                            }
+                        }
+                    })
+                    fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), {flag: 'w'});    //сохранить новую версию акта здеся
+                })
+            })
         }
+        return wrongCases;
     },
 
     getCasesForSearch: function(userInfo){
@@ -250,5 +270,17 @@ module.exports = {
         }else{
             return ["ERROR: userInfo not match"]
         }
+    },
+    resetUserStats:function(userInfo){
+        if(this.checkUserIsAdmin(userInfo)){
+            let allUsers = this.getAllUsersInfo();
+            allUsers.forEach((el)=>{
+                el["pages"]=0;
+                el["cases"]=0;
+            })
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
+            return ("Статистика пользователей сброшена")
+        }else{return("Тебе нельзя нажимать эту кнопку")}
     }
+
 }

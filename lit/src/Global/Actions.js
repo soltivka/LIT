@@ -14,6 +14,13 @@ const SET_FILTER_ID = 'SET_FILTER_ID';
 const CHANGE_ADMIN_OPERATION = 'CHANGE_ADMIN_OPERATION';
 const SET_DATE_DAY = 'SET_DATE_DAY';
 const GET_CASESFORSEARCH = 'GET_CASESFORSEARCH';
+const PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST = 'PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST';
+const POST_ISDONE_CASES = 'POST_ISDONE_CASES';
+const SET_FILTER_STITCHER = 'SET_FILTER_STITCHER';
+const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
+const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
+const RESET_USERSTATS = 'RESET_USERSTATS';
+const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -66,6 +73,22 @@ export const set_filter_id_action = (value) => ({
     type: SET_FILTER_ID,
     value: value,
 })
+export const set_filter_stitcher_action=(value)=>({
+    type:SET_FILTER_STITCHER,
+    value:value,
+})
+export const set_filter_scaner_action=(value)=>({
+    type:SET_FILTER_SCANER,
+    value:value,
+})
+export const set_filter_jointer_action=(value)=>({
+    type:SET_FILTER_JOINTER,
+    value:value,
+})
+export const set_filter_isDone_action=(value)=>({
+    type: SET_FILTER_ISDONE,
+    value:value,
+})
 export const change_admin_operation_action=(value)=>({
     type: CHANGE_ADMIN_OPERATION,
     value:value,
@@ -77,6 +100,17 @@ export const set_date_day_action=(value)=>({
 export const get_casesForSearch_action=()=>({
     type: GET_CASESFORSEARCH,
 });
+export const push_filtredByIndex_to_handOverCasesList_action=()=>({
+    type: PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST,
+})
+export const post_done_cases_action=()=>({
+    type:POST_ISDONE_CASES,
+})
+export const reset_userStats_action=()=>({
+    type: RESET_USERSTATS,
+})
+
+
 
 
 
