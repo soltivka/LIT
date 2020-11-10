@@ -78,6 +78,19 @@ app.get('/resetUserStats', (req, res) => {
     res.send({message});
 });
 
+app.get('/projectStats',(req,res)=>{
+    let userhash=req.headers.userhash
+    if(Functions.checkUserIsAdmin(userhash)){
+        let allActsStats = Functions.getProjectStatsByActs()
+
+        res.send({allActsStats})
+    }else{
+        res.send(["you shall not pass"])
+    }
+
+
+});
+
 
 app.use(express.static('build'));
 

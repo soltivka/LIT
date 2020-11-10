@@ -127,6 +127,18 @@ export const isDoneFilter=function(value,el){
         return el
     }
 }
+
+export const applyFilters= function(filters,filtredElement){
+    filtredElement = indexFilter(filters.index, filtredElement);
+    filtredElement = adressFilter(filters.adress, filtredElement);
+    filtredElement = idFilter(filters.id, filtredElement);
+    filtredElement = actFilter(filters.act, filtredElement);
+    filtredElement = stitcherFilter(filters.stitcher, filtredElement);
+    filtredElement = scanerFilter(filters.scaner, filtredElement);
+    filtredElement = jointerFilter(filters.jointer, filtredElement);
+    filtredElement = isDoneFilter(filters.isDone, filtredElement);
+    return filtredElement
+}
 export const setDateToChoosen=function(choosen_cases, operation, date){
     choosen_cases.forEach((el)=>{
         if(operation==="stitcher"){
@@ -185,5 +197,21 @@ export const reset_userstats = async function(userhash){
         return response.json()
     } else {
         alert(response.status + 'не удалось отправить данные на сервер')
+    }
+}
+
+export const request_projectStats = async function (userhash) {
+
+    let response = await fetch(`${serverURL}projectStats`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+        }
+    })
+    if (response.ok) {
+        let requestedData = await response.json()
+        return requestedData
+    } else {
+        alert(response.status)
     }
 }

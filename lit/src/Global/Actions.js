@@ -21,6 +21,7 @@ const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
 const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
 const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
+const GET_PROJECT_STATS='GET_PROJECT_STATS';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -109,6 +110,9 @@ export const post_done_cases_action=()=>({
 export const reset_userStats_action=()=>({
     type: RESET_USERSTATS,
 })
+export const get_projectStats_action=()=>({
+   type: GET_PROJECT_STATS,
+});
 
 
 

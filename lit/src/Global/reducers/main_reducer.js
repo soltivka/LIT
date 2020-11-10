@@ -2,7 +2,7 @@ import {
     change_admin_operation,
     dayJoiner,
     post_case_changes, post_done_cases, request_casesForSearch,
-    request_operator_cases, reset_userstats,
+    request_operator_cases, request_projectStats, reset_userstats,
     setDateToChoosen
 } from "../Functions";
 import {userHash_response_action} from "../Actions";
@@ -32,6 +32,7 @@ const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
 const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
 const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
+const GET_PROJECT_STATS = 'GET_PROJECT_STATS';
 
 
 const initialState = {
@@ -56,6 +57,7 @@ const initialState = {
         jointer: '',
         isDone:'',
     },
+    projectStats:{},
 
     currentNav: 'auth',
     userhash: '',
@@ -250,6 +252,15 @@ const main_reducer = function (state, action) {
             case RESET_USERSTATS:
                 reset_userstats(state.userhash).then((data) => {
                     console.log(data)
+                })
+                break;
+
+            case GET_PROJECT_STATS:
+                request_projectStats(state.userhash).then((data)=>{
+                    state.projectStats=data;
+
+
+                    store.dispatch(userHash_response_action())
                 })
                 break;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import s from './WorkScreen.module.css';
 import CaseString from "./CaseString/CaseString";
 import Choosen from "./Choosen/Choosen";
-import {actFilter, adressFilter, idFilter, indexFilter} from "../../Global/Functions";
+import {actFilter, adressFilter, applyFilters, idFilter, indexFilter} from "../../Global/Functions";
 import {
     change_admin_operation_action, choose_case_action,
     set_filter_act_action,
@@ -67,10 +67,7 @@ const WorkScreen = function (props) {
             return (props.state.operator_cases.data.map((el, i, arr) => {
 
                 if (el.choosen === false) {                                // check for not-choosen cases (display only not-choosen)
-                    let filtredElement = indexFilter(props.state.filters.index, el);
-                    filtredElement = adressFilter(props.state.filters.adress, filtredElement);
-                    filtredElement = idFilter(props.state.filters.id, filtredElement);
-                    filtredElement = actFilter(props.state.filters.act, filtredElement);
+                    let filtredElement = applyFilters(props.state.filters, el);
                     if (filtredElement) {
                         if (casesToView < 200) {
                             casesToView++;

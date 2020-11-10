@@ -3,7 +3,7 @@ import s from './SearchScreen.module.css';
 import SearchString from "./SearchString/SearchString";
 import {
     actFilter,
-    adressFilter,
+    adressFilter, applyFilters,
     idFilter,
     indexFilter, isDoneFilter,
     jointerFilter,
@@ -57,14 +57,7 @@ const SearchScreen = function (props) {
         if (Array.isArray(caseList)) {
             return caseList.map((el) => {
 
-                let filtredElement = indexFilter(props.state.filters.index, el);
-                filtredElement = adressFilter(props.state.filters.adress, filtredElement);
-                filtredElement = idFilter(props.state.filters.id, filtredElement);
-                filtredElement = actFilter(props.state.filters.act, filtredElement);
-                filtredElement = stitcherFilter(props.state.filters.stitcher, filtredElement);
-                filtredElement = scanerFilter(props.state.filters.scaner, filtredElement);
-                filtredElement = jointerFilter(props.state.filters.jointer, filtredElement);
-                filtredElement = isDoneFilter(props.state.filters.isDone, filtredElement);
+                let filtredElement= applyFilters(props.state.filters,el)
                 if (filtredElement) {
                     suitableWithFilters++
                     if (maxCounter < 500) {
