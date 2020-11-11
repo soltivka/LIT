@@ -3,11 +3,11 @@ import s from './App.module.css';
 import Header from "./Components/Header/Header";
 import WorkScreen from "./Components/WorkScreen/WorkScreen";
 import AuthScreen from "./Components/AuthScreen/AuthScreen";
-import UserScreen from "./Components/UserScreen/UserScreen";
+import UserStatsScreen from "./Components/UserStatsScreen/UserStatsScreen";
 import ProjectScreen from "./Components/ProjectScreen/ProjectScreen";
 import SearchScreen from "./Components/SearchScreen/SearchScreen";
 import HandOverScreen from "./Components/HandOverScreen/HandOverScreen";
-import StatsScreen from "./Components/SearchScreen/StatsScreen/StatsScreen";
+import ProjectStatsScreen from "./Components/ProjectStatsScreen/ProjectStatsScreen";
 
 
 function App(props) {
@@ -32,7 +32,7 @@ function App(props) {
         }else if (props.state.currentNav === 'userStats') {
             return (
                 <div>
-                    <UserScreen
+                    <UserStatsScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
                 </div>
@@ -67,7 +67,7 @@ function App(props) {
         else if (props.state.currentNav === 'projectStats') {
             return (
                 <div>
-                    <StatsScreen
+                    <ProjectStatsScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
                 </div>

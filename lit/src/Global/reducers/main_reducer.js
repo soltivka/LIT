@@ -33,6 +33,7 @@ const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
 const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
 const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
 const GET_PROJECT_STATS = 'GET_PROJECT_STATS';
+const GET_USERSTATS= 'GET_USERSTATS';
 
 
 const initialState = {
@@ -262,6 +263,9 @@ const main_reducer = function (state, action) {
 
                     store.dispatch(userHash_response_action())
                 })
+                break;
+            case GET_USERSTATS:
+                console.log("trying to get userStats")
                 break;
 
 

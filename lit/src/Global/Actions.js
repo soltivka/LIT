@@ -22,6 +22,7 @@ const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
 const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
 const GET_PROJECT_STATS='GET_PROJECT_STATS';
+const GET_USERSTATS = 'GET_USERSTATS';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -113,6 +114,9 @@ export const reset_userStats_action=()=>({
 export const get_projectStats_action=()=>({
    type: GET_PROJECT_STATS,
 });
+export const get_userStats_action=()=>({
+    type: GET_USERSTATS,
+})
 
 
 

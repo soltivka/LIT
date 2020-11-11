@@ -1,6 +1,11 @@
 import React from 'react';
 import s from './HeaderLink.module.css';
-import {get_casesForSearch_action, get_projectStats_action, setCurrentNav_action} from "../../../Global/Actions";
+import {
+    get_casesForSearch_action,
+    get_projectStats_action,
+    get_userStats_action,
+    setCurrentNav_action
+} from "../../../Global/Actions";
 
 
 
@@ -12,6 +17,9 @@ const HeaderLink = function (props) {
         }
         if(props.nav==="projectStats"){
             props.dispatch(get_projectStats_action(props.state.userhash))
+        }
+        if(props.nav==="userStats"){
+            props.dispatch(get_userStats_action(props.state.userhash))
         }
     }
 

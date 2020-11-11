@@ -295,7 +295,7 @@ module.exports = {
         let allActs = {};
         fileNames.forEach((actName) => {
             let actNumber = actName.split('.')[0];
-            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))
+            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))                // нужно будет
             allActs[actNumber] = {
                 new: 0,
                 stitcher: 0,
@@ -311,7 +311,7 @@ module.exports = {
                 if (el.stitcher !== '') {
                     allActs[actNumber].stitcher++
                 }
-                if (el.scaner !== '') {
+                if (el.scanDateFinish !== '') {
                     allActs[actNumber].scaner++
                 }
                 if (el.jointer !== '') {
@@ -322,33 +322,132 @@ module.exports = {
                 }
             })
             if (allActs[actNumber].new === allActs[actNumber].isDone) {
-                console.log(allActs[actNumber])
 
-                let latestMoment=0;
+                let latestMoment = 0;
                 act.forEach((el) => {
-                    let splitDate = el.isDoneDate.split(' ')
-                    let stringDay = splitDate[1];
-                    let day = parseInt(stringDay.replace(/[^\d]/g, ''))
-                    let month = splitDate[0]
-                    let year = splitDate[2]
-                    let finishDate = moment().date(day)
-                    finishDate.month(month)
-                    finishDate.year(Number(year));
-                    if(latestMoment===0){
-                        latestMoment=finishDate;
-                    }else{
-                        if(finishDate.isAfter(latestMoment)){
-                            latestMoment=finishDate;
-                            console.log(latestMoment)
+                    let finishDate = this.getMomentFromDateString(el.isDoneDate)
+                    if (latestMoment === 0) {
+                        latestMoment = finishDate;
+                    } else {
+                        if (finishDate.isAfter(latestMoment)) {
+                            latestMoment = finishDate;
                         }
                     }
                 })
-                allActs[actNumber].finishDate=latestMoment.format(("MMM Do YY"))
-                console.log(allActs[actNumber])
+                allActs[actNumber].finishDate = latestMoment.format(("MMM Do YY"))
             }
         })
         return allActs
+    },
+    getMomentFromDateString: function (dateString) {
+        let splitDate = dateString.split(' ')
+        let stringDay = splitDate[1];
+        let day = parseInt(stringDay.replace(/[^\d]/g, ''))
+        let month = splitDate[0]
+        let year = splitDate[2]
+        let finishDate = moment().date(day)
+        finishDate.month(month)
+        finishDate.year(Number(year))
+        finishDate.startOf("day");
+        return finishDate
+    },
+    getAllCases: function () {
+        let fileNames = fs.readdirSync(pathes.acts);
+        let allCases = [];
+        fileNames.forEach((actName) => {
+            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))
+            act.forEach((el) => {
+                allCases.push(el)
+            })
+        })
+        return allCases
+    },
 
+    getProjeectStatsByDates: function () {
+        let allDates = [];
+        let allCases = this.getAllCases()
+
+        allCases.forEach((el) => {
+            if (typeof (allDates.find((existDate) => existDate === el.incomeDate)) === 'undefined') {
+                allDates.push(el.incomeDate)
+            }
+            if (typeof (allDates.find((existDate) => existDate === el.stitchDate)) === 'undefined') {
+                allDates.push(el.stitchDate)
+            }
+            if (typeof (allDates.find((existDate) => existDate === el.scanDateFinish)) === 'undefined') {
+                allDates.push(el.scanDateFinish)
+            }
+            if (typeof (allDates.find((existDate) => existDate === el.jointDate)) === 'undefined') {
+                allDates.push(el.jointDate)
+            }
+            if (typeof (allDates.find((existDate) => existDate === el.isDoneDate)) === 'undefined') {
+                allDates.push(el.isDoneDate)
+            }
+        })
+        let emptyIndex = allDates.findIndex((string) => string === '')
+        allDates.splice(emptyIndex, 1)
+
+        allDates.sort((a, b) => {
+            let momentA = this.getMomentFromDateString(a);
+            let momentB = this.getMomentFromDateString(b);
+            if (momentA.isBefore(momentB)) {
+                return -1
+            } else if (momentA.isAfter(momentB)) {
+                return 1
+            } else return 0
+        })
+        let allDateStats = {}
+        allDates.forEach((date) => {
+            allDateStats[date] = {
+                new: 0,
+                stitcher: 0,
+                scaner: 0,
+                jointer: 0,
+                isDone: 0,
+            };
+            allCases.forEach((el) => {
+                if (el.incomeDate === date) {
+                    allDateStats[date].new++
+                }
+                if (el.stitchDate === date) {
+                    allDateStats[date].stitcher++
+                }
+                if (el.scanDateFinish === date) {
+                    allDateStats[date].scaner++
+                }
+                if (el.jointDate === date) {
+                    allDateStats[date].jointer++
+                }
+                if (el.isDoneDate === date) {
+                    allDateStats[date].isDone++
+                }
+            })
+        })
+        return allDateStats
+    },
+
+    getUserStats: function (userhash) {
+        let dates = {
+            stitcher: "stitchDate",
+            scaner: "scanDateFinish",
+            jointer: "jointDate",
+        }
+        let allCases = this.getAllCases()
+        let userInfo = this.getUserInfoFromJSON(userhash);
+        let userId = userInfo.id;
+        let operation = userInfo.operation;
+        let date = allCases[0][dates[operation]];
+        console.log(date)
+
+
+    },
+
+    getUsersStats: function (userhash) {
+        if (this.checkUserIsAdmin(userhash)) {
+            this.getUserStats(userhash)
+        } else {
+            this.getUserStats(userhash)
+        }
 
     }
 

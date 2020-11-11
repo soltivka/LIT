@@ -82,14 +82,18 @@ app.get('/projectStats',(req,res)=>{
     let userhash=req.headers.userhash
     if(Functions.checkUserIsAdmin(userhash)){
         let allActsStats = Functions.getProjectStatsByActs()
+        let allDatesStats = Functions.getProjeectStatsByDates()
 
-        res.send({allActsStats})
+        res.send({allActsStats,allDatesStats})
     }else{
         res.send(["you shall not pass"])
     }
-
-
 });
+app.get('/getUsersStat',(req,res)=>{
+    let userhash=req.headers.userhash;
+    let userStats=Functions.getUsersStats(userhash);
+    res.send(["/getUserStats"])
+})
 
 
 app.use(express.static('build'));
