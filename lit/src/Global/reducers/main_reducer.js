@@ -2,7 +2,7 @@ import {
     change_admin_operation,
     dayJoiner,
     post_case_changes, post_done_cases, request_casesForSearch,
-    request_operator_cases, request_projectStats, reset_userstats,
+    request_operator_cases, request_projectStats, request_userStats, reset_userstats,
     setDateToChoosen
 } from "../Functions";
 import {userHash_response_action} from "../Actions";
@@ -265,7 +265,11 @@ const main_reducer = function (state, action) {
                 })
                 break;
             case GET_USERSTATS:
-                console.log("trying to get userStats")
+                request_userStats(state.userhash).then((data)=>{
+                    state.usersStats=data;
+                    console.log(state.usersStats)
+                    store.dispatch(userHash_response_action())
+                })
                 break;
 
 

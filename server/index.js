@@ -89,10 +89,10 @@ app.get('/projectStats',(req,res)=>{
         res.send(["you shall not pass"])
     }
 });
-app.get('/getUsersStat',(req,res)=>{
+app.get('/getUsersStats',(req,res)=>{
     let userhash=req.headers.userhash;
-    let userStats=Functions.getUsersStats(userhash);
-    res.send(["/getUserStats"])
+    let usersStats=Functions.getDateUsersStats(userhash);
+    res.send(usersStats)
 })
 
 

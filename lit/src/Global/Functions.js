@@ -215,3 +215,18 @@ export const request_projectStats = async function (userhash) {
         alert(response.status)
     }
 }
+export const request_userStats = async function(userhash){
+
+    let response = await fetch(`${serverURL}getUsersStats`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+        }
+    })
+    if (response.ok) {
+        let requestedData = await response.json()
+        return requestedData
+    } else {
+        alert(response.status)
+    }
+}

@@ -23,3 +23,36 @@
     box-shadow: inset 0 0 15px 5px dimgrey;
     cursor: pointer;
 }
+.body{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+.tableHeader{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.headerCell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    background-color: darkgrey;
+
+}
+.headerStitcher{
+    background-color: goldenrod;
+}
+.headerScaner{
+    background-color: cornflowerblue;
+}
+.headerJointer{
+    background-color: forestgreen;
+}
+.tableBody{
+
+}

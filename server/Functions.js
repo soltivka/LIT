@@ -340,6 +340,7 @@ module.exports = {
         return allActs
     },
     getMomentFromDateString: function (dateString) {
+
         let splitDate = dateString.split(' ')
         let stringDay = splitDate[1];
         let day = parseInt(stringDay.replace(/[^\d]/g, ''))
@@ -350,6 +351,8 @@ module.exports = {
         finishDate.year(Number(year))
         finishDate.startOf("day");
         return finishDate
+
+
     },
     getAllCases: function () {
         let fileNames = fs.readdirSync(pathes.acts);
@@ -362,11 +365,9 @@ module.exports = {
         })
         return allCases
     },
-
-    getProjeectStatsByDates: function () {
-        let allDates = [];
+    getAllDates: function () {
         let allCases = this.getAllCases()
-
+        let allDates = [];
         allCases.forEach((el) => {
             if (typeof (allDates.find((existDate) => existDate === el.incomeDate)) === 'undefined') {
                 allDates.push(el.incomeDate)
@@ -385,7 +386,7 @@ module.exports = {
             }
         })
         let emptyIndex = allDates.findIndex((string) => string === '')
-        allDates.splice(emptyIndex, 1)
+        allDates.splice(emptyIndex, 1);
 
         allDates.sort((a, b) => {
             let momentA = this.getMomentFromDateString(a);
@@ -396,6 +397,13 @@ module.exports = {
                 return 1
             } else return 0
         })
+        return allDates
+    },
+
+    getProjeectStatsByDates: function () {
+        let allDates = this.getAllDates()
+        let allCases = this.getAllCases()
+
         let allDateStats = {}
         allDates.forEach((date) => {
             allDateStats[date] = {
@@ -426,29 +434,35 @@ module.exports = {
         return allDateStats
     },
 
-    getUserStats: function (userhash) {
-        let dates = {
-            stitcher: "stitchDate",
-            scaner: "scanDateFinish",
-            jointer: "jointDate",
-        }
-        let allCases = this.getAllCases()
-        let userInfo = this.getUserInfoFromJSON(userhash);
-        let userId = userInfo.id;
-        let operation = userInfo.operation;
-        let date = allCases[0][dates[operation]];
-        console.log(date)
-
-
-    },
-
-    getUsersStats: function (userhash) {
+    getDateUsersStats: function (userhash) {
         if (this.checkUserIsAdmin(userhash)) {
-            this.getUserStats(userhash)
-        } else {
-            this.getUserStats(userhash)
+            let allDates = this.getAllDates();
+            let allUsersInfo = this.getAllUsersInfo();
+            let allCases = this.getAllCases()
+            let dateUsersStats = [];
+            allDates.forEach((date) => {
+                let dateObj = {
+                    date,
+                };
+                allUsersInfo.forEach((userInfo) => {
+                    dateObj[userInfo.id] = {};
+                    dateObj[userInfo.id].cases=0;
+                    dateObj[userInfo.id].operation = userInfo.operation;
+                })
+                allCases.forEach((el) => {
+                    if (el.stitchDate === date) {
+                        dateObj[el.stitcher].cases++
+                    }
+                    if (el.scanDateFinish === date) {
+                        dateObj[el.scaner].cases++
+                    }
+                    if (el.jointDate === date) {
+                        dateObj[el.jointer].cases++
+                    }
+                })
+                dateUsersStats.push(dateObj)
+            })
+            return dateUsersStats
         }
-
     }
-
 }
