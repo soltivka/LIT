@@ -434,8 +434,7 @@ module.exports = {
         return allDateStats
     },
 
-    getDateUsersStats: function (userhash) {
-        if (this.checkUserIsAdmin(userhash)) {
+    getDateUsersStats: function () {
             let allDates = this.getAllDates();
             let allUsersInfo = this.getAllUsersInfo();
             let allCases = this.getAllCases()
@@ -448,21 +447,25 @@ module.exports = {
                     dateObj[userInfo.id] = {};
                     dateObj[userInfo.id].cases=0;
                     dateObj[userInfo.id].operation = userInfo.operation;
+                    dateObj[userInfo.id].pages=0;
                 })
                 allCases.forEach((el) => {
                     if (el.stitchDate === date) {
                         dateObj[el.stitcher].cases++
+                        dateObj[el.stitcher].pages=el.pages?el.pages:el.expectedPages
                     }
                     if (el.scanDateFinish === date) {
                         dateObj[el.scaner].cases++
+                        dateObj[el.scaner].pages+=Number(el.pages)
                     }
                     if (el.jointDate === date) {
                         dateObj[el.jointer].cases++
+                        dateObj[el.jointer].pages+=Number(el.pages)
                     }
                 })
                 dateUsersStats.push(dateObj)
             })
             return dateUsersStats
-        }
+
     }
 }

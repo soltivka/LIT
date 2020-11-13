@@ -34,6 +34,7 @@ const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
 const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
 const GET_PROJECT_STATS = 'GET_PROJECT_STATS';
 const GET_USERSTATS= 'GET_USERSTATS';
+const SWITCH_VIEW_MODE='SWITCH_VIEW_MODE';
 
 
 const initialState = {
@@ -59,6 +60,7 @@ const initialState = {
         isDone:'',
     },
     projectStats:{},
+    viewMode:'total',
 
     currentNav: 'auth',
     userhash: '',
@@ -101,9 +103,15 @@ const main_reducer = function (state, action) {
             case CHOOSE_CASE:                                                               // отобрать дело
                 state.operator_cases.data.map((el) => {
                     if (el.index === action.index) {
-                        state.choosen_cases.push(el);
-                        el.choosen = true
-                        state.filters.index = '';
+                        let choosenIsExist = state.choosen_cases.find((choosen_el)=>{
+                            return choosen_el.index===el.index
+                        })
+                        if(!choosenIsExist){
+                            state.choosen_cases.push(el);
+                            el.choosen = true
+                            state.filters.index = '';
+                        }else{alert("Нельзя выбрать одно дело дважды")}
+
                     }
                 })
                 console.log(state.choosen_cases)
@@ -228,11 +236,21 @@ const main_reducer = function (state, action) {
             case PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST:
                 state.casesForSearch.data.map((el) => {
                     if (el.index === state.filters.index) {
-                        state.casesForHandOver.push(el)
-                        state.filters.index = '';
+                        let choosenIsExist = state.casesForHandOver.find((existCase)=>{
+                            return existCase.index===state.filters.index
+                        })
+                        if(!choosenIsExist){
+                            state.casesForHandOver.push(el)
+                            state.filters.index = '';
+                        }else{alert("нельзя добавить в список дважды")}
+
                     }
                 })
                 console.log(state.casesForHandOver)
+
+
+
+
                 break;
 
             case POST_ISDONE_CASES:
@@ -252,7 +270,7 @@ const main_reducer = function (state, action) {
 
             case RESET_USERSTATS:
                 reset_userstats(state.userhash).then((data) => {
-                    console.log(data)
+                    alert(data[0])
                 })
                 break;
 
@@ -270,6 +288,9 @@ const main_reducer = function (state, action) {
                     console.log(state.usersStats)
                     store.dispatch(userHash_response_action())
                 })
+                break;
+            case SWITCH_VIEW_MODE:
+                state.viewMode=action.value
                 break;
 
 

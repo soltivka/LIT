@@ -112,7 +112,6 @@ const SearchScreen = function (props) {
                                    onChange={setFilterStitcher}/>
                         </div>
                         <div className={s.cell}>дата расшивки
-                            <input type={'number'} className={s.input}/>
                         </div>
                     </div>
 
@@ -124,10 +123,8 @@ const SearchScreen = function (props) {
                                    onChange={setFilterScaner}/>
                         </div>
                         <div className={s.cell}>Дата начала
-                            <input type={'number'} className={s.input}/>
                         </div>
                         <div className={s.cell}>Дата окончания
-                            <input type={'number'} className={s.input}/>
                         </div>
                     </div>
                     <div className={s.bigcell}>
@@ -144,7 +141,6 @@ const SearchScreen = function (props) {
                                    onChange={setFilterJointer}/>
                         </div>
                         <div className={s.cell}>Дата сшивки
-                            <input type={'number'} className={s.input}/>
                         </div>
                     </div>
                     <div className={s.bigcell}>
@@ -163,9 +159,9 @@ const SearchScreen = function (props) {
                 {content(props.state.casesForSearch.data)}
             </div>
             <div className={s.footer}>
-                <div>Vsego del prinyato: {props.state.casesForSearch.data.length}</div>
-                <div>podhodit pod filtPbI: {suitableWithFilters}</div>
-                <div> otobrajaetsa : {maxCounter}</div>
+                <div>Всего дел в списке: {props.state.casesForSearch.data.length}</div>
+                <div>Подходит под фильтры: {suitableWithFilters}</div>
+                <div>Отображается: {maxCounter}</div>
             </div>
 
 

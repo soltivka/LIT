@@ -25,6 +25,7 @@ const WorkScreen = function (props) {
     }
 
     let casesToView = 0;
+    let filtredCasesCount=0;
     const setFilterIndex = function (event) {
         props.dispatch(set_filter_index_action(event.target.value))
     }
@@ -69,7 +70,8 @@ const WorkScreen = function (props) {
                 if (el.choosen === false) {                                // check for not-choosen cases (display only not-choosen)
                     let filtredElement = applyFilters(props.state.filters, el);
                     if (filtredElement) {
-                        if (casesToView < 200) {
+                        filtredCasesCount++
+                        if (casesToView < 500) {
                             casesToView++;
                             return (
                                 <div key={el.index + '' + el.act}>
@@ -149,7 +151,7 @@ const WorkScreen = function (props) {
                             (props.state.userInfo["operation"] === "scaner" ? "сканировке : " : "сшивке : ")}
                             {props.state.operator_cases.data.length}
                         </div>
-                        <div>Подходит под фильтры: {casesToView}</div>
+                        <div>Подходит под фильтры: {filtredCasesCount}</div>
                         <div>Отображается дел: {casesToView}</div>
                     </div>
                 </div>

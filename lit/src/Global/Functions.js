@@ -1,4 +1,5 @@
 const serverURL = 'http://room50:3001/';                                 //switch to empty string to build
+const moment = require("moment");
 export const request_operator_cases = async function (userhash) {
 
     let response = await fetch(`${serverURL}getCases`, {
@@ -98,6 +99,8 @@ export const stitcherFilter=function(value,el){
         return el
     }else if(el&&value==='0'&&el.stitcher&&el.scaner===''&&el.jointer===''){
         return el
+    }else if(el&&value==='-1'&&el.stitcher===''){
+        return el
     }
 }
 export const scanerFilter=function(value,el){
@@ -107,7 +110,9 @@ export const scanerFilter=function(value,el){
         return el
     }else if(el&&value==='0'&&el.scaner&&el.jointer===''){
         return el
-    }
+    }else if(el&&value==='-1'&&el.scaner===''){
+    return el
+}
 }
 export const jointerFilter=function(value,el){
     if(el&&value===''){
@@ -115,6 +120,8 @@ export const jointerFilter=function(value,el){
     }else if(el&&value===el.jointer){
         return el
     }else if(el&&value==='0'&&el.jointer!==''){
+        return el
+    }else if(el&&value==='-1'&&el.jointer===''){
         return el
     }
 }
@@ -193,7 +200,6 @@ export const reset_userstats = async function(userhash){
         },
     });
     if (response.ok) {
-       alert("статистика всех пользователей сброшена")
         return response.json()
     } else {
         alert(response.status + 'не удалось отправить данные на сервер')
@@ -229,4 +235,16 @@ export const request_userStats = async function(userhash){
     } else {
         alert(response.status)
     }
+}
+export const getMomentFromDateString=function (dateString) {
+    let splitDate = dateString.split(' ')
+    let stringDay = splitDate[1];
+    let day = parseInt(stringDay.replace(/[^\d]/g, ''))
+    let month = splitDate[0]
+    let year = splitDate[2]
+    let finishDate = moment().date(day)
+    finishDate.month(month)
+    finishDate.year(Number(20+''+year));
+    finishDate.startOf("day");
+    return finishDate
 }

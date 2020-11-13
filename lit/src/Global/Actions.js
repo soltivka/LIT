@@ -23,6 +23,7 @@ const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
 const GET_PROJECT_STATS='GET_PROJECT_STATS';
 const GET_USERSTATS = 'GET_USERSTATS';
+const SWITCH_VIEW_MODE='SWITCH_VIEW_MODE';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -116,6 +117,10 @@ export const get_projectStats_action=()=>({
 });
 export const get_userStats_action=()=>({
     type: GET_USERSTATS,
+})
+export const switchViewMode_action=(value)=>({
+    type: SWITCH_VIEW_MODE,
+    value: value,
 })
 
 

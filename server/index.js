@@ -22,7 +22,6 @@ const serverStarting = async function () {
     let newActs = await Functions.getNewActs();
     console.log(newActs.length + '  new acts found: ' + newActs)
     newActs.forEach(Functions.createActObject)
-
 }
 serverStarting().then(() => {
     console.log('server works, congrats!');
@@ -75,7 +74,7 @@ app.get('/resetUserStats', (req, res) => {
     let userhash = req.headers.userhash
     let message=Functions.resetUserStats(userhash);
     console.log("пользователь "+ userhash + "сбросил статистику всех юзеров");
-    res.send({message});
+    res.send([message]);
 });
 
 app.get('/projectStats',(req,res)=>{
