@@ -1,7 +1,7 @@
 import {
     change_admin_operation,
-    dayJoiner,
-    post_case_changes, post_done_cases, request_casesForSearch,
+    dayJoiner, deleteUser,
+    post_case_changes, post_done_cases, post_new_user, request_casesForSearch,
     request_operator_cases, request_projectStats, request_userStats, reset_userstats,
     setDateToChoosen
 } from "../Functions";
@@ -35,7 +35,14 @@ const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
 const GET_PROJECT_STATS = 'GET_PROJECT_STATS';
 const GET_USERSTATS= 'GET_USERSTATS';
 const SWITCH_VIEW_MODE='SWITCH_VIEW_MODE';
-
+const SET_NEWUSER_NAME='SET_NEWUSER_NAME';
+const SET_NEWUSER_USERHASH='SET_NEWUSER_USERHASH';
+const SET_NEWUSER_ID='SET_NEWUSER_ID';
+const SET_NEWUSER_OPERATION='SET_NEWUSER_OPERATION';
+const SET_NEWUSER_ISADMIN='SET_NEWUSER_ISADMIN';
+const POST_NEWUSER='POST_NEWUSER';
+const SET_USER_TODELETE='SET_USER_TODELETE';
+const POST_USER_DELETE = 'POST_USER_DELETE';
 
 const initialState = {
     operator_cases: {
@@ -67,6 +74,14 @@ const initialState = {
     userInfo: {
         isAdmin: false,
     },
+    newUser:{
+        id:'',
+        userhash:'',
+        name:'',
+        operation:'jointer',
+        isAdmin:false,
+    },
+    userToDelete:'',
 }
 
 
@@ -289,9 +304,43 @@ const main_reducer = function (state, action) {
                     store.dispatch(userHash_response_action())
                 })
                 break;
+
             case SWITCH_VIEW_MODE:
                 state.viewMode=action.value
                 break;
+
+            case SET_NEWUSER_NAME:
+                state.newUser.name=action.value
+                break;
+            case SET_NEWUSER_USERHASH:
+                state.newUser.userhash=action.value
+                break;
+            case SET_NEWUSER_ID:
+                state.newUser.id=action.value
+                break;
+            case SET_NEWUSER_OPERATION:
+                state.newUser.operation=action.value;
+                console.log(state.newUser.operation)
+                break;
+            case SET_NEWUSER_ISADMIN:
+                if(action.value==='true'){state.newUser.isAdmin=true}
+                else if(action.value==='false'){state.newUser.isAdmin=false}
+                else{alert("troubles with set_newUser_isAdmin in reducer")}
+                console.log(state.newUser.isAdmin)
+                break;
+            case POST_NEWUSER:
+                post_new_user(state.userhash,state.newUser)
+                break;
+            case SET_USER_TODELETE:
+                state.userToDelete=action.value;
+                console.log(state.userToDelete)
+                break;
+            case POST_USER_DELETE:
+                deleteUser(state.userhash,state.userToDelete)
+
+
+                break;
+
 
 
 

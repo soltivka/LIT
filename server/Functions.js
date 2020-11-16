@@ -435,37 +435,85 @@ module.exports = {
     },
 
     getDateUsersStats: function () {
-            let allDates = this.getAllDates();
-            let allUsersInfo = this.getAllUsersInfo();
-            let allCases = this.getAllCases()
-            let dateUsersStats = [];
-            allDates.forEach((date) => {
-                let dateObj = {
-                    date,
-                };
-                allUsersInfo.forEach((userInfo) => {
-                    dateObj[userInfo.id] = {};
-                    dateObj[userInfo.id].cases=0;
-                    dateObj[userInfo.id].operation = userInfo.operation;
-                    dateObj[userInfo.id].pages=0;
-                })
-                allCases.forEach((el) => {
-                    if (el.stitchDate === date) {
-                        dateObj[el.stitcher].cases++
-                        dateObj[el.stitcher].pages=el.pages?el.pages:el.expectedPages
-                    }
-                    if (el.scanDateFinish === date) {
-                        dateObj[el.scaner].cases++
-                        dateObj[el.scaner].pages+=Number(el.pages)
-                    }
-                    if (el.jointDate === date) {
-                        dateObj[el.jointer].cases++
-                        dateObj[el.jointer].pages+=Number(el.pages)
-                    }
-                })
-                dateUsersStats.push(dateObj)
+        let allDates = this.getAllDates();
+        let allUsersInfo = this.getAllUsersInfo();
+        let allCases = this.getAllCases()
+        let dateUsersStats = [];
+        allDates.forEach((date) => {
+            let dateObj = {
+                date,
+            };
+            allUsersInfo.forEach((userInfo) => {
+                dateObj[userInfo.id] = {};
+                dateObj[userInfo.id].cases = 0;
+                dateObj[userInfo.id].operation = userInfo.operation;
+                dateObj[userInfo.id].pages = 0;
             })
-            return dateUsersStats
+            allCases.forEach((el) => {
+                if (el.stitchDate === date) {
+                    dateObj[el.stitcher]?dateObj[el.stitcher].cases++:0
+                    dateObj[el.stitcher]?(dateObj[el.stitcher].pages = el.pages ? el.pages : el.expectedPages):0
+                }
+                if (el.scanDateFinish === date) {
+                    dateObj[el.scaner]?dateObj[el.scaner].cases++:0
+                    dateObj[el.scaner]?dateObj[el.scaner].pages += Number(el.pages):0
+                }
+                if (el.jointDate === date) {
+                    dateObj[el.jointer]? dateObj[el.jointer].cases++:0
+                    dateObj[el.jointer]? dateObj[el.jointer].pages+=Number(el.pages):0
+                }
+            })
+            dateUsersStats.push(dateObj)
+        })
+        return dateUsersStats
+    },
+
+    createNewUser: function (newUserInfo) {
+        let newUser = {
+            "userhash": newUserInfo.userhash,
+            "id": newUserInfo.id,
+            "name": newUserInfo.name,
+            "isAdmin": newUserInfo.isAdmin,
+            "cases": 0,
+            "pages": 0,
+            "operation": newUserInfo.operation
+        };
+        let answer = '';
+        let allUsersInfo = this.getAllUsersInfo();
+        let isExist = allUsersInfo.find((existUser) => {
+            return existUser.userhash === newUser.userhash
+        });
+
+        if (!isExist) {
+            isExist = allUsersInfo.find((existUser) => existUser.id === newUser.id);
+        } else {
+            console.log("недопустимое значение #" + newUser.userhash)
+            answer = "недопустимое значение #" + newUser.userhash
+            return answer
+        }
+        if (!isExist) {
+            allUsersInfo.push(newUser);
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
+            console.log("новый пользователь добавлен");
+            answer = 'новый пользователь добавлен';
+            return answer
+        } else {
+            console.log("недопустимое значение, проверьте данные")
+            answer="недопустимое значение, проверьте данные";
+            return answer
+        }
+    },
+
+    deleteUser:function(userToDelete){
+        let allUsers= this.getAllUsersInfo();
+        let objectToDelete=allUsers.find((user)=>{
+            return user.id===userToDelete
+        })
+        let userToDeleteIndex = allUsers.indexOf(objectToDelete)
+        allUsers.splice(userToDeleteIndex,1)
+        fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
+
+
 
     }
 }

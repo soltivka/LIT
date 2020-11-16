@@ -24,6 +24,14 @@ const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
 const GET_PROJECT_STATS='GET_PROJECT_STATS';
 const GET_USERSTATS = 'GET_USERSTATS';
 const SWITCH_VIEW_MODE='SWITCH_VIEW_MODE';
+const SET_NEWUSER_NAME='SET_NEWUSER_NAME';
+const SET_NEWUSER_USERHASH='SET_NEWUSER_USERHASH';
+const SET_NEWUSER_ID='SET_NEWUSER_ID';
+const SET_NEWUSER_OPERATION='SET_NEWUSER_OPERATION';
+const SET_NEWUSER_ISADMIN='SET_NEWUSER_ISADMIN';
+const POST_NEWUSER='POST_NEWUSER';
+const SET_USER_TODELETE='SET_USER_TODELETE';
+const POST_USER_DELETE='POST_USER_DELETE';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -121,6 +129,37 @@ export const get_userStats_action=()=>({
 export const switchViewMode_action=(value)=>({
     type: SWITCH_VIEW_MODE,
     value: value,
+})
+export const set_newUser_name_action=(value)=>({
+    type: SET_NEWUSER_NAME,
+    value: value,
+
+})
+export const set_newUser_userhash_action=(value)=>({
+    type: SET_NEWUSER_USERHASH,
+    value:value,
+})
+export const set_newUser_id_action=(value)=>({
+    type: SET_NEWUSER_ID,
+    value:value,
+})
+export const set_newUser_operation_action=(value)=>({
+    type: SET_NEWUSER_OPERATION,
+    value: value,
+})
+export const set_newUser_isAdmin_action=(value)=>({
+    type: SET_NEWUSER_ISADMIN,
+    value:value,
+})
+export const post_newUser_action=()=>({
+    type: POST_NEWUSER,
+})
+export const set_userToDelete_action=(value)=>({
+    type: SET_USER_TODELETE,
+    value: value
+})
+export const post_deleteUser_action=()=>({
+    type: POST_USER_DELETE,
 })
 
 

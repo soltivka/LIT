@@ -4,7 +4,12 @@ const path = require('path');
 const app = express();
 const cors = require('cors');
 const port = 3001;
+const bodyParser = require('body-parser')
+
+
 app.use(cors());
+app.use(bodyParser.json())
+
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`server starting at ${port}`)
@@ -34,10 +39,10 @@ app.get('/getCases', (req, res) => {
     let casesForUser = Functions.getCasesForUser(userInfo);
     res.send({casesForUser, userInfo});
 });
-app.get('/casesForSearch',(req,res)=>{
-    let userInfo=Functions.getUserInfoFromJSON(req.headers.userhash);
-    let casesForSearch=Functions.getCasesForSearch(userInfo);
-    res.send({casesForSearch,userInfo})
+app.get('/casesForSearch', (req, res) => {
+    let userInfo = Functions.getUserInfoFromJSON(req.headers.userhash);
+    let casesForSearch = Functions.getCasesForSearch(userInfo);
+    res.send({casesForSearch, userInfo})
 })
 
 
@@ -47,7 +52,7 @@ app.get('/changeAdminOperation', (req, res) => {
         let userInfo = Functions.getUserInfoFromJSON(req.headers.userhash);
         let casesForUser = Functions.getCasesForUser(userInfo)
         res.send({casesForUser, userInfo})
-    }else{
+    } else {
         res.send(["ERROR:__you have no access"])
     }
 });
@@ -72,26 +77,47 @@ app.get('/postChangedCases', (req, res) => {
 
 app.get('/resetUserStats', (req, res) => {
     let userhash = req.headers.userhash
-    let message=Functions.resetUserStats(userhash);
-    console.log("пользователь "+ userhash + "сбросил статистику всех юзеров");
+    let message = Functions.resetUserStats(userhash);
+    console.log("пользователь " + userhash + "сбросил статистику всех юзеров");
     res.send([message]);
 });
 
-app.get('/projectStats',(req,res)=>{
-    let userhash=req.headers.userhash
-    if(Functions.checkUserIsAdmin(userhash)){
+app.get('/projectStats', (req, res) => {
+    let userhash = req.headers.userhash
+    if (Functions.checkUserIsAdmin(userhash)) {
         let allActsStats = Functions.getProjectStatsByActs()
         let allDatesStats = Functions.getProjeectStatsByDates()
 
-        res.send({allActsStats,allDatesStats})
-    }else{
+        res.send({allActsStats, allDatesStats})
+    } else {
         res.send(["you shall not pass"])
     }
 });
-app.get('/getUsersStats',(req,res)=>{
-    let userhash=req.headers.userhash;
-    let usersStats=Functions.getDateUsersStats(userhash);
+app.get('/getUsersStats', (req, res) => {
+    let userhash = req.headers.userhash;
+    let usersStats = Functions.getDateUsersStats(userhash);
     res.send(usersStats)
+})
+app.post('/createNewUser', (req, res) => {
+    let userhash = req.headers.userhash
+    if (Functions.checkUserIsAdmin(userhash)) {
+        let answer = Functions.createNewUser(req.body)
+        res.send(answer)
+    } else {
+        let answer = "У Вас недостаточно прав"
+        res.send(answer)
+    }
+})
+app.get('/deleteUser',(req,res)=>{
+    let userhash=req.headers.userhash;
+    if(Functions.checkUserIsAdmin(userhash)){
+        let userToDelete=req.headers.usertodelete
+        let answer=Functions.deleteUser(userToDelete)
+        res.send(answer)
+    }else {
+        let answer = "У Вас недостаточно прав"
+        res.send(answer)
+    }
 })
 
 

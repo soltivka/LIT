@@ -87,7 +87,6 @@ const SearchScreen = function (props) {
                                    value={props.state.filters.act} onChange={setFilterAct}/>
                         </div>
                         <div className={s.cell}>Дата получения
-                            <input type={'number'} className={s.input}/>
                         </div>
                     </div>
                     <div className={s.bigcell}>
