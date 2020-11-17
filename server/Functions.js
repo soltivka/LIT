@@ -197,10 +197,13 @@ module.exports = {
                                 userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages);
 
                                 let stitcherId = fileCase.stitcher;
-                                let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);             //добавляем данные к другим пользователям (кол-во страниц)
-                                stitcher["pages"] = Number(stitcher["pages"])
-                                    + Number(fileCase.pages)
-                                    - Number(fileCase.expectedPages);
+                                let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
+                                if(stitcher){
+                                    stitcher["pages"] = Number(stitcher["pages"])
+                                        + Number(fileCase.pages)
+                                        - Number(fileCase.expectedPages);
+                                }                                                           //добавляем данные к другим пользователям (кол-во страниц)
+
                             }
 
                         } else if (userInfo["operation"] === "jointer" && fileCase.jointer === '') {                                        //вносим изменения, если юзер сшивка
@@ -299,6 +302,7 @@ module.exports = {
             allActs[actNumber] = {
                 new: 0,
                 stitcher: 0,
+                onScan:0,
                 scaner: 0,
                 jointer: 0,
                 isDone: 0,
@@ -310,6 +314,9 @@ module.exports = {
                 allActs[actNumber].new++
                 if (el.stitcher !== '') {
                     allActs[actNumber].stitcher++
+                }
+                if(el.scaner!==''&&el.scanDateStart!==''){
+                    allActs[actNumber].onScan++
                 }
                 if (el.scanDateFinish !== '') {
                     allActs[actNumber].scaner++
@@ -409,6 +416,7 @@ module.exports = {
             allDateStats[date] = {
                 new: 0,
                 stitcher: 0,
+                onScan:0,
                 scaner: 0,
                 jointer: 0,
                 isDone: 0,
@@ -419,6 +427,9 @@ module.exports = {
                 }
                 if (el.stitchDate === date) {
                     allDateStats[date].stitcher++
+                }
+                if(el.scanDateStart===date){
+                    allDateStats[date].onScan++
                 }
                 if (el.scanDateFinish === date) {
                     allDateStats[date].scaner++
@@ -463,6 +474,16 @@ module.exports = {
                     dateObj[el.jointer]? dateObj[el.jointer].pages+=Number(el.pages):0
                 }
             })
+            dateObj.total= {};
+            dateObj.total.cases=0
+            for(let user in dateObj){
+                if(user!=='date'&&user!=='total'){
+                    dateObj.total.cases+=Number(dateObj[user].cases)
+                    console.log(dateObj.total.cases)
+                }
+            };
+
+
             dateUsersStats.push(dateObj)
         })
         return dateUsersStats
@@ -509,11 +530,29 @@ module.exports = {
         let objectToDelete=allUsers.find((user)=>{
             return user.id===userToDelete
         })
-        let userToDeleteIndex = allUsers.indexOf(objectToDelete)
-        allUsers.splice(userToDeleteIndex,1)
-        fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
-
-
-
+        console.log(objectToDelete)
+        if(objectToDelete){
+            let userToDeleteIndex = allUsers.indexOf(objectToDelete)
+            allUsers.splice(userToDeleteIndex,1)
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
+            return("Пользователь №"+userToDelete+" удален")
+        }else{
+            return("Пользователь №"+userToDelete+" не найден")
+        }
+    },
+    applyHardChangedCase:function(hardChangedCase){
+        let act =  JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), 'utf8'))
+        let caseToChange = act.find((existCase)=>{
+            return existCase.id===hardChangedCase.id
+        })
+        for(let field in caseToChange){
+            if(caseToChange[field]!==''){
+                if(caseToChange[field]!==hardChangedCase[field]){
+                    caseToChange[field]=hardChangedCase[field]
+                }
+            }
+        }
+        fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act), {flag: 'w'});
+        return "Акт № "+hardChangedCase.act+" перезаписан"
     }
 }

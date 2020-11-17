@@ -1,7 +1,7 @@
 import {
     change_admin_operation,
-    dayJoiner, deleteUser,
-    post_case_changes, post_done_cases, post_new_user, request_casesForSearch,
+    dayJoiner, deleteUser, getCaseFromServer,
+    post_case_changes, post_done_cases, post_new_user, postHardChange, request_casesForSearch,
     request_operator_cases, request_projectStats, request_userStats, reset_userstats,
     setDateToChoosen
 } from "../Functions";
@@ -43,6 +43,12 @@ const SET_NEWUSER_ISADMIN='SET_NEWUSER_ISADMIN';
 const POST_NEWUSER='POST_NEWUSER';
 const SET_USER_TODELETE='SET_USER_TODELETE';
 const POST_USER_DELETE = 'POST_USER_DELETE';
+const SET_CASETOGET='SET_CASETOGET';
+const GET_CASEFROMSERVER='GET_CASEFROMSERVER';
+const SET_HARDCHANGE_JOINTER='SET_HARDCHANGE_JOINTER';
+const SET_HARDCHANGE_STITCHER='SET_HARDCHANGE_STITCHER';
+const SET_HARDCHANGE_SCANER='SET_HARDCHANGE_SCANER';
+const POST_HARDCHANGE='POST_HARDCHANGE';
 
 const initialState = {
     operator_cases: {
@@ -82,6 +88,31 @@ const initialState = {
         isAdmin:false,
     },
     userToDelete:'',
+    hardChangeToCase:{
+        id:'',
+        index:'',
+        act:'',
+        street:'',
+        adress:'',
+        incomeDate:'',
+        expectedPages:'',
+
+        stitchDate :'',
+        stitcher:'',
+
+        scanDateStart:'',
+        scanDateFinish:'',
+        scaner :'',
+        pages :'',
+        scanNumber:'',
+
+        jointDate:'',
+        jointer:'',
+
+        comment:'',
+        isDone:'',
+        isDoneDate:''
+    }
 }
 
 
@@ -300,7 +331,6 @@ const main_reducer = function (state, action) {
             case GET_USERSTATS:
                 request_userStats(state.userhash).then((data)=>{
                     state.usersStats=data;
-                    console.log(state.usersStats)
                     store.dispatch(userHash_response_action())
                 })
                 break;
@@ -312,34 +342,74 @@ const main_reducer = function (state, action) {
             case SET_NEWUSER_NAME:
                 state.newUser.name=action.value
                 break;
+
             case SET_NEWUSER_USERHASH:
                 state.newUser.userhash=action.value
                 break;
+
             case SET_NEWUSER_ID:
                 state.newUser.id=action.value
                 break;
+
             case SET_NEWUSER_OPERATION:
                 state.newUser.operation=action.value;
-                console.log(state.newUser.operation)
                 break;
+
             case SET_NEWUSER_ISADMIN:
                 if(action.value==='true'){state.newUser.isAdmin=true}
                 else if(action.value==='false'){state.newUser.isAdmin=false}
                 else{alert("troubles with set_newUser_isAdmin in reducer")}
-                console.log(state.newUser.isAdmin)
                 break;
+
             case POST_NEWUSER:
                 post_new_user(state.userhash,state.newUser)
+                state.newUser.name='';
+                state.newUser.id='';
+                state.newUser.userhash='';
                 break;
+
             case SET_USER_TODELETE:
                 state.userToDelete=action.value;
-                console.log(state.userToDelete)
                 break;
+
             case POST_USER_DELETE:
-                deleteUser(state.userhash,state.userToDelete)
-
-
+                 deleteUser(state.userhash,state.userToDelete);
+                state.userToDelete='';
                 break;
+
+            case SET_CASETOGET:
+                state.hardChangeToCase.id=action.value
+                console.log(state.hardChangeToCase);
+                break;
+
+            case GET_CASEFROMSERVER:
+               getCaseFromServer(state.userhash,state.hardChangeToCase.id).then((requestedCase)=>{
+                   state.hardChangeToCase=requestedCase
+                   store.dispatch(userHash_response_action())
+
+                    }
+                )
+                break;
+
+               case  SET_HARDCHANGE_JOINTER:
+                state.hardChangeToCase.jointer=action.value
+                   console.log(state.hardChangeToCase.jointer)
+                break;
+
+            case SET_HARDCHANGE_STITCHER:
+                state.hardChangeToCase.stitcher=action.value
+                console.log(state.hardChangeToCase.stitcher)
+                break;
+
+            case SET_HARDCHANGE_SCANER:
+                state.hardChangeToCase.scaner=action.value
+                console.log(state.hardChangeToCase.scaner)
+                break;
+
+                case POST_HARDCHANGE:
+                postHardChange(state.userhash,state.hardChangeToCase)
+                break;
+
 
 
 

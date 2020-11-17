@@ -119,6 +119,31 @@ app.get('/deleteUser',(req,res)=>{
         res.send(answer)
     }
 })
+app.get('/getCaseToHardChange',(req,res)=>{
+    let userhash=req.headers.userhash;
+    if(Functions.checkUserIsAdmin(userhash)){
+        let caseToHardChange_id=req.headers.casetochange
+        let caseToChange=Functions.getAllCases().find((existCase)=>existCase.id===caseToHardChange_id)
+        console.log(caseToChange);
+        res.send(caseToChange)
+    }else {
+        let answer = "У Вас недостаточно прав"
+        res.send(answer)
+    }
+})
+app.post('/postHardChangeCase',(req,res)=>{
+    let userhash=req.headers.userhash;
+    if(Functions.checkUserIsAdmin(userhash)){
+        let hardChangedCase = req.body
+        let answer = Functions.applyHardChangedCase(hardChangedCase)
+        res.send(answer)
+
+    }else {
+        let answer = "У Вас недостаточно прав"
+        res.send(answer)
+    }
+})
+
 
 
 app.use(express.static('build'));

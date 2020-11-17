@@ -1,6 +1,6 @@
 .wrapper{
     display: flex;
-    background-color: grey;
+    background-color: dimgrey;
     width: 100%;
     height: 100vh;
     flex-wrap: wrap;
@@ -46,10 +46,10 @@
     align-items: center;
     margin: 0px 10px 0px 10px;
 }
-.addNewUser{
+.greenButton{
     display: flex;
     width: 200px;
-    height: 50px;
+    height: 45px;
     justify-content: center;
     cursor: pointer;
     background-color: darkgreen;

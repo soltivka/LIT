@@ -117,7 +117,7 @@ export const jointerFilter = function (value, el) {
         return el
     } else if (el && value === el.jointer) {
         return el
-    } else if (el && value === '0' && el.jointer !== '') {
+    } else if (el && value === '0' && el.jointer !== ''&&el.isDone===false) {
         return el
     } else if (el && value === '-1' && el.jointer === '') {
         return el
@@ -261,13 +261,12 @@ export const post_new_user = function (userhash, newUser) {
         alert("заполните все необходимые поля")
     }
 }
-export const deleteUser=function(userhash,userToDelete){
+export const deleteUser=  function(userhash,userToDelete){
     if (userToDelete!== '' ) {
-        let xhr = new XMLHttpRequest(); // 2. Настраиваем его: GET-запрос по URL /article/.../load
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', `${serverURL}deleteUser`, true);
         xhr.setRequestHeader("userhash", userhash);
-        xhr.setRequestHeader("userToDelete",userToDelete)
-        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader("userToDelete",userToDelete);
         xhr.send();
         xhr.onload = function() {
             alert(`ОТВЕТ:  ${xhr.response}`);
@@ -275,5 +274,32 @@ export const deleteUser=function(userhash,userToDelete){
     } else {
         alert("заполните все необходимые поля")
     }
+}
+export const getCaseFromServer=async function(userhash,caseToChange){
+
+    let response = await fetch(`${serverURL}getCaseToHardChange`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+            "caseToChange":caseToChange,
+        }
+    })
+    if (response.ok) {
+        let requestedData = await response.json()
+        return requestedData
+    } else {
+        alert(response.status)
+    }
+}
+
+export const postHardChange = function (userhash, hardChangeCase) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `${serverURL}postHardChangeCase`, true);
+    xhr.setRequestHeader("userhash", userhash);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify(hardChangeCase))
+    xhr.onload = function () {
+        alert(`ОТВЕТ:  ${xhr.response}`);
+    };
 
 }

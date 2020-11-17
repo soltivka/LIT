@@ -74,6 +74,10 @@
 .stitch {
     box-shadow: inset 0 0 5px 1px goldenrod;
 }
+.onScan{
+
+    box-shadow: inset 0 0 5px 0px purple;
+}
 
 .scan {
     box-shadow: inset 0 0 5px 0px blue;

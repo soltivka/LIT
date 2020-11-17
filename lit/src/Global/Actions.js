@@ -32,6 +32,12 @@ const SET_NEWUSER_ISADMIN='SET_NEWUSER_ISADMIN';
 const POST_NEWUSER='POST_NEWUSER';
 const SET_USER_TODELETE='SET_USER_TODELETE';
 const POST_USER_DELETE='POST_USER_DELETE';
+const GET_CASEFROMSERVER='GET_CASEFROMSERVER';
+const SET_CASETOGET='SET_CASETOGET';
+const SET_HARDCHANGE_JOINTER='SET_HARDCHANGE_JOINTER';
+const SET_HARDCHANGE_STITCHER='SET_HARDCHANGE_STITCHER';
+const SET_HARDCHANGE_SCANER='SET_HARDCHANGE_SCANER';
+const POST_HARDCHANGE='POST_HARDCHANGE';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -161,6 +167,29 @@ export const set_userToDelete_action=(value)=>({
 export const post_deleteUser_action=()=>({
     type: POST_USER_DELETE,
 })
+export const get_caseFromServer_action=()=>({
+    type: GET_CASEFROMSERVER,
+})
+export const set_caseToGet_action=(value)=>({
+    type: SET_CASETOGET,
+    value:value,
+})
+export const set_hardChange_scaner_action=(value)=>({
+    type: SET_HARDCHANGE_SCANER,
+    value:value,
+})
+export const set_hardChange_stitcher_action=(value)=>({
+    type: SET_HARDCHANGE_STITCHER,
+    value:value,
+})
+export const set_hardChange_jointer_action=(value)=>({
+    type: SET_HARDCHANGE_JOINTER,
+    value:value,
+})
+export const post_hardChange_action=()=>({
+    type: POST_HARDCHANGE,
+})
+
 
 
 

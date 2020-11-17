@@ -9,11 +9,13 @@ const UserStatsScreen = function (props) {
     let userDays= {};
 
 
-    console.log(props.state.usersStats)
     let usersStats=[];
     if (props.state.userInfo.isAdmin) {
         if (props.state.viewMode === 'total') {
             usersStats = props.state.usersStats;
+            console.log(usersStats)
+
+
             if(usersStats){
                 usersStats.forEach((el)=>{
                     for(let user in el){
@@ -29,8 +31,6 @@ const UserStatsScreen = function (props) {
                     }
                 })
             }
-            console.log(userTotal);
-            console.log(userDays)
 
         } else if (props.state.viewMode === 'this month') {
             props.state.usersStats.forEach((el, i, arr) => {
@@ -55,8 +55,6 @@ const UserStatsScreen = function (props) {
                 })
             }
         }
-        console.log(userTotal)
-        console.log(userDays)
 
     } else {
         if (props.state.usersStats) {
@@ -142,7 +140,6 @@ const UserStatsScreen = function (props) {
         if (usersStats) {
             let operatorsString = [];
             for (let user in usersStats[0]) {
-                console.log(usersStats[0][user]);
                 if (user !== "date") {
                     operatorsString.push((
                         <td key={user}
@@ -150,6 +147,7 @@ const UserStatsScreen = function (props) {
                     ))
                 }
             }
+
             return operatorsString
         }
     }

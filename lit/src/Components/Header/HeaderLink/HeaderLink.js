@@ -22,11 +22,16 @@ const HeaderLink = function (props) {
             props.dispatch(get_userStats_action(props.state.userhash))
         }
     }
+    const defineClass=function(){
+        if(props.state.currentNav===props.nav){
+            return(s.activeLink)
+        }else return(s.headerButton)
+    }
 
 
     return (
         <div className={s.buttonWrapper}>
-            <button className={s.headerButton}
+            <button className={defineClass()}
                     onClick={click}>
                 {props.text}
             </button>

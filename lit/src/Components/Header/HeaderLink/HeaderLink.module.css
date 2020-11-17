@@ -21,5 +21,15 @@
     cursor: pointer;
     transition: .25s;
 }
+.activeLink{
+    width: 100%;
+    height: 100%;
+    background-color: dimgrey;
+    color: white;
+    text-decoration-style: solid;
+    border: none;
+    outline: none;
+    transition:.5s;
+}
 
 

@@ -3,16 +3,17 @@ import s from './ProjectStatsScreen.module.css';
 
 
 const ProjectStatsScreen = function (props) {
-    let total = [0, 0, 0, 0, 0];
+    let total = [0, 0, 0, 0, 0, 0];
     let actsStat = function () {
         let allActs = props.state.projectStats.allActsStats
         let strings = [];
         for (let actName in allActs) {
             total[0] += allActs[actName].new
             total[1] += allActs[actName].stitcher
-            total[2] += allActs[actName].scaner
-            total[3] += allActs[actName].jointer
-            total[4] += allActs[actName].isDone
+            total[2] += allActs[actName].onScan
+            total[3] += allActs[actName].scaner
+            total[4] += allActs[actName].jointer
+            total[5] += allActs[actName].isDone
             let string = function () {
                 return (
                     <tr className={s.actString} key={'actStatString' + actName}>
@@ -20,6 +21,7 @@ const ProjectStatsScreen = function (props) {
                         <td className={s.stringcell + ' ' + s.new}>{allActs[actName].startDate}</td>
                         <td className={s.stringcell + ' ' + s.new}>{allActs[actName].new}</td>
                         <td className={s.stringcell + ' ' + s.stitch}>{allActs[actName].stitcher}</td>
+                        <td className={s.stringcell + ' ' + s.onScan}>{allActs[actName].onScan}</td>
                         <td className={s.stringcell + ' ' + s.scan}>{allActs[actName].scaner}</td>
                         <td className={s.stringcell + ' ' + s.joint}>{allActs[actName].jointer}</td>
                         <td className={s.stringcell + ' ' + s.done}>{allActs[actName].isDone}</td>
@@ -41,6 +43,7 @@ const ProjectStatsScreen = function (props) {
                         <td className={s.stringcell}>{date}</td>
                         <td className={s.stringcell + ' ' + s.new}>{allDates[date].new}</td>
                         <td className={s.stringcell + ' ' + s.stitch}>{allDates[date].stitcher}</td>
+                        <td className={s.stringcell + ' ' + s.onScan}>{allDates[date].onScan}</td>
                         <td className={s.stringcell + ' ' + s.scan}>{allDates[date].scaner}</td>
                         <td className={s.stringcell + ' ' + s.joint}>{allDates[date].jointer}</td>
                         <td className={s.stringcell + ' ' + s.done}>{allDates[date].isDone}</td>
@@ -63,6 +66,7 @@ const ProjectStatsScreen = function (props) {
                             <td className={s.cell}>Дата получения</td>
                             <td className={s.cell}>Получено</td>
                             <td className={s.cell}>Расшито</td>
+                            <div className={s.cell}>На скане</div>
                             <td className={s.cell}>Отскан</td>
                             <td className={s.cell}>Сшито</td>
                             <td className={s.cell}>Сдано</td>
@@ -84,6 +88,7 @@ const ProjectStatsScreen = function (props) {
                     <div className={s.cell}>{total[1]-total[2]}</div>
                     <div className={s.cell}>{total[2]-total[3]}</div>
                     <div className={s.cell}>{total[3]-total[4]}</div>
+                    <div className={s.cell}>{total[4]-total[5]}</div>
                     <div className={s.cell}>------</div>
                     <div className={s.cell}></div>
                     <div className={s.placeholder}></div>
@@ -96,6 +101,7 @@ const ProjectStatsScreen = function (props) {
                     <div className={s.cell}>Дата</div>
                     <div className={s.cell}>Получено</div>
                     <div className={s.cell}>Расшито</div>
+                    <div className={s.cell}>На скане</div>
                     <div className={s.cell}>Отскан</div>
                     <div className={s.cell}>Сшито</div>
                     <div className={s.cell}>Сдано</div>
@@ -113,6 +119,7 @@ const ProjectStatsScreen = function (props) {
                     <div className={s.cell}>{total[2]}</div>
                     <div className={s.cell}>{total[3]}</div>
                     <div className={s.cell}>{total[4]}</div>
+                    <div className={s.cell}>{total[5]}</div>
                     <div className={s.placeholder}></div>
 
                 </div>
