@@ -5,6 +5,21 @@
     align-items: center;
     box-shadow: inset 0 0 12px 2px darkgrey;
     margin: 3px;
+    animation-duration: 0.5s;
+    animation-name: visualize;
+}
+
+@keyframes visualize {
+    from {
+        opacity:0;
+
+        box-shadow: inset 0 0 20px 5px green;
+    }
+
+    to {
+        opacity:1;
+        box-shadow: inset 0 0 12px 2px darkgrey;
+    }
 }
 .wrapperOnScan{
     display: flex;
