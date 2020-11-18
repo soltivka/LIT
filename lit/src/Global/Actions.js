@@ -38,6 +38,8 @@ const SET_HARDCHANGE_JOINTER='SET_HARDCHANGE_JOINTER';
 const SET_HARDCHANGE_STITCHER='SET_HARDCHANGE_STITCHER';
 const SET_HARDCHANGE_SCANER='SET_HARDCHANGE_SCANER';
 const POST_HARDCHANGE='POST_HARDCHANGE';
+const GET_USERSTATS2='GET_USERSTATS2';
+const SWITCH_STATSOPERATION='SWITCH_STATSOPERATION';
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -188,6 +190,14 @@ export const set_hardChange_jointer_action=(value)=>({
 })
 export const post_hardChange_action=()=>({
     type: POST_HARDCHANGE,
+})
+export const get_userStats2_action=(value)=>({
+    type: GET_USERSTATS2,
+    value: value,
+})
+export const switchStatsOperation_action=(value)=>({
+    type: SWITCH_STATSOPERATION,
+    value: value
 })
 
 
