@@ -8,7 +8,6 @@ import ProjectScreen from "./Components/ProjectScreen/ProjectScreen";
 import SearchScreen from "./Components/SearchScreen/SearchScreen";
 import HandOverScreen from "./Components/HandOverScreen/HandOverScreen";
 import ProjectStatsScreen from "./Components/ProjectStatsScreen/ProjectStatsScreen";
-import UserStatScreen from "./Components/UserStatScreen/UserStatScreen";
 
 
 function App(props) {
@@ -69,15 +68,6 @@ function App(props) {
             return (
                 <div>
                     <ProjectStatsScreen
-                        dispatch={props.dispatch}
-                        state={props.state}/>
-                </div>
-            )
-        }
-        else if (props.state.currentNav === 'userStats2') {
-            return (
-                <div>
-                    <UserStatScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
                 </div>

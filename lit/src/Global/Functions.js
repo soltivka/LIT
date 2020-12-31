@@ -301,19 +301,5 @@ export const postHardChange = function (userhash, hardChangeCase) {
     xhr.onload = function () {
         alert(`ОТВЕТ:  ${xhr.response}`);
     };
-}
-export const getOperationStats=async function(userhash,statsOperation){
-    let response = await fetch(`${serverURL}getUsersStats2`, {
-        method: "GET",
-        headers: {
-            "userhash": userhash,
-            "statsOperation":statsOperation,
-        }
-    })
-    if (response.ok) {
-        let requestedData = await response.json()
-        return requestedData
-    } else {
-        alert(response.status)
-    }
+
 }

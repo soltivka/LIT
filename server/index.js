@@ -98,14 +98,6 @@ app.get('/getUsersStats', (req, res) => {
     let usersStats = Functions.getDateUsersStats(userhash);
     res.send(usersStats)
 })
-app.get('/getUsersStats2',(req,res)=>{
-    if(Functions.checkUserIsAdmin(req.headers.userhash)){
-        let statsOperation=req.headers.statsoperation;
-        let allDatesStats=Functions.getUsersStats(statsOperation)
-       res.send(allDatesStats)
-    }
-
-})
 app.post('/createNewUser', (req, res) => {
     let userhash = req.headers.userhash
     if (Functions.checkUserIsAdmin(userhash)) {
