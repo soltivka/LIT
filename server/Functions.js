@@ -198,7 +198,7 @@ module.exports = {
 
                                 let stitcherId = fileCase.stitcher;
                                 let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
-                                if(stitcher){
+                                if (stitcher) {
                                     stitcher["pages"] = Number(stitcher["pages"])
                                         + Number(fileCase.pages)
                                         - Number(fileCase.expectedPages);
@@ -302,7 +302,7 @@ module.exports = {
             allActs[actNumber] = {
                 new: 0,
                 stitcher: 0,
-                onScan:0,
+                onScan: 0,
                 scaner: 0,
                 jointer: 0,
                 isDone: 0,
@@ -315,7 +315,7 @@ module.exports = {
                 if (el.stitcher !== '') {
                     allActs[actNumber].stitcher++
                 }
-                if(el.scaner!==''&&el.scanDateStart!==''){
+                if (el.scaner !== '' && el.scanDateStart !== '') {
                     allActs[actNumber].onScan++
                 }
                 if (el.scanDateFinish !== '') {
@@ -416,7 +416,7 @@ module.exports = {
             allDateStats[date] = {
                 new: 0,
                 stitcher: 0,
-                onScan:0,
+                onScan: 0,
                 scaner: 0,
                 jointer: 0,
                 isDone: 0,
@@ -428,7 +428,7 @@ module.exports = {
                 if (el.stitchDate === date) {
                     allDateStats[date].stitcher++
                 }
-                if(el.scanDateStart===date){
+                if (el.scanDateStart === date) {
                     allDateStats[date].onScan++
                 }
                 if (el.scanDateFinish === date) {
@@ -462,26 +462,27 @@ module.exports = {
             })
             allCases.forEach((el) => {
                 if (el.stitchDate === date) {
-                    dateObj[el.stitcher]?dateObj[el.stitcher].cases++:0
-                    dateObj[el.stitcher]?(dateObj[el.stitcher].pages = el.pages ? el.pages : el.expectedPages):0
+                    dateObj[el.stitcher] ? dateObj[el.stitcher].cases++ : 0
+                    dateObj[el.stitcher] ? (dateObj[el.stitcher].pages = el.pages ? el.pages : el.expectedPages) : 0
                 }
                 if (el.scanDateFinish === date) {
-                    dateObj[el.scaner]?dateObj[el.scaner].cases++:0
-                    dateObj[el.scaner]?dateObj[el.scaner].pages += Number(el.pages):0
+                    dateObj[el.scaner] ? dateObj[el.scaner].cases++ : 0
+                    dateObj[el.scaner] ? dateObj[el.scaner].pages += Number(el.pages) : 0
                 }
                 if (el.jointDate === date) {
-                    dateObj[el.jointer]? dateObj[el.jointer].cases++:0
-                    dateObj[el.jointer]? dateObj[el.jointer].pages+=Number(el.pages):0
+                    dateObj[el.jointer] ? dateObj[el.jointer].cases++ : 0
+                    dateObj[el.jointer] ? dateObj[el.jointer].pages += Number(el.pages) : 0
                 }
             })
-            dateObj.total= {};
-            dateObj.total.cases=0
-            for(let user in dateObj){
-                if(user!=='date'&&user!=='total'){
-                    dateObj.total.cases+=Number(dateObj[user].cases)
+            dateObj.total = {};
+            dateObj.total.cases = 0
+            for (let user in dateObj) {
+                if (user !== 'date' && user !== 'total') {
+                    dateObj.total.cases += Number(dateObj[user].cases)
                     console.log(dateObj.total.cases)
                 }
-            };
+            }
+            ;
 
 
             dateUsersStats.push(dateObj)
@@ -520,39 +521,84 @@ module.exports = {
             return answer
         } else {
             console.log("недопустимое значение, проверьте данные")
-            answer="недопустимое значение, проверьте данные";
+            answer = "недопустимое значение, проверьте данные";
             return answer
         }
     },
 
-    deleteUser:function(userToDelete){
-        let allUsers= this.getAllUsersInfo();
-        let objectToDelete=allUsers.find((user)=>{
-            return user.id===userToDelete
+    deleteUser: function (userToDelete) {
+        let allUsers = this.getAllUsersInfo();
+        let objectToDelete = allUsers.find((user) => {
+            return user.id === userToDelete
         })
         console.log(objectToDelete)
-        if(objectToDelete){
+        if (objectToDelete) {
             let userToDeleteIndex = allUsers.indexOf(objectToDelete)
-            allUsers.splice(userToDeleteIndex,1)
+            allUsers.splice(userToDeleteIndex, 1)
             fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
-            return("Пользователь №"+userToDelete+" удален")
-        }else{
-            return("Пользователь №"+userToDelete+" не найден")
+            return ("Пользователь №" + userToDelete + " удален")
+        } else {
+            return ("Пользователь №" + userToDelete + " не найден")
         }
     },
-    applyHardChangedCase:function(hardChangedCase){
-        let act =  JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), 'utf8'))
-        let caseToChange = act.find((existCase)=>{
-            return existCase.id===hardChangedCase.id
+    applyHardChangedCase: function (hardChangedCase) {
+        let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), 'utf8'))
+        let caseToChange = act.find((existCase) => {
+            return existCase.id === hardChangedCase.id
         })
-        for(let field in caseToChange){
-            if(caseToChange[field]!==''){
-                if(caseToChange[field]!==hardChangedCase[field]){
-                    caseToChange[field]=hardChangedCase[field]
+        for (let field in caseToChange) {
+            if (caseToChange[field] !== '') {
+                if (caseToChange[field] !== hardChangedCase[field]) {
+                    caseToChange[field] = hardChangedCase[field]
                 }
             }
         }
         fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act), {flag: 'w'});
-        return "Акт № "+hardChangedCase.act+" перезаписан"
+        return "Акт № " + hardChangedCase.act + " перезаписан"
+    },
+
+
+    getUsersStats: function (statsOperation) {
+        let operationDate = statsOperation.split('er')[0]==="scan"?statsOperation.split('er')[0]+"DateFinish":statsOperation.split('er')[0]+"Date"
+
+       let allCases=this.getAllCases();
+       let operation_notEmpty_cases=allCases.filter((el)=>{
+           return (el[statsOperation]!==''&&el[operationDate]!=='')
+       })
+        let dates=[];
+       let allDatesObj={};
+       operation_notEmpty_cases.forEach((el)=>{
+           let dateIsExist = dates.find((date)=>{
+               return el[operationDate]===date
+           })
+           if(!dateIsExist){
+               dates.push(el[operationDate])
+           }
+       })
+        dates = dates.sort((a, b) => {
+            let momentA = this.getMomentFromDateString(a);
+            let momentB = this.getMomentFromDateString(b);
+            if (momentA.isBefore(momentB)) {
+                return -1
+            } else if (momentA.isAfter(momentB)) {
+                return 1
+            } else return 0
+        })
+        dates.forEach((date)=>{
+            let dateObj={}
+            let casesWithThisDate = operation_notEmpty_cases.filter((el)=>{
+                return el[operationDate]===date;
+            })
+            casesWithThisDate.forEach((el)=>{
+                if(dateObj[el[statsOperation]]){
+                    dateObj[el[statsOperation]]++
+                }else{
+                    dateObj[el[statsOperation]]=1
+                }
+            })
+            allDatesObj[date]=dateObj;
+        })
+        return allDatesObj
+
     }
 }
