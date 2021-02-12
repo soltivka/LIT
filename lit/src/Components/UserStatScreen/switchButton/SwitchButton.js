@@ -13,8 +13,14 @@ const clickSwitchButton=function(){
 
 }
 const defineClass=function(){
-    if(props.viewMode===props.value){return s.clicked}
-    else{return s.active}
+    let classString = ''
+    if(props.viewMode===props.value||props.statsOperation===props.value){classString+= s.clicked}
+    else{classString+= s.active}
+
+    if(props.statsOperation==="stitcher"){classString+=' '+s.stitchColor}
+    if(props.statsOperation==="scaner"){classString+=' '+s.scaner}
+    if(props.statsOperation==="jointer"){classString+=' '+s.jointer}
+    return classString
 }
 
 

@@ -42,8 +42,7 @@ const SearchString = function (props) {
                 <div className={s.cell}>{el.scanDateFinish}</div>
             </div>
             <div className={s.bigcell}>
-                <div className={s.cell}>{el.pages}</div>
-                <div className={s.cell}>{el.expectedPages}</div>
+                <div className={s.cell}>{el.factPages}</div>
                 <div className={s.cell}>{el.scanNumber}</div>
             </div>
 

@@ -23,14 +23,20 @@ app.get('/', (req, res) => {
 
 
 const serverStarting = async function () {
-    console.log('looking for new acts.xml in data/excels')
+    Functions.writeLog('________________')
+    Functions.writeLog('________________')
+    Functions.writeLog('________________')
+    Functions.writeLog(' Запуск сервера')
     let newActs = await Functions.getNewActs();
-    console.log(newActs.length + '  new acts found: ' + newActs)
-    newActs.forEach(Functions.createActObject)
+    newActs.forEach(Functions.createActObject);
+    Functions.getAllCases_FactPages();
 }
 serverStarting().then(() => {
     console.log('server works, congrats!');
     console.log("___________________________________")
+    let boundGetAllCases_FactPages = Functions.getAllCases_FactPages.bind(Functions)
+    setInterval(boundGetAllCases_FactPages, 7200000);//7200000
+    setInterval(serverStarting, 7200000);
 })
 
 
@@ -47,7 +53,7 @@ app.get('/casesForSearch', (req, res) => {
 
 
 app.get('/changeAdminOperation', (req, res) => {
-    console.log(req.headers.newoperation)
+
     if (Functions.changeAdminOperation(req.headers.userhash, req.headers.newoperation)) {
         let userInfo = Functions.getUserInfoFromJSON(req.headers.userhash);
         let casesForUser = Functions.getCasesForUser(userInfo)
@@ -86,7 +92,7 @@ app.get('/projectStats', (req, res) => {
     let userhash = req.headers.userhash
     if (Functions.checkUserIsAdmin(userhash)) {
         let allActsStats = Functions.getProjectStatsByActs()
-        let allDatesStats = Functions.getProjeectStatsByDates()
+        let allDatesStats = Functions.getProjectStatsByDates()
 
         res.send({allActsStats, allDatesStats})
     } else {
@@ -132,7 +138,7 @@ app.get('/getCaseToHardChange',(req,res)=>{
     if(Functions.checkUserIsAdmin(userhash)){
         let caseToHardChange_id=req.headers.casetochange
         let caseToChange=Functions.getAllCases().find((existCase)=>existCase.id===caseToHardChange_id)
-        console.log(caseToChange);
+
         res.send(caseToChange)
     }else {
         let answer = "У Вас недостаточно прав"

@@ -1,4 +1,4 @@
-const serverURL = 'http://room50:3001/';                                 //switch to empty string to build
+const serverURL = '';                      //room50:           //switch to empty string to build
 const moment = require("moment");
 export const request_operator_cases = async function (userhash) {
 
@@ -316,4 +316,18 @@ export const getOperationStats=async function(userhash,statsOperation){
     } else {
         alert(response.status)
     }
+}
+
+export const getCurrentMonth = function (dateStats){
+    let now = moment()
+    console.log(now)
+
+    let currentMonthDates = {};
+    for (let day in dateStats) {
+        let date = getMomentFromDateString(day)
+        if(now.isSame(date, 'month')){
+            currentMonthDates[day]=dateStats[day]
+        }
+    }
+    return currentMonthDates
 }

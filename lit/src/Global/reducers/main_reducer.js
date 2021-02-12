@@ -75,7 +75,7 @@ const initialState = {
     },
     projectStats: {},
     viewMode: 'total',
-    statsOperation:'',
+    statsOperation:'stitcher',
 
     currentNav: 'auth',
     userhash: '',

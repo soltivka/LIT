@@ -127,8 +127,8 @@ const SearchScreen = function (props) {
                         </div>
                     </div>
                     <div className={s.bigcell}>
-                        <div className={s.cell}>страниц отсканено</div>
-                        <div className={s.cell}>страниц ожидалось</div>
+                        <div className={s.cell}>кол-во страниц</div>
+
                         <div className={s.cell}>индекс</div>
                     </div>
 

@@ -1,7 +1,6 @@
 .wrapper_new{
     display: flex;
     width: 100%;
-    height: 7vh;
     box-shadow: inset 0 0 40px 6px white;
     margin: 5px 0 5px 0;
     background-color: lightgray;
@@ -10,7 +9,6 @@
 .wraper_stitch{
     display: flex;
     width: 100%;
-    height: 7vh;
     box-shadow: inset 0 0 12px 2px goldenrod;
     margin: 5px 0 5px 0;
     background-color: lightgray;
@@ -18,7 +16,6 @@
 .wrapper_scanStart{
     display: flex;
     width: 100%;
-    height: 7vh;
     box-shadow: inset 0 0 10px 2px blueviolet;
     margin: 5px 0 5px 0;
     background-color: lightgray;
@@ -27,7 +24,6 @@
 .wrapper_scanFinish{
     display: flex;
     width: 100%;
-    height: 7vh;
     box-shadow: inset 0 0 10px 2px blue;
     margin: 5px 0 5px 0;
     background-color: lightgray;
@@ -36,7 +32,6 @@
 .wrapper_joined{
     display: flex;
     width: 100%;
-    height: 7vh;
     box-shadow: inset 0 0 12px 2px forestgreen;
     margin: 5px 0 5px 0;
     background-color: lightgray;

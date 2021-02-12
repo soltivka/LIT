@@ -1,6 +1,7 @@
 import React from 'react';
 import s from './UserStatScreen.module.css';
 import SwitchButton from "./switchButton/SwitchButton";
+import {getCurrentMonth} from "../../Global/Functions";
 
 
 const UserStatScreen = function (props) {
@@ -9,7 +10,13 @@ const UserStatScreen = function (props) {
     }
 
 
-    let dateStats = props.state.dateUsersStats;
+    let dateStats;
+    if (props.state.viewMode === "total") {
+        dateStats = props.state.dateUsersStats
+    } else {
+        dateStats = getCurrentMonth(props.state.dateUsersStats)
+    }
+    console.log(dateStats)
     let users = [];
     let content = function () {
         let allUsers = [];
@@ -37,30 +44,39 @@ const UserStatScreen = function (props) {
         };
         let content_header = content_header_creator()
 
-        let content_body_creator=function(){
-            let allStrings=[];
-            for(let date in dateStats){
+        let content_body_creator = function () {
+            let allStrings = [];
+            for (let date in dateStats) {
                 let string = [];
-                let stringSum=0;
-                string.push(<td className={s.cell}>{date}</td>)
-                users.forEach((user)=> {
-                    if(dateStats[date][user]){
-                        stringSum+=dateStats[date][user];
-                        string.push(<td className={s.cell}>{dateStats[date][user]}</td>)
+                let stringSum = 0;
+                string.push(<td className={s.cell} key={date}>{date}</td>)
+
+                allUsers.forEach((user) => {
+
+                    if (dateStats[date][user]) {
+                        stringSum += dateStats[date][user].cases;
+                        string.push(<td className={s.cell} key={dateStats[date][user].cases}>
+                            <div className={s.incell}>{dateStats[date][user].cases} </div>
+                            <div className={s.incell}>{dateStats[date][user].pages} </div>
+
+                        </td>)
+                    } else {
+                        string.push(<td className={s.cell}></td>)
                     }
                 })
-                string.push(<td className={s.cell}>{stringSum}</td>)
-                allStrings.push(<tr className={s.bodyString}>{string}</tr>)
+                string.push(<td className={s.cell} key={stringSum}>{stringSum}</td>)
+                allStrings.push(<tr className={s.bodyString} key={'string'+date}>{string}</tr>)
             }
+
             return allStrings
         }
-        let content_body=content_body_creator();
+        let content_body = content_body_creator();
 
         return (
             <table>
                 <tbody>
-                    {content_header}
-                    {content_body}
+                {content_header}
+                {content_body}
                 </tbody>
             </table>
         )
@@ -87,17 +103,20 @@ const UserStatScreen = function (props) {
                                   field={"statsOperation"}
                                   value={'stitcher'}
                                   dispatch={props.dispatch}
-                                  viewMode={props.state.viewMode}/>
+                                  viewMode={props.state.viewMode}
+                                  statsOperation={props.state.statsOperation}/>
                     <SwitchButton text={"Сканировка"}
                                   field={"statsOperation"}
                                   value={'scaner'}
                                   dispatch={props.dispatch}
-                                  viewMode={props.state.viewMode}/>
+                                  viewMode={props.state.viewMode}
+                                  statsOperation={props.state.statsOperation}/>
                     <SwitchButton text={"Сшивка"}
                                   field={"statsOperation"}
                                   value={'jointer'}
                                   dispatch={props.dispatch}
-                                  viewMode={props.state.viewMode}/>
+                                  viewMode={props.state.viewMode}
+                                  statsOperation={props.state.statsOperation}/>
                 </div>
             </div>
 

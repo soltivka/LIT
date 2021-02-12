@@ -2,10 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const excelToJson = require("convert-excel-to-json");
 const moment = require("moment");
+const settings = {
+    currentYear: '2021' //название ГОДА проэкта ( где искать отсканеные странички на сканарче)
+}
 const pathes = {
+    logs: path.join(__dirname + `/../../data/logs`),
     excels: path.join(__dirname + `/../../data/excels`),
     acts: path.join(__dirname + `/../../data/acts`),
-    users: path.join(__dirname + `/../../data/users.json`)
+    users: path.join(__dirname + `/../../data/users.json`),
+    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021')
 }
 
 module.exports = {
@@ -40,6 +45,7 @@ module.exports = {
                     elem.scaner = ''
                     elem.pages = ''
                     elem.scanNumber = ''
+                    elem.factPages = ''
 
                     elem.jointDate = ''
                     elem.jointer = ''
@@ -62,6 +68,7 @@ module.exports = {
 
 
     getNewActs: async function () {
+        console.log('Проверка наличия новых act.xml в  data/excels')
         let promisificate = function () {                                                                       //отслеживает добавление нового акта и возвращает его название
             return new Promise((resolve, reject) => {
 
@@ -89,7 +96,9 @@ module.exports = {
             const diff = function (a1, a2) {
                 return a1.filter(i => !a2.includes(i))
             }
-            return diff(excelNames, actNames)
+            let newActs = diff(excelNames, actNames)
+            console.log(newActs.length + '  new acts found: ' + newActs)
+            return newActs
         })
     },
     getAllUsersInfo: function () {                                                          //прочитать из файла все данные о всех пользователях
@@ -261,6 +270,20 @@ module.exports = {
         return wrongCases;
     },
 
+    getAllCases: function () {
+        let fileNames = fs.readdirSync(pathes.acts);
+        let allCases = [];
+        fileNames.forEach((el) => {
+            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${el}`), 'utf8'))
+            act.forEach((el) => {
+                if (el.index) {
+                    allCases.push(el)
+                }
+            })
+        })
+        return allCases
+    },
+
     getCasesForSearch: function (userInfo) {
         if (userInfo) {
             let fileNames = fs.readdirSync(pathes.acts);
@@ -361,17 +384,7 @@ module.exports = {
 
 
     },
-    getAllCases: function () {
-        let fileNames = fs.readdirSync(pathes.acts);
-        let allCases = [];
-        fileNames.forEach((actName) => {
-            let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))
-            act.forEach((el) => {
-                allCases.push(el)
-            })
-        })
-        return allCases
-    },
+
     getAllDates: function () {
         let allCases = this.getAllCases()
         let allDates = [];
@@ -407,7 +420,7 @@ module.exports = {
         return allDates
     },
 
-    getProjeectStatsByDates: function () {
+    getProjectStatsByDates: function () {
         let allDates = this.getAllDates()
         let allCases = this.getAllCases()
 
@@ -479,7 +492,6 @@ module.exports = {
             for (let user in dateObj) {
                 if (user !== 'date' && user !== 'total') {
                     dateObj.total.cases += Number(dateObj[user].cases)
-                    console.log(dateObj.total.cases)
                 }
             }
             ;
@@ -531,7 +543,6 @@ module.exports = {
         let objectToDelete = allUsers.find((user) => {
             return user.id === userToDelete
         })
-        console.log(objectToDelete)
         if (objectToDelete) {
             let userToDeleteIndex = allUsers.indexOf(objectToDelete)
             allUsers.splice(userToDeleteIndex, 1)
@@ -542,16 +553,17 @@ module.exports = {
         }
     },
     applyHardChangedCase: function (hardChangedCase) {
+        console.log(hardChangedCase)
         let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), 'utf8'))
         let caseToChange = act.find((existCase) => {
             return existCase.id === hardChangedCase.id
         })
         for (let field in caseToChange) {
-            if (caseToChange[field] !== '') {
-                if (caseToChange[field] !== hardChangedCase[field]) {
-                    caseToChange[field] = hardChangedCase[field]
-                }
+
+            if (caseToChange[field] !== hardChangedCase[field]) {
+                caseToChange[field] = hardChangedCase[field]
             }
+
         }
         fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act), {flag: 'w'});
         return "Акт № " + hardChangedCase.act + " перезаписан"
@@ -559,22 +571,22 @@ module.exports = {
 
 
     getUsersStats: function (statsOperation) {
-        let operationDate = statsOperation.split('er')[0]==="scan"?statsOperation.split('er')[0]+"DateFinish":statsOperation.split('er')[0]+"Date"
+        let operationDate = statsOperation.split('er')[0] === "scan" ? statsOperation.split('er')[0] + "DateFinish" : statsOperation.split('er')[0] + "Date"
 
-       let allCases=this.getAllCases();
-       let operation_notEmpty_cases=allCases.filter((el)=>{
-           return (el[statsOperation]!==''&&el[operationDate]!=='')
-       })
-        let dates=[];
-       let allDatesObj={};
-       operation_notEmpty_cases.forEach((el)=>{
-           let dateIsExist = dates.find((date)=>{
-               return el[operationDate]===date
-           })
-           if(!dateIsExist){
-               dates.push(el[operationDate])
-           }
-       })
+        let allCases = this.getAllCases();
+        let operation_notEmpty_cases = allCases.filter((el) => {
+            return (el[statsOperation] !== '' && el[operationDate] !== '')
+        })
+        let dates = [];
+        let allDatesObj = {};
+        operation_notEmpty_cases.forEach((el) => {
+            let dateIsExist = dates.find((date) => {
+                return el[operationDate] === date
+            })
+            if (!dateIsExist) {
+                dates.push(el[operationDate])
+            }
+        })
         dates = dates.sort((a, b) => {
             let momentA = this.getMomentFromDateString(a);
             let momentB = this.getMomentFromDateString(b);
@@ -584,21 +596,72 @@ module.exports = {
                 return 1
             } else return 0
         })
-        dates.forEach((date)=>{
-            let dateObj={}
-            let casesWithThisDate = operation_notEmpty_cases.filter((el)=>{
-                return el[operationDate]===date;
+        dates.forEach((date) => {
+            let dateObj = {}
+            let casesWithThisDate = operation_notEmpty_cases.filter((el) => {
+                return el[operationDate] === date;
             })
-            casesWithThisDate.forEach((el)=>{
-                if(dateObj[el[statsOperation]]){
-                    dateObj[el[statsOperation]]++
-                }else{
-                    dateObj[el[statsOperation]]=1
+            casesWithThisDate.forEach((el) => {
+                if (dateObj[el[statsOperation]]) {
+                    dateObj[el[statsOperation]].cases++
+                    dateObj[el[statsOperation]].pages+=el.factPages
+                } else {
+                    dateObj[el[statsOperation]] = {cases:1,pages:el.factPages}
                 }
             })
-            allDatesObj[date]=dateObj;
+            allDatesObj[date] = dateObj;
+            console.log(dateObj)
         })
         return allDatesObj
 
+    },
+    getCaseFactPages: function (caseObj) {
+        let mainpath = pathes.factPagesDir
+        let operator = caseObj.scaner;
+        let scanIndex = caseObj.scanNumber;
+        let dirPath = path.join(mainpath, '/' + operator, '/' + settings.currentYear + '_' + operator + '_' + scanIndex);
+        console.log(dirPath)
+        let pageNames;
+        console.log(fs.existsSync(dirPath))
+        if (fs.existsSync(dirPath)) {
+            pageNames = fs.readdirSync(dirPath)
+        } else pageNames = []
+        return pageNames.length
+    },
+
+    getAllCases_FactPages: function () {
+        let allCases = this.getAllCases();
+        let casesToFindFactPages = allCases.filter((el) => {
+            return el.factPages === '' && el.scaner !== ''
+        })
+        console.log('проверяю фактическое количество страниц в отсканированных делах: ' + casesToFindFactPages.length + ' шт.')
+        let caseIndexes = []
+        this.writeLog('проверка факт.страниц в делах: ' + casesToFindFactPages.length + ' шт.' + JSON.stringify(caseIndexes))
+        casesToFindFactPages.forEach((caseObj) => {
+            let factPages = this.getCaseFactPages(caseObj)
+            console.log(factPages)
+            if (factPages) {
+                caseObj.factPages = factPages
+                this.writeLog('для дела ' + caseObj.act + '_' + caseObj.id + ' найдено ' + factPages + ' страниц на сканАрче')
+                this.applyHardChangedCase(caseObj)
+
+            }
+            caseIndexes.push(caseObj.act + '_' + caseObj.id)
+        })
+        console.log(caseIndexes)
+
+    },
+
+    writeLog: function (string) {
+        let today = moment().format("MMM Do YY");
+        let filename = path.join(pathes.logs, '/' + today + '.json')
+        let log;
+        if (fs.existsSync(filename)) {
+            log = JSON.parse(fs.readFileSync(path.join(filename), 'utf8'))
+            log.push(moment().format('LTS') + '_____' + string)
+        } else {
+            log = [moment().format('LTS') + '_____' + string]
+        }
+        fs.writeFileSync(filename, JSON.stringify(log, null, '\t'), {flag: 'w'});
     }
 }
