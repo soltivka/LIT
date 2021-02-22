@@ -93,16 +93,19 @@ const WorkScreen = function (props) {
         <div className={s.wrapper}>
             <div className={s.header}>
                 <div>
-                    <p className={s.bigText}>Оперотор : {props.state.userInfo["name"]} ,
-                        {props.state.userInfo["operation"] === "stitcher" ? "расшивщик " :
-                            (props.state.userInfo["operation"] === "scaner" ? "сканировщик " : "сшивщик ")}
+                    <p className={s.bigText}>Оператор : {props.state.userInfo["name"]}
+
+                    </p>
+                    <p className={s.bigText}>
+                        {props.state.userInfo["operation"] === "stitcher" ? "Розшивка " :
+                            (props.state.userInfo["operation"] === "scaner" ? "Сканування " : "Зшивка ")}
                     </p>
 
-                    <p className={s.midText}>Личный номер : {props.state.userInfo["id"]}</p>
+                    <p className={s.midText}>Особистий номер: {props.state.userInfo["id"]}</p>
                 </div>
                 <div>
-                    <p className={s.midText}>дел выполнено: {props.state.userInfo["cases"]}</p>
-                    <p className={s.midText}>страниц выполнено: {props.state.userInfo["pages"]}</p>
+                    <p className={s.midText}>Справ оброблено: {props.state.userInfo["cases"]}</p>
+                    <p className={s.midText}>Сторінок оброблено: {props.state.userInfo["pages"]}</p>
                 </div>
                 <div>{adminWindow()}</div>
             </div>
@@ -111,9 +114,9 @@ const WorkScreen = function (props) {
                     <div className={s.caseList_header}>
                         <div className={s.topSide}>
                             <div className={s.cell}>Акт</div>
-                            <div className={s.cell}>Номер дела</div>
-                            <div className={s.cell}>Адрес</div>
-                            <div className={s.cell}>Добавить</div>
+                            <div className={s.cell}>Номер справи</div>
+                            <div className={s.cell}>Адреса</div>
+                            <div className={s.cell}>Відібрати</div>
                         </div>
                         <div className={s.bottomSide}>
                             <div className={s.cell}>
@@ -135,7 +138,8 @@ const WorkScreen = function (props) {
                                        onChange={setFilterAdress}/>
                             </div>
                             <div className={s.cell}>
-                                <input className={s.IndexInput}
+                                <input  autoFocus
+                                        className={s.searchInput}
                                        type={'number'}
                                        onChange={setFilterIndex}
                                        onKeyDown={addCaseToChoosen}
@@ -147,12 +151,12 @@ const WorkScreen = function (props) {
                     <div className={s.content}>{content()}</div>
                     <div className={s.footer}>
 
-                        <div>Всего дел на {props.state.userInfo["operation"] === "stitcher" ? "расшивке : " :
-                            (props.state.userInfo["operation"] === "scaner" ? "сканировке : " : "сшивке : ")}
+                        <div>Усього справ на  {props.state.userInfo["operation"] === "stitcher" ? "розшивці : " :
+                            (props.state.userInfo["operation"] === "scaner" ? "скануванні : " : "зшивці : ")}
                             {props.state.operator_cases.data.length}
                         </div>
-                        <div>Подходит под фильтры: {filtredCasesCount}</div>
-                        <div>Отображается дел: {casesToView}</div>
+                        <div>Відфільтровано : {filtredCasesCount}</div>
+                        <div>Відображено: {casesToView}</div>
                     </div>
                 </div>
                 <div className={s.choosen}>

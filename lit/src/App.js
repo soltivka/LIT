@@ -24,7 +24,7 @@ function App(props) {
 
         } else if (props.state.currentNav === 'auth') {
             return (
-                <div>
+                <div className={s.wrapper}>
                     <AuthScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
@@ -92,7 +92,7 @@ function App(props) {
                     state={props.state}
             />
 
-            <div>
+            <div className={s.bg_image}>
                 {setCurrentNavScreen()}
             </div>
         </div>

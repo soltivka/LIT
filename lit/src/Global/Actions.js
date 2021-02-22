@@ -40,6 +40,7 @@ const SET_HARDCHANGE_SCANER='SET_HARDCHANGE_SCANER';
 const POST_HARDCHANGE='POST_HARDCHANGE';
 const GET_USERSTATS2='GET_USERSTATS2';
 const SWITCH_STATSOPERATION='SWITCH_STATSOPERATION';
+const PROJECT_STATS_SET_PAGES_VISIBLE='PROJECT_STATS_SET_PAGES_VISIBLE'
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -198,6 +199,9 @@ export const get_userStats2_action=(value)=>({
 export const switchStatsOperation_action=(value)=>({
     type: SWITCH_STATSOPERATION,
     value: value
+})
+export const setPagesVisible_action=()=>({
+    type: PROJECT_STATS_SET_PAGES_VISIBLE
 })
 
 

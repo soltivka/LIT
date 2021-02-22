@@ -50,6 +50,7 @@ const SET_HARDCHANGE_STITCHER = 'SET_HARDCHANGE_STITCHER';
 const SET_HARDCHANGE_SCANER = 'SET_HARDCHANGE_SCANER';
 const POST_HARDCHANGE = 'POST_HARDCHANGE';
 const SWITCH_STATSOPERATION="SWITCH_STATSOPERATION";
+const PROJECT_STATS_SET_PAGES_VISIBLE="PROJECT_STATS_SET_PAGES_VISIBLE";
 
 const initialState = {
     operator_cases: {
@@ -115,7 +116,8 @@ const initialState = {
         comment: '',
         isDone: '',
         isDoneDate: ''
-    }
+    },
+    projectStats_pagesVisible:false,
 }
 
 
@@ -243,8 +245,7 @@ const main_reducer = function (state, action) {
             case POST_CHANGES:                                                                //передать список отобраных дел на сервер
                 setDateToChoosen(state.choosen_cases,
                     state.userInfo["operation"],
-                    state.date)
-                console.log(state.choosen_cases)
+                    state.date);
 
                 state.operator_cases.isFetching = true;
                 state.operator_cases.data = [];
@@ -425,6 +426,10 @@ const main_reducer = function (state, action) {
                    state.dateUsersStats=data;
                     store.dispatch(userHash_response_action())
                 })
+                break;
+            case PROJECT_STATS_SET_PAGES_VISIBLE:
+                state.projectStats_pagesVisible=!state.projectStats_pagesVisible
+                console.log(state.projectStats_pagesVisible)
                 break;
 
         }

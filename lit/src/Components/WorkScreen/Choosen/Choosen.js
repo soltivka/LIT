@@ -16,46 +16,52 @@ const Choosen = function (props) {
             )
         })
     }
-    let defineHeader=function(){
-        if(props.user["operation"]==="stitcher"){
-            return(
+    let defineHeader = function () {
+        if (props.user["operation"] === "stitcher") {
+            return (
                 <div className={s.header}>
                     <div className={s.smallcell}/>
-                    <div className={s.cell}>Номер акта</div>
-                    <div className={s.cell}>Номер дела</div>
+                    <div className={s.cell}>Акт</div>
+                    <div className={s.cell}>Номер справи</div>
                 </div>
             )
-        }else if(props.user["operation"]==="scaner"){
-            return(
+        } else if (props.user["operation"] === "scaner") {
+            return (
                 <div className={s.header}>
                     <div className={s.smallcell}/>
-                    <div className={s.cell}>Номер акта</div>
-                    <div className={s.cell}>Номер дела</div>
-                    <div className={s.cell}>Cтраницы</div>
-                    <div className={s.cell}>Индекс</div>
-                    <div className={s.cell}>Расшивщик</div>
+                    <div className={s.cell}>Акт</div>
+                    <div className={s.cell}>Номер справи</div>
+                    <div className={s.cell}>Індекс</div>
+                    <div className={s.cell}>Розшив</div>
                 </div>
             )
-        }else if(props.user["operation"]==="jointer"){
-            return(
+        } else if (props.user["operation"] === "jointer") {
+            return (
                 <div className={s.header}>
                     <div className={s.smallcell}/>
-                    <div className={s.cell}>Номер акта</div>
-                    <div className={s.cell}>Номер дела</div>
-                    <div className={s.cell}>Страницы</div>
-                    <div className={s.cell}>Индекс</div>
-                    <div className={s.cell}>Сканировщик</div>
+                    <div className={s.cell}>Акт</div>
+                    <div className={s.cell}>Номер справи</div>
+                    <div className={s.cell}>Сторінок</div>
+                    <div className={s.cell}>Індекс</div>
+                    <div className={s.cell}>Сканувальник</div>
                 </div>
             )
         }
     }
     let postChanges = function () {
-        props.dispatch(post_changes_action())
+
+        let indexNotSet = props.caseList.find((el) => {
+            return el.scanNumber === '' && el.scanDateStart !== ''
+        })
+        if (!indexNotSet) {
+            props.dispatch(post_changes_action())
+        } else alert("Усі індекси мають бути заповнені")
+
     }
-    let emptyClick=function(){
-        console.log("no cases to change")
+    let emptyClick = function () {
+        alert("no cases to change")
     }
-    let set_date_day= function(event){
+    let set_date_day = function (event) {
         props.dispatch(set_date_day_action(event.target.value))
     }
 
@@ -68,12 +74,16 @@ const Choosen = function (props) {
             </div>
             <div className={s.footer}>
                 <div className={s.postButton}
-                     onClick={props.caseList.length>0?postChanges:emptyClick}>передать на сервер
+                     onClick={props.caseList.length > 0 ? postChanges : emptyClick}>Відправити
                 </div>
-                <div>Дел отобрано : {props.caseList.length}</div>
-                <div>Дата : {props.date}<input type={'number'}
-                                   placeholder={"день месяца"}
-                                   onChange={set_date_day}/></div>
+                <div>Справ відібрано : {props.caseList.length}</div>
+                <div>Дата : {props.date}
+                    <input
+                        className={s.input}
+                        type={'number'}
+                        placeholder={"день месяца"}
+                        onChange={set_date_day}/>
+                </div>
             </div>
 
         </div>

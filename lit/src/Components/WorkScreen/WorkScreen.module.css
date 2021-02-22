@@ -1,23 +1,25 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    background-color: darkgrey;
+    background-color: #00446c;
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    padding-top: 20px;
 }
 .header{
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 10vh;
-    background-color: darkgrey;
-    box-shadow: inset 0 10px 30px 0 white;
+    color: #85caf2;
+    margin-bottom: 20px;
+    background-color: #0087bb;
+    box-shadow: inset 0 20px 30px 10px #00446c;
 }
 .bigText{
     margin: 0;
-    font-size: 25px;
+    font-size: 20px;
 }
 .midText{
     margin: 0;
@@ -32,7 +34,7 @@
 
 .caseList {
     margin:0 15px 0 0;
-    background-color: lightgrey;
+    background-color: #00446c;
     display: flex;
     flex-direction: column;
     width: 58%;
@@ -51,9 +53,23 @@
     display:flex;
     width:100%;
     height:60%;
+    color:#85caf2;
+    background-color: #0087bb;
+    box-shadow: inset 0 0 30px 10px #00446c;
     justify-content: center;
-    box-shadow: inset 0 0 12px 2px darkgrey;
     align-items: center;
+}
+.searchInput{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20px;
+    background-color:#85caf2;
+    outline: none;
+    border: solid #00446c;
+    border-bottom: 3px;
+    box-shadow: inset 0 0 12px 2px #85caf2;
 }
 .bottomSide{
     display:flex;
@@ -76,15 +92,32 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: 65vh;
+    max-height: 50vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
+.content::-webkit-scrollbar {
+    width: 1em;
+}
+
+.content::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px #85caf2;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background-color: #85caf2;
+    border-radius: 10px;
+}
 .footer{
+    margin-top: 5px;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100px;
+    width: calc(100% - 20px);
+    height: 75px;
+    padding-left: 20px;
+    color:#85caf2;
+    background-color: #0087bb;
+    box-shadow: inset 0 0 30px 10px #00446c;
 }
 .choosen{
     margin-right: 15px;
@@ -99,4 +132,11 @@
 .IndexInput{
     width: 94%;
 }
+.searchInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+
+
+
 

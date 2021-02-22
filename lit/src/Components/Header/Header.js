@@ -13,38 +13,45 @@ const Header = function (props) {
                          src={headerIcon}/>
 
                     <div>
-                        <h4 className={`${s.text}`}>DIGITAL DOCS</h4>
+                        <h4 className={`${s.headerText}`}>DIGITAL DOCS</h4>
                     </div>
                 </div>
                 <div className={s.navbar}>
                     <HeaderLink nav={'work'}
                                 text={'Обработка'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={false}/>
                     <HeaderLink nav={'userStats'}
                                 text={'Статистика'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={true}/>
                     <HeaderLink nav={'projectSettings'}
                                 text={'Проэкт'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={true}/>
                     <HeaderLink nav={'search'}
                                 text={'Поиск'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={false}/>
                     <HeaderLink nav={'handOver'}
                                 text={'Сдать дела'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={true}/>
                     <HeaderLink nav={'projectStats'}
                                 text={'Статистика проэкта'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={true}/>
                     <HeaderLink nav={'userStats2'}
                                 text={'STATISTIKA 2'}
                                 dispatch={props.dispatch}
-                                state={props.state}/>
+                                state={props.state}
+                                onlyAdmin={true}/>
                 </div>
             </header>
 

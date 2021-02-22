@@ -26,8 +26,14 @@
     margin: 0 5px 0 15px;
 }
 
+.headerText{
+    color: #0087bb;
+    text-decoration: underline;
+    margin: 0 15px 7px 15px;
+    size: 40px;
+}
 .text{
-    color: white;
+    color: #0087bb;
     text-decoration: underline;
     margin: 0 15px 0 5px;
 }

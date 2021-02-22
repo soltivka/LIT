@@ -1,30 +1,63 @@
 import React from 'react';
+import {Component} from "react";
 import s from './ProjectStatsScreen.module.css';
+import {setPagesVisible_action} from "../../Global/Actions";
+import Cell from "./Cell/Cell";
 
 
-const ProjectStatsScreen = function (props) {
-    let total = [0, 0, 0, 0, 0, 0];
+let ProjectStatsScreen = function (props) {
+
+    let total = [{cases: 0, pages: 0}, {cases: 0, pages: 0}, {cases: 0, pages: 0}, {cases: 0, pages: 0}, {
+        cases: 0,
+        pages: 0
+    }, {cases: 0, pages: 0}];
+    let projectStats_setPagesVisible = function () {
+        props.dispatch(setPagesVisible_action())
+    }
+
     let actsStat = function () {
         let allActs = props.state.projectStats.allActsStats
+        console.log(allActs)
         let strings = [];
         for (let actName in allActs) {
-            total[0] += allActs[actName].new
-            total[1] += allActs[actName].stitcher
-            total[2] += allActs[actName].onScan
-            total[3] += allActs[actName].scaner
-            total[4] += allActs[actName].jointer
-            total[5] += allActs[actName].isDone
+            console.log(allActs[actName])
+            total[0].cases += Number(allActs[actName].new.cases)
+            total[0].pages += Number(allActs[actName].new.pages)
+            total[1].cases += Number(allActs[actName].stitcher.cases)
+            total[1].pages += Number(allActs[actName].stitcher.pages)
+            total[2].cases += Number(allActs[actName].onScan.cases)
+            total[2].pages += Number(allActs[actName].onScan.pages)
+            total[3].cases += Number(allActs[actName].scaner.cases)
+            total[3].pages += Number(allActs[actName].scaner.pages)
+            total[4].cases += Number(allActs[actName].jointer.cases)
+            total[4].pages += Number(allActs[actName].jointer.pages)
+            total[5].cases += Number(allActs[actName].isDone.cases)
+            total[5].pages += Number(allActs[actName].isDone.pages)
+            console.log(total)
             let string = function () {
                 return (
                     <tr className={s.actString} key={'actStatString' + actName}>
                         <td className={s.stringcell}>{actName}</td>
                         <td className={s.stringcell + ' ' + s.new}>{allActs[actName].startDate}</td>
-                        <td className={s.stringcell + ' ' + s.new}>{allActs[actName].new}</td>
-                        <td className={s.stringcell + ' ' + s.stitch}>{allActs[actName].stitcher}</td>
-                        <td className={s.stringcell + ' ' + s.onScan}>{allActs[actName].onScan}</td>
-                        <td className={s.stringcell + ' ' + s.scan}>{allActs[actName].scaner}</td>
-                        <td className={s.stringcell + ' ' + s.joint}>{allActs[actName].jointer}</td>
-                        <td className={s.stringcell + ' ' + s.done}>{allActs[actName].isDone}</td>
+                        <td className={s.stringcell + ' ' + s.new}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].new}/>
+                        </td>
+
+                        <td className={s.stringcell + ' ' + s.stitch}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].stitcher}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.onScan}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].onScan}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.scan}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].scaner}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.joint}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].jointer}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.done}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allActs[actName].isDone}/>
+                        </td>
                         <td className={s.stringcell + ' ' + s.done}>{allActs[actName].finishDate}</td>
                     </tr>
                 )
@@ -41,12 +74,25 @@ const ProjectStatsScreen = function (props) {
                 return (
                     <tr className={s.actString} key={'dateString' + date}>
                         <td className={s.stringcell}>{date}</td>
-                        <td className={s.stringcell + ' ' + s.new}>{allDates[date].new}</td>
-                        <td className={s.stringcell + ' ' + s.stitch}>{allDates[date].stitcher}</td>
-                        <td className={s.stringcell + ' ' + s.onScan}>{allDates[date].onScan}</td>
-                        <td className={s.stringcell + ' ' + s.scan}>{allDates[date].scaner}</td>
-                        <td className={s.stringcell + ' ' + s.joint}>{allDates[date].jointer}</td>
-                        <td className={s.stringcell + ' ' + s.done}>{allDates[date].isDone}</td>
+
+                        <td className={s.stringcell + ' ' + s.new}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].new}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.stitch}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].stitcher}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.onScan}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].onScan}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.scan}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].scaner}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.joint}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].jointer}/>
+                        </td>
+                        <td className={s.stringcell + ' ' + s.done}>
+                            <Cell visible={props.state.projectStats_pagesVisible} value={allDates[date].isDone}/>
+                        </td>
                     </tr>
                 )
             }()
@@ -58,71 +104,140 @@ const ProjectStatsScreen = function (props) {
 
     return (
         <div className={s.wrapper}>
-            <div className={s.actStats}>
-                <table>
-                    <tbody>
+            <div className={s.checkbox} onClick={projectStats_setPagesVisible}>
+                {props.state.projectStats_pagesVisible ? "Вимкнути сторінки" : "Увімкнути сторінки"}
+            </div>
+            <div className={s.wrapper_line}>
+
+                <div className={s.actStats}>
+                    <table>
+                        <tbody>
                         <tr className={s.segment_header}>
                             <td className={s.cell}>Акт №</td>
                             <td className={s.cell}>Дата получения</td>
                             <td className={s.cell}>Получено</td>
                             <td className={s.cell}>Расшито</td>
-                            <div className={s.cell}>На скане</div>
+                            <td className={s.cell}>На скане</td>
                             <td className={s.cell}>Отскан</td>
                             <td className={s.cell}>Сшито</td>
                             <td className={s.cell}>Сдано</td>
                             <td className={s.cell}>Дата сдачи</td>
                             <td className={s.placeholder}/>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                <table className={s.segment_body}>
-                    <tbody>
+                    <table className={s.segment_body}>
+                        <tbody>
                         {actsStat()}
-                    </tbody>
-                </table>
-                <div className={s.footer}>
-                    <div className={s.cell}>В наличии:</div>
-                    <div className={s.cell}></div>
-                    <div className={s.cell}>{total[0]-total[1]}</div>
-                    <div className={s.cell}>{total[1]-total[2]}</div>
-                    <div className={s.cell}>{total[2]-total[3]}</div>
-                    <div className={s.cell}>{total[3]-total[4]}</div>
-                    <div className={s.cell}>{total[4]-total[5]}</div>
-                    <div className={s.cell}>------</div>
-                    <div className={s.cell}></div>
-                    <div className={s.placeholder}></div>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                        <tr className={s.footer}>
+                            <td className={s.cell}>В наличии:</td>
+                            <td className={s.cell}/>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={{
+                                          cases: total[0].cases - total[1].cases,
+                                          pages: total[0].pages - total[1].pages
+                                      }}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={{
+                                          cases: total[1].cases - total[2].cases,
+                                          pages: total[1].pages - total[2].pages
+                                      }}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={{
+                                          cases: total[2].cases - total[3].cases,
+                                          pages: total[2].pages - total[3].pages
+                                      }}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={{
+                                          cases: total[3].cases - total[4].cases,
+                                          pages: total[3].pages - total[4].pages
+                                      }}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={{
+                                          cases: total[4].cases - total[5].cases,
+                                          pages: total[4].pages - total[5].pages
+                                      }}/>
+                            </td>
+                            <td className={s.cell}>------</td>
+                            <td className={s.cell}/>
+                            <td className={s.placeholder}/>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
-            </div>
 
-            <div className={s.actStats}>
-                <div className={s.segment_header}>
-                    <div className={s.cell}>Дата</div>
-                    <div className={s.cell}>Получено</div>
-                    <div className={s.cell}>Расшито</div>
-                    <div className={s.cell}>На скане</div>
-                    <div className={s.cell}>Отскан</div>
-                    <div className={s.cell}>Сшито</div>
-                    <div className={s.cell}>Сдано</div>
-                    <div className={s.placeholder}/>
-                </div>
-                <table className={s.segment_body}>
-                    <tbody>
+                <div className={s.actStats}>
+                    <table>
+                        <tbody>
+                        <tr className={s.segment_header}>
+                            <td className={s.cell}>Дата</td>
+                            <td className={s.cell}>Получено</td>
+                            <td className={s.cell}>Расшито</td>
+                            <td className={s.cell}>На скане</td>
+                            <td className={s.cell}>Отскан</td>
+                            <td className={s.cell}>Сшито</td>
+                            <td className={s.cell}>Сдано</td>
+                            <td className={s.placeholder}/>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table className={s.segment_body}>
+                        <tbody>
                         {dateStat()}
-                    </tbody>
-                </table>
-                <div className={s.footer}>
-                    <div className={s.cell}>Всего:</div>
-                    <div className={s.cell}>{total[0]}</div>
-                    <div className={s.cell}>{total[1]}</div>
-                    <div className={s.cell}>{total[2]}</div>
-                    <div className={s.cell}>{total[3]}</div>
-                    <div className={s.cell}>{total[4]}</div>
-                    <div className={s.cell}>{total[5]}</div>
-                    <div className={s.placeholder}></div>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <tbody>
+                        <tr className={s.footer}>
+                            <td className={s.cell}>Всего:</td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[0]}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[1]}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[2]}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[3]}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[4]}/>
+                            </td>
+                            <td className={s.cell}>
+                                <Cell visible={props.state.projectStats_pagesVisible}
+                                      value={total[5]}/>
+                            </td>
+                            <td className={s.placeholder}></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
+
             </div>
         </div>
     )

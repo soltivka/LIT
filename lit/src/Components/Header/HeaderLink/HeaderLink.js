@@ -23,9 +23,14 @@ const HeaderLink = function (props) {
         }
     }
     const defineClass=function(){
+        let curClass='';
         if(props.state.currentNav===props.nav){
-            return(s.activeLink)
-        }else return(s.headerButton)
+            curClass+=' '+s.activeLink
+        }else curClass+=' '+s.headerButton
+        if(props.onlyAdmin===true&&props.state.userInfo.isAdmin!==true){
+            curClass+=' '+s.invisible
+        }
+        return curClass
     }
 
 
@@ -33,7 +38,7 @@ const HeaderLink = function (props) {
         <div className={s.buttonWrapper}>
             <button className={defineClass()}
                     onClick={click}>
-                {props.text}
+                <b>{props.text}</b>
             </button>
 
         </div>

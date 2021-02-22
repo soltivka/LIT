@@ -57,6 +57,25 @@
     justify-content: space-around;
 
 }
+.footerCell{
+    display: flex;
+    width: 100%;
+    background-color: black;
+    color:white;
+    justify-content: space-around;
+}
+.footerString{
+    display: flex;
+    justify-content: space-between;
+}
+.totalCell{
+    display: flex;
+    width: 100%;
+    background-color: black;
+    color: white;
+    justify-content: space-around;
+
+}
 .incell{
 
 }

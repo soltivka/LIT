@@ -35,8 +35,10 @@ serverStarting().then(() => {
     console.log('server works, congrats!');
     console.log("___________________________________")
     let boundGetAllCases_FactPages = Functions.getAllCases_FactPages.bind(Functions)
-    setInterval(boundGetAllCases_FactPages, 7200000);//7200000
+    let boundSaveDB = Functions.saveDB.bind(Functions)
+    setInterval(boundGetAllCases_FactPages, 7200000);//3600000 = 1hr
     setInterval(serverStarting, 7200000);
+    setInterval(boundSaveDB,3600000);
 })
 
 
@@ -85,6 +87,7 @@ app.get('/resetUserStats', (req, res) => {
     let userhash = req.headers.userhash
     let message = Functions.resetUserStats(userhash);
     console.log("пользователь " + userhash + "сбросил статистику всех юзеров");
+    Functions.writeLog("пользователь " + userhash + "сбросил статистику всех юзеров")
     res.send([message]);
 });
 

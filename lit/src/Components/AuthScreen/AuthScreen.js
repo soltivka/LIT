@@ -23,8 +23,10 @@ const AuthScreen = function (props) {
     return (
         <div className={s.wrapper}>
             <div className={s.window}>
-                Choose your destiny
-                <input placeholder={'enter code here'}
+                АВТОРИЗАЦІЯ
+                <input autoFocus
+                    className={s.input}
+                    placeholder={'відскануйте код'}
                        onChange={change}
                        onKeyPress={handleEnter}/>
 

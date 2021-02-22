@@ -1,4 +1,14 @@
 .wrapper {
+    background-color: dimgrey;
+    display: flex;
+    flex-direction: column
+}
+.checkbox{
+    cursor: pointer;
+    border: red;
+}
+
+.wrapper_line {
     display: flex;
     width: 100%;
     height: 100vh;
@@ -53,13 +63,13 @@
 .actString {
     width: 100%;
     display: flex;
-    height: 25px;
     border-bottom: solid 2px dimgrey;
 }
 
 .stringcell {
     display: flex;
     width: 100%;
+    min-height: 20px;
     justify-content: center;
     align-items: center;
     border-left: solid 1px dimgrey;
@@ -74,7 +84,8 @@
 .stitch {
     box-shadow: inset 0 0 5px 1px goldenrod;
 }
-.onScan{
+
+.onScan {
 
     box-shadow: inset 0 0 5px 0px purple;
 }

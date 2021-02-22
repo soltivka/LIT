@@ -1,0 +1,17 @@
+.wrapper_2floor{
+    display: flex;
+    flex-direction: column;
+    min-height: 25px;
+    width:100%;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.wrapper{
+    display:flex;
+    width:100%;
+    align-items: center;
+    justify-content: space-around;
+}
+.inner{
+}

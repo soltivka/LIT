@@ -44,9 +44,7 @@ const ChoosenString = function (props) {
                         {props.el.act}
                     </div>
                     <div className={s.cell}>{props.el.id}</div>
-                    <div className={s.cell}>
-                        -----
-                    </div>
+
                     <div className={s.cell}>
                         -----
                     </div>
@@ -68,10 +66,7 @@ const ChoosenString = function (props) {
                         {props.el.act}
                     </div>
                     <div className={s.cell}>{props.el.id}</div>
-                    <div className={s.cell}>
-                        <input className={s.input} type={'number'}
-                               onChange={set_scanPages} value={props.el.pages}/>
-                    </div>
+
                     <div className={s.cell}>
                         <input className={s.input} type={'number'}
                                onChange={set_scanNumber} value={props.el.scanNumber}/>

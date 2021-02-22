@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const excelToJson = require("convert-excel-to-json");
 const moment = require("moment");
@@ -10,7 +11,8 @@ const pathes = {
     excels: path.join(__dirname + `/../../data/excels`),
     acts: path.join(__dirname + `/../../data/acts`),
     users: path.join(__dirname + `/../../data/users.json`),
-    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021')
+    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021'),
+    saveDB:path.join((__dirname + `/../../data/saveDB`))
 }
 
 module.exports = {
@@ -62,13 +64,14 @@ module.exports = {
         }
         let actObject = createCaseObjects({freshJson, actNumber: el, date})
         console.log("Создан новый акт, в нем  _" + actObject.length + "_  дел")
-        fs.writeFileSync(path.join(pathes.acts + `/${el}.json`), JSON.stringify(actObject));
+        fs.writeFileSync(path.join(pathes.acts + `/${el}.json`), JSON.stringify(actObject, null, '\t'));
 
     },
 
 
     getNewActs: async function () {
         console.log('Проверка наличия новых act.xml в  data/excels')
+        this.writeLog('Проверка наличия новых act.xml в  data/excels')
         let promisificate = function () {                                                                       //отслеживает добавление нового акта и возвращает его название
             return new Promise((resolve, reject) => {
 
@@ -168,7 +171,6 @@ module.exports = {
 
 
     applyChangesToCases: function (userhash, changedCases) {
-        console.log("applyChanges started")
         let allUsersInfo = this.getAllUsersInfo();
         let userInfo = this.getUserInfo(userhash, allUsersInfo);
         let fileNames = fs.readdirSync(pathes.acts);
@@ -177,6 +179,7 @@ module.exports = {
         let actsToChange = fileNamesToChange.length;
 
         console.log("Оператор " + userInfo["id"] + " вносит изменения в " + actsToChange + " актов : " + fileNamesToChange.join(' | '))
+        this.writeLog("Оператор " + userInfo["id"] + " вносит изменения в " + actsToChange + " актов : " + fileNamesToChange.join(' | '))
         fileNamesToChange.forEach((act_json) => {
             let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${act_json}`), 'utf8'))
             act.forEach((fileCase) => {                                                                     //перебираем каждый элемент из каждого акта
@@ -205,13 +208,15 @@ module.exports = {
                                 userInfo["cases"]++;
                                 userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages);
 
-                                let stitcherId = fileCase.stitcher;
-                                let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
-                                if (stitcher) {
-                                    stitcher["pages"] = Number(stitcher["pages"])
-                                        + Number(fileCase.pages)
-                                        - Number(fileCase.expectedPages);
-                                }                                                           //добавляем данные к другим пользователям (кол-во страниц)
+
+                                //обновление данных на этом этапе отключено, т. к. данные берутся со СКАН-АРЧ
+                                // let stitcherId = fileCase.stitcher;
+                                // let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
+                                // if (stitcher) {
+                                //     stitcher["pages"] = Number(stitcher["pages"])
+                                //         + Number(fileCase.pages)
+                                //         - Number(fileCase.expectedPages);
+                                // }                                                           //добавляем данные к другим пользователям (кол-во страниц)
 
                             }
 
@@ -223,8 +228,8 @@ module.exports = {
                         }
                     }
                 })
-                fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), {flag: 'w'});    //сохранить новую версию акта здеся
-                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});                       // обновить статы юзера
+                fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act, null, '\t'), {flag: 'w'});    //сохранить новую версию акта здеся
+                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo, null, '\t'), {flag: 'w'});                       // обновить статы юзера
             })
         })
     },
@@ -235,7 +240,7 @@ module.exports = {
         if (userInfo["isAdmin"] === true) {
             userInfo["operation"] = newOperation;
             console.log(userInfo["id"] + " сменил профессию на " + newOperation)
-            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo, null, '\t'), {flag: 'w'});
             return true
         } else return false
     },
@@ -244,6 +249,7 @@ module.exports = {
     //actName : type === "123.json"
     handOverCases: function (userhash, changedCases) {
         let wrongCases = [];
+        this.writeLog(userhash + 'сдает дела в архив, '+ changedCases.length +'штук')
         if (this.checkUserIsAdmin(userhash)) {
 
             let fileNames = fs.readdirSync(pathes.acts);
@@ -263,10 +269,11 @@ module.exports = {
                             }
                         }
                     })
-                    fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act), {flag: 'w'});    //сохранить новую версию акта здеся
+                    fs.writeFileSync(path.join(pathes.acts + `/${act_json}`), JSON.stringify(act, null, '\t'), {flag: 'w'});    //сохранить новую версию акта здеся
                 })
             })
         }
+        this.writeLog(userhash + 'сдает дела в архив, '+ (changedCases.length-wrongCases.length)+' штук')
         return wrongCases;
     },
 
@@ -309,7 +316,7 @@ module.exports = {
                 el["pages"] = 0;
                 el["cases"] = 0;
             })
-            fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsers, null, '\t'), {flag: 'w'});
             return ("Статистика пользователей сброшена")
         } else {
             return ("Тебе нельзя нажимать эту кнопку")
@@ -323,36 +330,41 @@ module.exports = {
             let actNumber = actName.split('.')[0];
             let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${actName}`), 'utf8'))                // нужно будет
             allActs[actNumber] = {
-                new: 0,
-                stitcher: 0,
-                onScan: 0,
-                scaner: 0,
-                jointer: 0,
-                isDone: 0,
+                new: {pages:0,cases:0},
+                stitcher: {pages:0,cases:0},
+                onScan: {pages:0,cases:0},
+                scaner: {pages:0,cases:0},
+                jointer: {pages:0,cases:0},
+                isDone: {pages:0,cases:0},
                 startDate: '',
                 finishDate: '',
             };
             allActs[actNumber].startDate = act[0].incomeDate
             act.forEach((el) => {
-                allActs[actNumber].new++
+                allActs[actNumber].new.cases++
+                allActs[actNumber].new.pages+=Number(el.factPages)
                 if (el.stitcher !== '') {
-                    allActs[actNumber].stitcher++
+                    allActs[actNumber].stitcher.cases++
+                    allActs[actNumber].stitcher.pages+=Number(el.factPages)
                 }
                 if (el.scaner !== '' && el.scanDateStart !== '') {
-                    allActs[actNumber].onScan++
+                    allActs[actNumber].onScan.cases++
+                    allActs[actNumber].onScan.pages+=Number(el.factPages)
                 }
                 if (el.scanDateFinish !== '') {
-                    allActs[actNumber].scaner++
+                    allActs[actNumber].scaner.cases++
+                    allActs[actNumber].scaner.pages+=Number(el.factPages)
                 }
                 if (el.jointer !== '') {
-                    allActs[actNumber].jointer++
+                    allActs[actNumber].jointer.cases++
+                    allActs[actNumber].jointer.pages+=Number(el.factPages)
                 }
                 if (el.isDone === true) {
-                    allActs[actNumber].isDone++
+                    allActs[actNumber].isDone.cases++
+                    allActs[actNumber].isDone.pages+=Number(el.factPages)
                 }
             })
-            if (allActs[actNumber].new === allActs[actNumber].isDone) {
-
+            if (allActs[actNumber].new.cases === allActs[actNumber].isDone.cases) {
                 let latestMoment = 0;
                 act.forEach((el) => {
                     let finishDate = this.getMomentFromDateString(el.isDoneDate)
@@ -427,31 +439,37 @@ module.exports = {
         let allDateStats = {}
         allDates.forEach((date) => {
             allDateStats[date] = {
-                new: 0,
-                stitcher: 0,
-                onScan: 0,
-                scaner: 0,
-                jointer: 0,
-                isDone: 0,
+                new: {cases:0,pages:0},
+                stitcher: {cases:0,pages:0},
+                onScan: {cases:0,pages:0},
+                scaner: {cases:0,pages:0},
+                jointer: {cases:0,pages:0},
+                isDone: {cases:0,pages:0},
             };
             allCases.forEach((el) => {
                 if (el.incomeDate === date) {
-                    allDateStats[date].new++
+                    allDateStats[date].new.cases++
+                    allDateStats[date].new.pages+=Number(el.factPages?el.factPages:0)
                 }
                 if (el.stitchDate === date) {
-                    allDateStats[date].stitcher++
+                    allDateStats[date].stitcher.cases++
+                    allDateStats[date].stitcher.pages+=Number(el.factPages?el.factPages:0)
                 }
                 if (el.scanDateStart === date) {
-                    allDateStats[date].onScan++
+                    allDateStats[date].onScan.cases++
+                    allDateStats[date].onScan.pages+=Number(el.factPages?el.factPages:0)
                 }
                 if (el.scanDateFinish === date) {
-                    allDateStats[date].scaner++
+                    allDateStats[date].scaner.cases++
+                    allDateStats[date].scaner.pages+=Number(el.factPages?el.factPages:0)
                 }
                 if (el.jointDate === date) {
-                    allDateStats[date].jointer++
+                    allDateStats[date].jointer.cases++
+                    allDateStats[date].jointer.pages+=Number(el.factPages?el.factPages:0)
                 }
                 if (el.isDoneDate === date) {
-                    allDateStats[date].isDone++
+                    allDateStats[date].isDone.cases++
+                    allDateStats[date].isDone.pages+=Number(el.factPages?el.factPages:0)
                 }
             })
         })
@@ -527,7 +545,7 @@ module.exports = {
         }
         if (!isExist) {
             allUsersInfo.push(newUser);
-            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo, null, '\t'), {flag: 'w'});
             console.log("новый пользователь добавлен");
             answer = 'новый пользователь добавлен';
             return answer
@@ -546,14 +564,14 @@ module.exports = {
         if (objectToDelete) {
             let userToDeleteIndex = allUsers.indexOf(objectToDelete)
             allUsers.splice(userToDeleteIndex, 1)
-            fs.writeFileSync(pathes.users, JSON.stringify(allUsers), {flag: 'w'});
+            fs.writeFileSync(pathes.users, JSON.stringify(allUsers, null, '\t'), {flag: 'w'});
             return ("Пользователь №" + userToDelete + " удален")
         } else {
             return ("Пользователь №" + userToDelete + " не найден")
         }
     },
     applyHardChangedCase: function (hardChangedCase) {
-        console.log(hardChangedCase)
+
         let act = JSON.parse(fs.readFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), 'utf8'))
         let caseToChange = act.find((existCase) => {
             return existCase.id === hardChangedCase.id
@@ -565,7 +583,8 @@ module.exports = {
             }
 
         }
-        fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act), {flag: 'w'});
+        this.writeLog('перезапись файла ' + JSON.stringify(hardChangedCase, null, '\t'))
+        fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act, null, '\t'), {flag: 'w'});
         return "Акт № " + hardChangedCase.act + " перезаписан"
     },
 
@@ -604,13 +623,13 @@ module.exports = {
             casesWithThisDate.forEach((el) => {
                 if (dateObj[el[statsOperation]]) {
                     dateObj[el[statsOperation]].cases++
-                    dateObj[el[statsOperation]].pages+=el.factPages
+                    dateObj[el[statsOperation]].pages+=Number(el.factPages)
                 } else {
-                    dateObj[el[statsOperation]] = {cases:1,pages:el.factPages}
+                    dateObj[el[statsOperation]] = {cases:1,pages:Number(el.factPages)}
                 }
             })
             allDatesObj[date] = dateObj;
-            console.log(dateObj)
+
         })
         return allDatesObj
 
@@ -620,16 +639,15 @@ module.exports = {
         let operator = caseObj.scaner;
         let scanIndex = caseObj.scanNumber;
         let dirPath = path.join(mainpath, '/' + operator, '/' + settings.currentYear + '_' + operator + '_' + scanIndex);
-        console.log(dirPath)
+
         let pageNames;
-        console.log(fs.existsSync(dirPath))
         if (fs.existsSync(dirPath)) {
             pageNames = fs.readdirSync(dirPath)
         } else pageNames = []
         return pageNames.length
     },
 
-    getAllCases_FactPages: function () {
+    getAllCases_FactPages: function () {                    //получить данные о количестве страниц со сканарча
         let allCases = this.getAllCases();
         let casesToFindFactPages = allCases.filter((el) => {
             return el.factPages === '' && el.scaner !== ''
@@ -639,16 +657,32 @@ module.exports = {
         this.writeLog('проверка факт.страниц в делах: ' + casesToFindFactPages.length + ' шт.' + JSON.stringify(caseIndexes))
         casesToFindFactPages.forEach((caseObj) => {
             let factPages = this.getCaseFactPages(caseObj)
-            console.log(factPages)
+
             if (factPages) {
                 caseObj.factPages = factPages
+
+                //обновить счетчик страничек в юзерИнфо
+                let allUsersInfo=this.getAllUsersInfo();
+                let stitcherId = caseObj.stitcher;
+                let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
+                if (stitcher) {
+                    stitcher["pages"] = Number(stitcher["pages"])
+                        + Number(caseObj.factPages)
+                        - Number(caseObj.expectedPages);
+                }
+                fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
+
+
+
                 this.writeLog('для дела ' + caseObj.act + '_' + caseObj.id + ' найдено ' + factPages + ' страниц на сканАрче')
                 this.applyHardChangedCase(caseObj)
 
             }
             caseIndexes.push(caseObj.act + '_' + caseObj.id)
         })
-        console.log(caseIndexes)
+
+
+
 
     },
 
@@ -663,5 +697,52 @@ module.exports = {
             log = [moment().format('LTS') + '_____' + string]
         }
         fs.writeFileSync(filename, JSON.stringify(log, null, '\t'), {flag: 'w'});
+    },
+
+    saveDB:function(){
+        let dirname = moment().format('MMMM Do YYYY, h:mm:ss a');
+        dirname = dirname.split(' ').join('');
+        dirname = dirname.split(':').join('')
+        let source=path.join(pathes.acts);
+        let target=path.join(pathes.saveDB, '/'+dirname)
+
+        let copyFileSync=function ( source, target ) {
+
+            let targetFile = target;
+
+            // If target is a directory, a new file with the same name will be created
+            if ( fs.existsSync( target ) ) {
+                if ( fs.lstatSync( target ).isDirectory() ) {
+                    targetFile = path.join( target, path.basename( source ) );
+                }
+            }
+
+            fs.writeFileSync(targetFile, fs.readFileSync(source));
+        }
+        let copyFolderRecursiveSync = function( source, target ) {
+            let files = [];
+
+            // Check if folder needs to be created or integrated
+            let targetFolder = path.join( target, path.basename( source ) );
+            if ( !fs.existsSync( targetFolder ) ) {
+                fs.mkdirSync( targetFolder );
+            }
+
+            // Copy
+            if ( fs.lstatSync( source ).isDirectory() ) {
+                files = fs.readdirSync( source );
+                files.forEach( function ( file ) {
+                    let curSource = path.join( source, file );
+                    if ( fs.lstatSync( curSource ).isDirectory() ) {
+                        copyFolderRecursiveSync( curSource, targetFolder );
+                    } else {
+                        copyFileSync( curSource, targetFolder );
+                    }
+                } );
+            }
+        }
+        fs.mkdirSync(target)
+        copyFolderRecursiveSync(source, target)
+        this.writeLog('сохранение резервной копии БД')
     }
 }
