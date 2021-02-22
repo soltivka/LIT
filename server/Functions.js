@@ -202,7 +202,12 @@ module.exports = {
                                     moment().format("MMM Do YY") : changedCase.scanDateStart
                             } else if (fileCase.scanDateStart !== '' && fileCase.scanDateFinish === '') {
                                 fileCase.pages = changedCase.pages;
-                                fileCase.scanNumber = changedCase.scanNumber;
+                                let zeroes = '';
+                                while(changedCase.scanNumber.length+zeroes.length<5){
+                                    zeroes+='0'
+                                }
+
+                                fileCase.scanNumber = zeroes +''+ changedCase.scanNumber;
                                 fileCase.scanDateFinish = changedCase.scanDateFinish === '' ?
                                     moment().format("MMM Do YY") : changedCase.scanDateStart
                                 userInfo["cases"]++;
@@ -577,8 +582,15 @@ module.exports = {
             return existCase.id === hardChangedCase.id
         })
         for (let field in caseToChange) {
+            // let zeroes = '';
+            // while(changedCase.scanNumber.length+zeroes.length<5){
+            //     zeroes+='0'
+            // }
+            //
+            // fileCase.scanNumber = zeroes +''+ changedCase.scanNumber;
 
-            if (caseToChange[field] !== hardChangedCase[field]) {
+
+            if (caseToChange[field] && caseToChange[field] !== hardChangedCase[field]) {
                 caseToChange[field] = hardChangedCase[field]
             }
 
