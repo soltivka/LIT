@@ -589,13 +589,19 @@ module.exports = {
             //
             // fileCase.scanNumber = zeroes +''+ changedCase.scanNumber;
 
-
+            if(field==="factPages" && caseToChange[field] !== hardChangedCase[field]){
+                caseToChange[field] = hardChangedCase[field]
+                console.log(caseToChange[field] , hardChangedCase[field])
+            }
             if (caseToChange[field] && caseToChange[field] !== hardChangedCase[field]) {
                 caseToChange[field] = hardChangedCase[field]
+
+                console.log(caseToChange[field] , hardChangedCase[field])
             }
 
         }
-        this.writeLog('перезапись файла ' + JSON.stringify(hardChangedCase, null, '\t'))
+        this.writeLog('перезапись файла ' + JSON.stringify(caseToChange))
+        console.log(path.join(pathes.acts + `/${hardChangedCase.act}.json`));
         fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act, null, '\t'), {flag: 'w'});
         return "Акт № " + hardChangedCase.act + " перезаписан"
     },
@@ -655,7 +661,9 @@ module.exports = {
         let pageNames;
         if (fs.existsSync(dirPath)) {
             pageNames = fs.readdirSync(dirPath)
+            console.log("найдено дело с " + pageNames.length + " количеством страниц")
         } else pageNames = []
+
         return pageNames.length
     },
 
