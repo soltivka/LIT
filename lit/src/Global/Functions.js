@@ -1,4 +1,4 @@
-const serverURL = 'http://localhost:3001/';                      //room50:           //switch to empty string to build
+const serverURL = '';                      //'http://localhost:3001/'          //switch to empty string to build
 const moment = require("moment");
 export const request_operator_cases = async function (userhash) {
 

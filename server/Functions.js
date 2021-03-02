@@ -189,9 +189,7 @@ module.exports = {
                             if (fileCase.stitcher === '') {
                                 fileCase.stitcher = userInfo["id"];
                                 fileCase.stitchDate = changedCase.stitchDate === '' ? moment().format("MMM Do YY") : changedCase.stitchDate
-
                                 userInfo["cases"]++;
-                                userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.expectedPages)
                             }
 
 
@@ -211,25 +209,18 @@ module.exports = {
                                 fileCase.scanDateFinish = changedCase.scanDateFinish === '' ?
                                     moment().format("MMM Do YY") : changedCase.scanDateStart
                                 userInfo["cases"]++;
-                                userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages);
-
-
-                                //обновление данных на этом этапе отключено, т. к. данные берутся со СКАН-АРЧ
-                                // let stitcherId = fileCase.stitcher;
-                                // let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
-                                // if (stitcher) {
-                                //     stitcher["pages"] = Number(stitcher["pages"])
-                                //         + Number(fileCase.pages)
-                                //         - Number(fileCase.expectedPages);
-                                // }                                                           //добавляем данные к другим пользователям (кол-во страниц)
-
                             }
 
                         } else if (userInfo["operation"] === "jointer" && fileCase.jointer === '') {                                        //вносим изменения, если юзер сшивка
                             fileCase.jointer = userInfo["id"];
                             fileCase.jointDate = changedCase.jointDate === '' ? moment().format("MMM Do YY") : changedCase.jointDate
                             userInfo["cases"]++;
-                            userInfo["pages"] = Number(userInfo["pages"]) + Number(fileCase.pages)
+                            if(userInfo["pages"]||userInfo["pages"]=="0"){
+                                if(changedCase.factPages){
+                                    userInfo["pages"]+=changedCase.factPages
+                                }
+
+                            }
                         }
                     }
                 })
@@ -685,11 +676,26 @@ module.exports = {
                 let allUsersInfo=this.getAllUsersInfo();
                 let stitcherId = caseObj.stitcher;
                 let stitcher = allUsersInfo.find((el) => el["id"] === stitcherId);
-                if (stitcher) {
-                    stitcher["pages"] = Number(stitcher["pages"])
-                        + Number(caseObj.factPages)
-                        - Number(caseObj.expectedPages);
+                if(stitcher["pages"]){stitcher["pages"]+=factPages}else{stitcher["pages"]=factPages}
+                let scanerId = caseObj.scaner;
+                let scaner = allUsersInfo.findIndex((el) => el["id"] === scanerId);
+                if(allUsersInfo[scaner]){
+                    if(allUsersInfo[scaner]["pages"]!==0){
+                        allUsersInfo[scaner]["pages"]+=factPages
+                    }else{
+                        allUsersInfo[scaner]["pages"]=factPages
+                    }
                 }
+                let jointerId = caseObj.jointer;
+                let jointer = allUsersInfo.findIndex((el) => el["id"] === jointerId);
+                if(allUsersInfo[jointer]){
+                    if(allUsersInfo[jointer]["pages"]!==0){
+                        allUsersInfo[jointer]["pages"]+=factPages
+                    }else{
+                        allUsersInfo[jointer]["pages"]=factPages
+                    }
+                }
+
                 fs.writeFileSync(pathes.users, JSON.stringify(allUsersInfo), {flag: 'w'});
 
 

@@ -21,7 +21,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));
 })
 
-
+const searchForNewActs = async function (){
+    let newActs = await Functions.getNewActs();
+    newActs.forEach(Functions.createActObject);
+}
 const serverStarting = async function () {
     Functions.writeLog('________________')
     Functions.writeLog('________________')
@@ -36,8 +39,8 @@ serverStarting().then(() => {
     console.log("___________________________________")
     let boundGetAllCases_FactPages = Functions.getAllCases_FactPages.bind(Functions)
     let boundSaveDB = Functions.saveDB.bind(Functions)
-    setInterval(boundGetAllCases_FactPages, 7200000);//3600000 = 1hr
-    setInterval(serverStarting, 7200000);
+    setInterval(boundGetAllCases_FactPages, 36000000);//3600000 = 1hr
+    setInterval(searchForNewActs, 60000);
     setInterval(boundSaveDB,3600000);
 })
 
