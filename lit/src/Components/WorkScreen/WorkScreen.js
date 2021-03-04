@@ -163,6 +163,7 @@ const WorkScreen = function (props) {
                     <Choosen
                         user={props.state.userInfo}
                         date={props.state.date}
+                        isFetching={props.state.operator_cases.isFetching}
                         caseList={props.state.choosen_cases}
                         dispatch={props.dispatch}/>
                 </div>

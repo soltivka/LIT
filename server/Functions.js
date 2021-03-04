@@ -11,7 +11,7 @@ const pathes = {
     excels: path.join(__dirname + `/../../data/excels`),
     acts: path.join(__dirname + `/../../data/acts`),
     users: path.join(__dirname + `/../../data/users.json`),
-    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021'),
+    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021'), // убрать D: для билда
     saveDB:path.join((__dirname + `/../../data/saveDB`))
 }
 
@@ -600,7 +600,14 @@ module.exports = {
 
     getUsersStats: function (statsOperation) {
         let operationDate = statsOperation.split('er')[0] === "scan" ? statsOperation.split('er')[0] + "DateFinish" : statsOperation.split('er')[0] + "Date"
+        let allUsersInfo=this.getAllUsersInfo();
+        let getUserName = function(userNumber){
+            let userObject = allUsersInfo.find((anyUser)=>{
 
+                return anyUser["id"]===userNumber
+            })
+            return userObject.name
+        }
         let allCases = this.getAllCases();
         let operation_notEmpty_cases = allCases.filter((el) => {
             return (el[statsOperation] !== '' && el[operationDate] !== '')
@@ -634,12 +641,18 @@ module.exports = {
                     dateObj[el[statsOperation]].cases++
                     dateObj[el[statsOperation]].pages+=Number(el.factPages)
                 } else {
-                    dateObj[el[statsOperation]] = {cases:1,pages:Number(el.factPages)}
+                    dateObj[el[statsOperation]] = {
+                        cases:1,
+                        pages:Number(el.factPages),
+                        name:getUserName(el[statsOperation])
+                    }
                 }
             })
             allDatesObj[date] = dateObj;
 
         })
+        console.log("статистика по " + statsOperation)
+        console.log(allDatesObj)
         return allDatesObj
 
     },
@@ -647,7 +660,7 @@ module.exports = {
         let mainpath = pathes.factPagesDir
         let operator = caseObj.scaner;
         let scanIndex = caseObj.scanNumber;
-        let dirPath = path.join(mainpath, '/' + operator, '/' + settings.currentYear + '_' + operator + '_' + scanIndex);
+        let dirPath = path.join(mainpath, '/' + operator, '/' + settings.currentYear + '-' + operator + '-' + scanIndex);
 
         let pageNames;
         if (fs.existsSync(dirPath)) {

@@ -79,3 +79,26 @@
 .incell{
 
 }
+.checkbox {background-image: linear-gradient(to right, #314755 0%, #26a0da  51%, #314755  100%)}
+.checkbox {
+    cursor: pointer;
+    width: 250px;
+    height:100%;
+    margin: 20px;
+    font-size: 15px;
+
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 5px #eee;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.checkbox:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}

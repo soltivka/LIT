@@ -73,7 +73,7 @@ const Choosen = function (props) {
                 {content()}
             </div>
             <div className={s.footer}>
-                <div className={s.postButton}
+                <div className={props.isFetching?s.hideButton:s.postButton}
                      onClick={props.caseList.length > 0 ? postChanges : emptyClick}>Відправити
                 </div>
                 <div>Справ відібрано : {props.caseList.length}</div>

@@ -56,11 +56,23 @@ const SearchScreen = function (props) {
         }
         if (Array.isArray(caseList)) {
             return caseList.map((el) => {
+                let scanNumberInvalidChecker = function(el){
+                    if(el.scanNumber=="00000"){
+                        return true
+                    }else{
+                        if(el.scanNumber){
+                            let sameScanNumberExist = caseList.find((anyCase)=>{
+                                return anyCase.scanNumber===el.scanNumber&&anyCase.scaner===el.scaner
+                            })
+                        }
+                    }
+
+                }
 
                 let filtredElement= applyFilters(props.state.filters,el)
                 if (filtredElement) {
                     suitableWithFilters++
-                    if (maxCounter < 500) {
+                    if (maxCounter < 600) {
                         maxCounter++
                         return (
                             <SearchString el={el}
