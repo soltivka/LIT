@@ -2,6 +2,7 @@ import React from 'react';
 import s from './Choosen.module.css';
 import ChoosenString from "./ChoosenString/ChoosenString";
 import {post_changes_action, set_date_day_action} from "../../../Global/Actions";
+import PulseNumber from "./PulseNumber/PulseNumber";
 
 
 const Choosen = function (props) {
@@ -73,10 +74,12 @@ const Choosen = function (props) {
                 {content()}
             </div>
             <div className={s.footer}>
-                <div className={props.isFetching?s.hideButton:s.postButton}
+                <div className={props.isFetching ? s.hideButton : s.postButton}
                      onClick={props.caseList.length > 0 ? postChanges : emptyClick}>Відправити
                 </div>
-                <div>Справ відібрано : {props.caseList.length}</div>
+                <div>Справ відібрано :
+                    <PulseNumber className={s.pulseNumber} value={props.caseList.length} key={"choosenCounter-pulseNumber" + props.caseList.length}/>
+                </div>
                 <div>Дата : {props.date}
                     <input
                         className={s.input}

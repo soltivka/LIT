@@ -30,37 +30,38 @@ const UserStatScreen = function (props) {
             for (let user in dateStats[date]) {
                 let userIsExist = allUsers.find((existUser) => existUser.name === dateStats[date][user].name)
                 if (!userIsExist) {
-                    dateStats[date][user]["id"]=user
+                    dateStats[date][user]["id"] = user
                     allUsers.push(dateStats[date][user])
                 }
             }
         }
         allUsers.sort()
         console.log("all users length " + allUsers.length)
-        let keyCounter=0;
         let content_header_creator = function () {
 
             allUsers.forEach((user) => {
-                console.log(user)
-                console.log("user is here")
-                keyCounter++
                 users.push(
-                    <td className={s.headerCell + ' ' + defineClass()}
-                        key={"userHeader" + user.name}>
-                        <Cell visible={props.state.projectStats_pagesVisible}
-                              key={user.name}
-                              value={{
-                                  cases: user.id,
-                                  pages: user.name
-                              }}/>
-                    </td>
+                    <Cell visible={props.state.projectStats_pagesVisible}
+                          key={user.id + user.name}
+                          value={user.id}/>
                 )
+                users.push(
+                    <Cell visible={true}
+                          key={user.name}
+                          value={user.name}/>
+                )
+
             })
             return (
                 <tr className={s.headerString} key={"headerString"}>
                     <td className={s.headerCell}> Дата</td>
                     {users}
-                    <td className={s.headerCell}> Всего за день</td>
+                    <Cell visible={props.state.projectStats_pagesVisible}
+                          value={"Усього за день,справ."}
+                    />
+                    <Cell visible={true}
+                          value={"Усього за день,стор."}
+    />
                 </tr>
 
             )
@@ -75,10 +76,10 @@ const UserStatScreen = function (props) {
             for (let date in dateStats) {
                 let string = [];
                 let stringSum = {cases: 0, pages: 0};
-                string.push(<td className={s.cell} key={date}>{date}</td>)
+                string.push(<td className={s.headerCell} key={date}>{date}</td>)
 
                 allUsers.forEach((userObj) => {
-                    let user=userObj.id
+                    let user = userObj.id
                     console.log('userObj')
                     console.log(userObj)
 
@@ -98,29 +99,37 @@ const UserStatScreen = function (props) {
                     if (dateStats[date][user]) {                 //создание строки со статистикой пользователей
                         stringSum.cases += Number(dateStats[date][user].cases);
                         stringSum.pages += Number(dateStats[date][user].pages);
-                        string.push(<td className={s.cell}
-                                        key={dateStats[date][user].cases + '' + user + dateStats[date][user].pages}>
-
+                        string.push(
                             <Cell visible={props.state.projectStats_pagesVisible}
-                                  value={{
-                                      cases: dateStats[date][user].cases,
-                                      pages: dateStats[date][user].pages
-                                  }}/>
-                        </td>)
+                                  value={dateStats[date][user].cases}/>)
+                        string.push(
+                            <Cell visible={true}
+                                  value={dateStats[date][user].pages}/>)
+
+
+
                     } else {
-                        keyCounter++
-                        string.push(<td key={keyCounter} className={s.cell}></td>)
+                        string.push(
+                            <Cell visible={props.state.projectStats_pagesVisible}
+                                  value={""}/>)
+                        string.push(
+                            <Cell visible={true}
+                                  value={""}/>)
+
+
                     }
                 })
-                string.push(<td className={s.cell} key={stringSum.cases + '' + stringSum.pages}>
-
+                string.push(
                     <Cell visible={props.state.projectStats_pagesVisible}
-                          value={{
-                              cases: stringSum.cases,
-                              pages: stringSum.pages
-                          }}/>
+                          value={stringSum.cases}
+                    />
+                )
+                string.push(
+                    <Cell visible={true}
+                          value={stringSum.pages}
+                          />
+                )
 
-                </td>)
                 allStrings.push(<tr className={s.bodyString} key={'string' + date}>{string}</tr>)
             }
 
@@ -134,37 +143,40 @@ const UserStatScreen = function (props) {
 
             footerString.push(<td className={s.footerCell} key={'stringTotalHeader'}>Усього</td>)
             allUsers.forEach((userObj) => {
-                let user=userObj.id
+                let user = userObj.id
                 let el = usersTotal[user];
                 if (el) {
                     totalSum.pages += Number(el.pages);
                     totalSum.cases += Number(el.cases);
-                    console.log(totalSum)
+
                     footerString.push(
-                        <td className={s.cell} key={el.cases + ' ' + el.pages}>
-                            <Cell visible={props.state.projectStats_pagesVisible}
-                                  value={{
-                                      cases: el.cases,
-                                      pages: el.pages
-                                  }}/>
-                        </td>
+                        <Cell visible={props.state.projectStats_pagesVisible}
+                              key={el.cases+'_'+el.pages}
+                              value={el.cases}/>
                     )
+                    footerString.push(
+                            <Cell visible={true}
+                                  key={el.pages+'_'+el.cases}
+                                  value={el.pages}/>
+                    )
+
                 }
 
 
             })
-
-
             footerString.push(
-                <td className={s.totalCell} key={'allUsersTotal'}>
-
-                    <Cell visible={props.state.projectStats_pagesVisible}
-                          value={{
-                              cases: totalSum.cases,
-                              pages: totalSum.pages
-                          }}/>
-                </td>
+                <Cell visible={props.state.projectStats_pagesVisible}
+                      key={"footerTotalCases"}
+                      value={totalSum.cases}/>
             )
+            footerString.push(
+                    <Cell visible={true}
+                          key={"footerTotalPages"}
+                          value={totalSum.pages}/>
+            )
+
+
+
             return <tr className={s.footerString} key={'footerString'}>{footerString}</tr>
         }
         let content_footer = content_footer_creator();

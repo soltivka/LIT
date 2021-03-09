@@ -119,24 +119,24 @@ const WorkScreen = function (props) {
                             <div className={s.cell}>Відібрати</div>
                         </div>
                         <div className={s.bottomSide}>
-                            <div className={s.cell}>
-                                <input className={s.searchInput}
-                                       type={'number'}
-                                       value={props.state.filters.act}
-                                       onChange={setFilterAct}/>
-                            </div>
-                            <div className={s.cell}>
-                                <input className={s.searchInput}
-                                       type={'number'}
-                                       value={props.state.filters.id}
-                                       onChange={setFilterId}/>
-                            </div>
-                            <div className={s.cell}>
-                                <input className={s.searchInput}
-                                       type={'text'}
-                                       value={props.state.filters.adress}
-                                       onChange={setFilterAdress}/>
-                            </div>
+                            {/*<div className={s.cell}>*/}
+                            {/*    <input className={s.searchInput}*/}
+                            {/*           type={'number'}*/}
+                            {/*           value={props.state.filters.act}*/}
+                            {/*           onChange={setFilterAct}/>*/}
+                            {/*</div>*/}
+                            {/*<div className={s.cell}>*/}
+                            {/*    <input className={s.searchInput}*/}
+                            {/*           type={'number'}*/}
+                            {/*           value={props.state.filters.id}*/}
+                            {/*           onChange={setFilterId}/>*/}
+                            {/*</div>*/}
+                            {/*<div className={s.cell}>*/}
+                            {/*    <input className={s.searchInput}*/}
+                            {/*           type={'text'}*/}
+                            {/*           value={props.state.filters.adress}*/}
+                            {/*           onChange={setFilterAdress}/>*/}
+                            {/*</div>*/}
                             <div className={s.cell}>
                                 <input  autoFocus
                                         className={s.searchInput}

@@ -40,11 +40,12 @@
 }
 .headerCell{
     display: flex;
+    justify-content: space-around;
+    min-height: 25px;
+    width:100%;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
     background-color: darkgrey;
+    border: solid 1px black;
 }
 .bodyString{
     display: flex;

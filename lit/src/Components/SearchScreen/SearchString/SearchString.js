@@ -13,7 +13,9 @@ const SearchString = function (props) {
         else if(el.scanDateFinish!==''&&el.jointer===''){return s.wrapper_scanFinish}
         else if(el.jointer!==''&&el.isDoneDate===''){return s.wrapper_joined}
         else if(el.isDoneDate!==''){return s.wrapper_isDone}
-
+    }
+    let defineClassCell=function(indexIsWrong){
+        if(indexIsWrong){return s.indexIsWrong}else return ''
     }
 
     return (
@@ -43,7 +45,7 @@ const SearchString = function (props) {
             </div>
             <div className={s.bigcell}>
                 <div className={s.cell}>{el.factPages}</div>
-                <div className={s.cell}>{el.scanNumber}</div>
+                <div className={s.cell +' '+defineClassCell(props.wrongIndex)}>{el.scanNumber}</div>
             </div>
 
             <div className={s.bigcell}>

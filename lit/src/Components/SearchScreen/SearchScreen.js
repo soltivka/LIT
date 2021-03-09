@@ -21,6 +21,27 @@ import {
     set_filter_stitcher_action
 } from "../../Global/Actions";
 
+let scanNumberInvalidChecker = function (caseToCheck, caseList) {   /// проверялка индексов
+    if (caseToCheck.scanNumber === "00000") {
+        console.log("нулі в індексі" + caseToCheck.id)
+        return true
+    } else if(!caseToCheck.scanNumber&&caseToCheck.scaner){
+        return true
+    }else{
+        if (caseToCheck.scanNumber) {
+            let sameScanNumberExist = caseList.find((anyCase) => {
+                return (anyCase.scanNumber === caseToCheck.scanNumber
+                    && anyCase.scaner === caseToCheck.scaner
+                    && anyCase.index !== caseToCheck.index)
+            })
+            if (sameScanNumberExist){
+                console.log("однакові індекси: "+caseToCheck.id + " та " + sameScanNumberExist.id )
+                return true
+            }
+        }else return false
+    }
+}
+
 const SearchScreen = function (props) {
 
     const setFilterIndex = function (event) {
@@ -44,7 +65,7 @@ const SearchScreen = function (props) {
     const setFilterJointer = function (event) {
         props.dispatch(set_filter_jointer_action(event.target.value))
     }
-    const setFilterIsDone=function(event){
+    const setFilterIsDone = function (event) {
         props.dispatch(set_filter_isDone_action(event.target.value))
     }
 
@@ -56,27 +77,19 @@ const SearchScreen = function (props) {
         }
         if (Array.isArray(caseList)) {
             return caseList.map((el) => {
-                let scanNumberInvalidChecker = function(el){
-                    if(el.scanNumber=="00000"){
-                        return true
-                    }else{
-                        if(el.scanNumber){
-                            let sameScanNumberExist = caseList.find((anyCase)=>{
-                                return anyCase.scanNumber===el.scanNumber&&anyCase.scaner===el.scaner
-                            })
-                        }
-                    }
 
-                }
 
-                let filtredElement= applyFilters(props.state.filters,el)
+
+                let filtredElement = applyFilters(props.state.filters, el)
                 if (filtredElement) {
+                    let indexIsWrong = scanNumberInvalidChecker(el,caseList)
                     suitableWithFilters++
                     if (maxCounter < 600) {
                         maxCounter++
                         return (
                             <SearchString el={el}
-                                          key={el.index + '' + el.act}/>
+                                          key={el.index + '' + el.act}
+                                          wrongIndex={indexIsWrong}/>
                         )
                     }
 
@@ -84,7 +97,7 @@ const SearchScreen = function (props) {
 
 
             })
-        } else console.log(caseList)
+        }
 
     }
 

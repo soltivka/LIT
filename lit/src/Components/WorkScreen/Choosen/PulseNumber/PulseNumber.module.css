@@ -1,0 +1,19 @@
+
+.pulseNumber {
+    color: #85caf2;
+    animation: pulsing 1.5s cubic-bezier(0.12, 0.88, 0.71, 0.97);
+
+}
+@keyframes pulsing {
+    0% {
+        transform: translate(300px) scale(10);
+
+        color:green;
+    }
+    20%{
+        color:green;
+    }
+    100% {
+        transform: translate(0) scale(1);
+    }
+}

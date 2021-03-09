@@ -101,3 +101,19 @@
     color: #fff;
     text-decoration: none;
 }
+
+.pulseNumber {
+    color: #85caf2;
+    animation: pulsing 2s ;
+}
+@keyframes pulsing {
+    0% {
+        -webkit-transform: scale(2);
+        transform: scale(2);
+        color:green;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
