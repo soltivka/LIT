@@ -25,6 +25,8 @@
 .body{
     display: flex;
     flex-direction: column;
+    max-height: 88vh;
+    overflow: scroll;
     padding: 10px;
     height: 90vh;
     width: 100%;
@@ -102,4 +104,8 @@
     background-position: right center; /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
+}
+
+.bodyTable{
+    overflow:scroll;
 }

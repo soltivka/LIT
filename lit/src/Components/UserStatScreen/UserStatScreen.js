@@ -182,7 +182,7 @@ const UserStatScreen = function (props) {
         let content_footer = content_footer_creator();
 
         return (
-            <table>
+            <table className={s.bodyTable}>
                 <tbody>
                 {content_header}
                 {content_body}

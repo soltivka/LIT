@@ -25,14 +25,15 @@ let scanNumberInvalidChecker = function (caseToCheck, caseList) {   /// пров
     if (caseToCheck.scanNumber === "00000") {
         console.log("нулі в індексі" + caseToCheck.id)
         return true
-    } else if(!caseToCheck.scanNumber&&caseToCheck.scaner){
+    } else if(caseToCheck.scanNumber&&!caseToCheck.factPages){
         return true
     }else{
         if (caseToCheck.scanNumber) {
             let sameScanNumberExist = caseList.find((anyCase) => {
-                return (anyCase.scanNumber === caseToCheck.scanNumber
+                let sameScanNumber =  (anyCase.scanNumber === caseToCheck.scanNumber
                     && anyCase.scaner === caseToCheck.scaner
                     && anyCase.index !== caseToCheck.index)
+                return sameScanNumber
             })
             if (sameScanNumberExist){
                 console.log("однакові індекси: "+caseToCheck.id + " та " + sameScanNumberExist.id )

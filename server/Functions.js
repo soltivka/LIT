@@ -631,7 +631,35 @@ module.exports = {
                 return 1
             } else return 0
         })
-        dates.forEach((date) => {
+        
+        let holydaysFiller = function(dates){
+            let filledByHolydays=[]
+            dates.forEach((date,index,arr)=>{
+                let loosedDates=[];
+                filledByHolydays.push(date);
+                let dateSplitter = function(dateString){
+                    let dateNumber = dateString.split(' ')[1];
+                    dateNumber = dateNumber.split('nd')[0];
+                    dateNumber = dateNumber.split('th')[0];
+                    dateNumber = dateNumber.split('rd')[0];
+                    dateNumber = dateNumber.split('st')[0];
+                    if(dateNumber)return Number(dateNumber)
+                }
+                let currentNumber = dateSplitter(date);
+                let nextNumber = dates[index+1]?dateSplitter(dates[index+1]):undefined
+                if(nextNumber<currentNumber){
+                    return}
+                let difference = nextNumber-currentNumber;
+                for(let i=0; i<difference-1;i++){
+                    filledByHolydays.push(date.split(' ')[0]+' '+(currentNumber+i+1)+'th '+date.split(' ')[2])
+                    console.log("в статистику влита дата" +date.split(' ')[0]+' '+(currentNumber+i+1)+'th '+date.split(' ')[2] )
+                }
+                
+            })
+            return filledByHolydays
+        } 
+        let datesWithHolydays = holydaysFiller(dates)
+        datesWithHolydays.forEach((date) => {
             let dateObj = {}
             let casesWithThisDate = operation_notEmpty_cases.filter((el) => {
                 return el[operationDate] === date;
