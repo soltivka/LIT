@@ -39,7 +39,7 @@ serverStarting().then(() => {
     console.log("___________________________________")
     let boundGetAllCases_FactPages = Functions.getAllCases_FactPages.bind(Functions)
     let boundSaveDB = Functions.saveDB.bind(Functions)
-    setInterval(boundGetAllCases_FactPages, 36000000);//3600000 = 1hr
+    setInterval(boundGetAllCases_FactPages, 345600000);//3600000 = 1hr
     setInterval(searchForNewActs, 60000);
     setInterval(boundSaveDB,3600000);
 })
@@ -99,13 +99,14 @@ app.get('/projectStats', (req, res) => {
     if (Functions.checkUserIsAdmin(userhash)) {
         let allActsStats = Functions.getProjectStatsByActs()
         let allDatesStats = Functions.getProjectStatsByDates()
+        console.log('we are here')
 
         res.send({allActsStats, allDatesStats})
     } else {
         res.send(["you shall not pass"])
     }
 });
-app.get('/getUsersStats', (req, res) => {
+app.get('/getUsersStats', (req, res) => { // переключение на вкладку користувачі
     let userhash = req.headers.userhash;
     let usersStats = Functions.getDateUsersStats(userhash);
     res.send(usersStats)

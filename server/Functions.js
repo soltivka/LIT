@@ -473,47 +473,10 @@ module.exports = {
     },
 
     getDateUsersStats: function () {
-        let allDates = this.getAllDates();
         let allUsersInfo = this.getAllUsersInfo();
-        let allCases = this.getAllCases()
-        let dateUsersStats = [];
-        allDates.forEach((date) => {
-            let dateObj = {
-                date,
-            };
-            allUsersInfo.forEach((userInfo) => {
-                dateObj[userInfo.id] = {};
-                dateObj[userInfo.id].cases = 0;
-                dateObj[userInfo.id].operation = userInfo.operation;
-                dateObj[userInfo.id].pages = 0;
-            })
-            allCases.forEach((el) => {
-                if (el.stitchDate === date) {
-                    dateObj[el.stitcher] ? dateObj[el.stitcher].cases++ : 0
-                    dateObj[el.stitcher] ? (dateObj[el.stitcher].pages = el.pages ? el.pages : el.expectedPages) : 0
-                }
-                if (el.scanDateFinish === date) {
-                    dateObj[el.scaner] ? dateObj[el.scaner].cases++ : 0
-                    dateObj[el.scaner] ? dateObj[el.scaner].pages += Number(el.pages) : 0
-                }
-                if (el.jointDate === date) {
-                    dateObj[el.jointer] ? dateObj[el.jointer].cases++ : 0
-                    dateObj[el.jointer] ? dateObj[el.jointer].pages += Number(el.pages) : 0
-                }
-            })
-            dateObj.total = {};
-            dateObj.total.cases = 0
-            for (let user in dateObj) {
-                if (user !== 'date' && user !== 'total') {
-                    dateObj.total.cases += Number(dateObj[user].cases)
-                }
-            }
-            ;
 
 
-            dateUsersStats.push(dateObj)
-        })
-        return dateUsersStats
+        return allUsersInfo
     },
 
     createNewUser: function (newUserInfo) {

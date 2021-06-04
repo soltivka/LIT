@@ -52,11 +52,6 @@ const Header = function (props) {
                                 dispatch={props.dispatch}
                                 state={props.state}
                                 onlyAdmin={true}/>
-                    <HeaderLink nav={'userStatsByActs'}
-                                text={'Статистика користувачів по актам'}
-                                dispatch={props.dispatch}
-                                state={props.state}
-                                onlyAdmin={true}/>
                 </div>
             </header>
 

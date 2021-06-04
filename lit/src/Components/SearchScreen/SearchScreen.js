@@ -207,7 +207,7 @@ const SearchScreen = function (props) {
                     </div>
                     <div className={s.bigcell}>
                         Дата сдачи
-                        <input type={'number'}
+                        <input type={'text'}
                                className={s.input}
                                value={props.state.filters.isDone}
                                onChange={setFilterIsDone}/>
