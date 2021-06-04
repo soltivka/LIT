@@ -110,6 +110,16 @@ app.get('/getUsersStats', (req, res) => {
     let usersStats = Functions.getDateUsersStats(userhash);
     res.send(usersStats)
 })
+
+app.get('/getUsersStatsByActs',(req,res)=>{
+    if(Functions.checkUserIsAdmin(req.headers.userhash)){
+        let statsOperation=req.headers.statsoperation;
+        let allActsStats=Functions.getUsersStatsByActs(statsOperation)
+        res.send(allActsStats)
+    }
+
+})
+
 app.get('/getUsersStats2',(req,res)=>{
     if(Functions.checkUserIsAdmin(req.headers.userhash)){
         let statsOperation=req.headers.statsoperation;

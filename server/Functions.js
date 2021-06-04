@@ -11,7 +11,7 @@ const pathes = {
     excels: path.join(__dirname + `/../../data/excels`),
     acts: path.join(__dirname + `/../../data/acts`),
     users: path.join(__dirname + `/../../data/users.json`),
-    factPagesDir: path.join('D://nas/ScanArch/gotovie_2021'), // убрать D: для билда
+    factPagesDir: path.join('D://nas/ScanArch/2021_gotovye'), // убрать D: для билда
     saveDB:path.join((__dirname + `/../../data/saveDB`))
 }
 
@@ -595,6 +595,11 @@ module.exports = {
         console.log(path.join(pathes.acts + `/${hardChangedCase.act}.json`));
         fs.writeFileSync(path.join(pathes.acts + `/${hardChangedCase.act}.json`), JSON.stringify(act, null, '\t'), {flag: 'w'});
         return "Акт № " + hardChangedCase.act + " перезаписан"
+    },
+
+    getUsersStatsByActs:function(){
+        return({response:"userstatsByActs got"})
+
     },
 
 

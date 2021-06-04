@@ -101,6 +101,9 @@
     color: #fff;
     text-decoration: none;
 }
+.none{
+    display: none;
+}
 
 .pulseNumber {
     color: #85caf2;

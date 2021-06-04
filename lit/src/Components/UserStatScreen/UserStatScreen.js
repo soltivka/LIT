@@ -4,6 +4,7 @@ import SwitchButton from "./switchButton/SwitchButton";
 import {getCurrentMonth} from "../../Global/Functions";
 import {setPagesVisible_action} from "../../Global/Actions";
 import Cell from "./Cell/Cell";
+import {switchViewMode_action} from "../../Global/Actions"
 
 
 const UserStatScreen = function (props) {
@@ -19,10 +20,9 @@ const UserStatScreen = function (props) {
     if (props.state.viewMode === "total") {
         dateStats = props.state.dateUsersStats
     } else {
-        dateStats = getCurrentMonth(props.state.dateUsersStats)
+        dateStats = getCurrentMonth(props.state.dateUsersStats,props.state.viewMode)
     }
-    console.log("dateStats")
-    console.log(dateStats)
+    
     let users = [];
     let content = function () {
         let allUsers = [];
@@ -192,21 +192,24 @@ const UserStatScreen = function (props) {
         )
 
     }
+    let setNeededMonth = function(event){
+        if(event.target.value===""){
+            props.dispatch(switchViewMode_action("total"))
+        }else{
+            props.dispatch(switchViewMode_action(event.target.value))
+        }
+        
+    }
 
     return (
         <div className={s.wrapper}>
             <div className={s.header}>
                 <div className={s.headerCell}>
-                    <SwitchButton text={"Всего"}
-                                  value={'total'}
-                                  field={"view mode"}
-                                  dispatch={props.dispatch}
-                                  viewMode={props.state.viewMode}/>
-                    <SwitchButton text={"За этот месяц"}
-                                  field={"view mode"}
-                                  value={'this month'}
-                                  dispatch={props.dispatch}
-                                  viewMode={props.state.viewMode}/>
+                    <input  className={s.monthInput}
+                            onChange={setNeededMonth}
+                            placeholder={"Вкажіть потрібний місяць"}
+                            type={"options"}
+                            field={"view mode"}/>
                 </div>
                 <div className={s.headerCell}>
                     <div className={s.checkbox} onClick={projectStats_setPagesVisible}>

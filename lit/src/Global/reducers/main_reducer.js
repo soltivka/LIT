@@ -2,7 +2,7 @@ import {
     change_admin_operation,
     dayJoiner, deleteUser, getCaseFromServer, getOperationStats,
     post_case_changes, post_done_cases, post_new_user, postHardChange, request_casesForSearch,
-    request_operator_cases, request_projectStats, request_userStats, reset_userstats,
+    request_operator_cases, request_projectStats, request_userStats, request_userStatsByActs, reset_userstats,
     setDateToChoosen
 } from "../Functions";
 import {userHash_response_action} from "../Actions";
@@ -51,6 +51,7 @@ const SET_HARDCHANGE_SCANER = 'SET_HARDCHANGE_SCANER';
 const POST_HARDCHANGE = 'POST_HARDCHANGE';
 const SWITCH_STATSOPERATION="SWITCH_STATSOPERATION";
 const PROJECT_STATS_SET_PAGES_VISIBLE="PROJECT_STATS_SET_PAGES_VISIBLE";
+const GET_USERSTATS_BYACTS='GET_USERSTATS_BYACTS';
 
 const initialState = {
     operator_cases: {
@@ -340,6 +341,12 @@ const main_reducer = function (state, action) {
                     store.dispatch(userHash_response_action())
                 })
                 break;
+            case GET_USERSTATS_BYACTS:
+                request_userStatsByActs(state.userhash).then((data)=>{
+                    state.userStatsByActs=data
+                    alert(data);
+                    store.dispatch(userHash_response_action())
+                })
 
             case SWITCH_VIEW_MODE:
                 state.viewMode = action.value

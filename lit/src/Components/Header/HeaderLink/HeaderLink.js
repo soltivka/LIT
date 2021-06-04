@@ -3,7 +3,7 @@ import s from './HeaderLink.module.css';
 import {
     get_casesForSearch_action,
     get_projectStats_action,
-    get_userStats_action,
+    get_userStats_action, get_userStatsByActs_action,
     setCurrentNav_action
 } from "../../../Global/Actions";
 
@@ -20,6 +20,9 @@ const HeaderLink = function (props) {
         }
         if(props.nav==="userStats"){
             props.dispatch(get_userStats_action(props.state.userhash))
+        }
+        if(props.nav==="userStatsByActs"){
+            props.dispatch(get_userStatsByActs_action(props.state.userhash))
         }
     }
     const defineClass=function(){

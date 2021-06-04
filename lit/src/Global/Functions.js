@@ -1,4 +1,4 @@
-const serverURL = '';                      //'http://localhost:3001/'          //switch to empty string to build
+const serverURL = 'http://localhost:3001/';                      //'http://localhost:3001/'          //switch to empty string to build
 const moment = require("moment");
 export const request_operator_cases = async function (userhash) {
 
@@ -234,6 +234,21 @@ export const request_userStats = async function (userhash) {
         alert(response.status)
     }
 }
+export const request_userStatsByActs = async function(userhash){
+    let response = await fetch(`${serverURL}getUsersStatsByActs`, {
+        method: "GET",
+        headers: {
+            "userhash": userhash,
+            "statsOperation":"stitcher"
+        }
+    })
+    if (response.ok) {
+        let requestedData = await response.json()
+        return requestedData
+    } else {
+        alert(response.status)
+    }
+}
 export const getMomentFromDateString = function (dateString) {
     let splitDate = dateString.split(' ')
     let stringDay = splitDate[1];
@@ -318,14 +333,13 @@ export const getOperationStats=async function(userhash,statsOperation){
     }
 }
 
-export const getCurrentMonth = function (dateStats){
-    let now = moment()
-    console.log(now)
+export const getCurrentMonth = function (dateStats,neededMonth){
+    let m_neededMonth = moment().month(Number(neededMonth)-1);
 
     let currentMonthDates = {};
     for (let day in dateStats) {
         let date = getMomentFromDateString(day)
-        if(now.isSame(date, 'month')){
+        if(m_neededMonth.isSame(date, 'month')){
             currentMonthDates[day]=dateStats[day]
         }
     }

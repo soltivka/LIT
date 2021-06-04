@@ -22,10 +22,18 @@ import {
 } from "../../Global/Actions";
 
 let scanNumberInvalidChecker = function (caseToCheck, caseList) {   /// проверялка индексов
+    let actsWithEmptyFactPages = [];
     if (caseToCheck.scanNumber === "00000") {
         console.log("нулі в індексі" + caseToCheck.id)
         return true
     } else if(caseToCheck.scanNumber&&!caseToCheck.factPages){
+        let alreadyMarkAsEmpty = actsWithEmptyFactPages.find((actNumber)=>{
+            return actNumber===caseToCheck.act
+        })
+        if(!alreadyMarkAsEmpty){
+            actsWithEmptyFactPages.push(caseToCheck.act)
+            console.log('не підтягнуті сторінки в ' +caseToCheck.act + ' акті' )
+        }
         return true
     }else{
         if (caseToCheck.scanNumber) {

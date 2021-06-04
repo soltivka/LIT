@@ -67,6 +67,7 @@ const Choosen = function (props) {
     }
 
 
+
     return (
         <div className={s.wrapper}>
             {defineHeader()}
@@ -82,6 +83,7 @@ const Choosen = function (props) {
                 </div>
                 <div>Дата : {props.date}
                     <input
+
                         className={s.input}
                         type={'number'}
                         placeholder={"день месяца"}
