@@ -17,8 +17,12 @@ const GET_CASESFORSEARCH = 'GET_CASESFORSEARCH';
 const PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST = 'PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST';
 const POST_ISDONE_CASES = 'POST_ISDONE_CASES';
 const SET_FILTER_STITCHER = 'SET_FILTER_STITCHER';
+const SET_FILTER_STITCHDATE='SET_FILTER_STITCHDATE';
 const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
+const SET_FILTER_SCANERSTARTDATE = 'SET_FILTER_SCANERSTARTDATE';
+const SET_FILTER_SCANERFINISHDATE = 'SET_FILTER_SCANERFINISHDATE';
 const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
+const SET_FILTER_JOINTDATE = 'SET_FILTER_JOINTDATE';
 const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_ISDONE='SET_FILTER_ISDONE';
 const GET_PROJECT_STATS='GET_PROJECT_STATS';
@@ -41,7 +45,8 @@ const POST_HARDCHANGE='POST_HARDCHANGE';
 const GET_USERSTATS2='GET_USERSTATS2';
 const SWITCH_STATSOPERATION='SWITCH_STATSOPERATION';
 const PROJECT_STATS_SET_PAGES_VISIBLE='PROJECT_STATS_SET_PAGES_VISIBLE';
-const GET_USERSTATS_BYACTS = 'GET_USERSTATS_BYACTS'
+const GET_USERSTATS_BYACTS = 'GET_USERSTATS_BYACTS';
+
 
 export const setCurrentNav_action = (button_nav) => ({
     type: SET_CURRENT_NAV,
@@ -98,12 +103,28 @@ export const set_filter_stitcher_action=(value)=>({
     type:SET_FILTER_STITCHER,
     value:value,
 })
+export const set_filter_stitchDate_action=(value)=>({
+    type: SET_FILTER_STITCHDATE,
+    value:value,
+})
 export const set_filter_scaner_action=(value)=>({
     type:SET_FILTER_SCANER,
     value:value,
 })
+export const set_filter_scanerStartDate_action = (value)=>({
+    type: SET_FILTER_SCANERSTARTDATE,
+    value:value,
+})
+export const set_filter_scanerFinishDate_action =(value)=>({
+    type:SET_FILTER_SCANERFINISHDATE,
+    value:value,
+})
 export const set_filter_jointer_action=(value)=>({
     type:SET_FILTER_JOINTER,
+    value:value,
+})
+export const set_filter_jointDate_action=(value)=>({
+    type:SET_FILTER_JOINTDATE,
     value:value,
 })
 export const set_filter_isDone_action=(value)=>({

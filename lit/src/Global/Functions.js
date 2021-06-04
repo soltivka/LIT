@@ -101,6 +101,13 @@ export const stitcherFilter = function (value, el) {
         return el
     }
 }
+export const stitchDateFilter = function (value,el){
+    if (el && value === '') {
+        return el
+    } else if (el && el.stitchDate.indexOf(value)!==-1) {
+        return el
+    }
+}
 export const scanerFilter = function (value, el) {
     if (el && value === '') {
         return el
@@ -109,6 +116,20 @@ export const scanerFilter = function (value, el) {
     } else if (el && value === '0' && el.scaner && el.jointer === '') {
         return el
     } else if (el && value === '-1' && el.scaner === '') {
+        return el
+    }
+}
+export const scanerDateStartFilter = function (value, el) {
+    if (el && value === '') {
+        return el
+    } else if (el && el.scanDateStart.indexOf(value)!==-1) {
+        return el
+    }
+}
+export const scanerDateFinishFilter = function (value, el) {
+    if (el && value === '') {
+        return el
+    } else if (el && el.scanDateFinish.indexOf(value)!==-1) {
         return el
     }
 }
@@ -123,12 +144,21 @@ export const jointerFilter = function (value, el) {
         return el
     }
 }
+export const jointDateFilter = function (value, el) {
+    if (el && value === '') {
+        return el
+    } else if (el && el.jointDate.indexOf(value)!==-1) {
+        return el
+    }
+}
 export const isDoneFilter = function (value, el) {
     if (el && value === '') {
         return el
     } else if (el && value === '0' && el.isDone) {
         return el
     } else if (el && value === '-1' && el.isDone === false) {
+        return el
+    }  else if (el && el.isDoneDate.indexOf(value)!==-1) {
         return el
     }
 }
@@ -139,8 +169,12 @@ export const applyFilters = function (filters, filtredElement) {
     filtredElement = idFilter(filters.id, filtredElement);
     filtredElement = actFilter(filters.act, filtredElement);
     filtredElement = stitcherFilter(filters.stitcher, filtredElement);
+    filtredElement = stitchDateFilter(filters.stitchDate,filtredElement)
     filtredElement = scanerFilter(filters.scaner, filtredElement);
+    filtredElement = scanerDateStartFilter(filters.scanerDateStart,filtredElement)
+    filtredElement = scanerDateFinishFilter(filters.scanerDateFinish,filtredElement)
     filtredElement = jointerFilter(filters.jointer, filtredElement);
+    filtredElement = jointDateFilter(filters.jointDate,filtredElement)
     filtredElement = isDoneFilter(filters.isDone, filtredElement);
     return filtredElement
 }

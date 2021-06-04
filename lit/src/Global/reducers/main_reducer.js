@@ -28,9 +28,13 @@ const GET_CASESFORSEARCH = 'GET_CASESFORSEARCH';
 const PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST = 'PUSH_FILTREDBYINDEX_TO_HANDOVERCASESLIST';
 const POST_ISDONE_CASES = 'POST_ISDONE_CASES';
 const SET_FILTER_STITCHER = 'SET_FILTER_STITCHER';
+const SET_FILTER_STITCHDATE='SET_FILTER_STITCHDATE';
 const RESET_USERSTATS = 'RESET_USERSTATS';
 const SET_FILTER_SCANER = 'SET_FILTER_SCANER';
+const SET_FILTER_SCANERSTARTDATE = 'SET_FILTER_SCANERSTARTDATE';
+const SET_FILTER_SCANERFINISHDATE = 'SET_FILTER_SCANERFINISHDATE';
 const SET_FILTER_JOINTER = 'SET_FILTER_JOINTER';
+const SET_FILTER_JOINTDATE = 'SET_FILTER_JOINTDATE';
 const SET_FILTER_ISDONE = 'SET_FILTER_ISDONE';
 const GET_PROJECT_STATS = 'GET_PROJECT_STATS';
 const GET_USERSTATS = 'GET_USERSTATS';
@@ -71,8 +75,12 @@ const initialState = {
         act: '',
         id: '',
         stitcher: '',
+        stitchDate:'',
         scaner: '',
+        scanerDateStart:'',
+        scanerDateFinish:'',
         jointer: '',
+        jointDate:'',
         isDone: '',
     },
     projectStats: {},
@@ -197,11 +205,23 @@ const main_reducer = function (state, action) {
             case SET_FILTER_STITCHER:
                 state.filters.stitcher = action.value
                 break;
+            case SET_FILTER_STITCHDATE:
+                state.filters.stitchDate=action.value
+                break;
             case SET_FILTER_SCANER:
                 state.filters.scaner = action.value
                 break;
+            case SET_FILTER_SCANERSTARTDATE:
+                state.filters.scanerDateStart = action.value
+                break;
+            case SET_FILTER_SCANERFINISHDATE:
+                state.filters.scanerDateFinish = action.value
+                break;
             case SET_FILTER_JOINTER:
                 state.filters.jointer = action.value
+                break;
+            case SET_FILTER_JOINTDATE:
+                state.filters.jointDate = action.value
                 break;
             case SET_FILTER_ISDONE:
                 state.filters.isDone = action.value

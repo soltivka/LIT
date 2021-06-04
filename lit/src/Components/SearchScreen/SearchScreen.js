@@ -15,9 +15,10 @@ import {
     set_filter_adress_action,
     set_filter_id_action,
     set_filter_index_action,
-    set_filter_isDone_action,
+    set_filter_isDone_action, set_filter_jointDate_action,
     set_filter_jointer_action,
-    set_filter_scaner_action,
+    set_filter_scaner_action, set_filter_scanerFinishDate_action, set_filter_scanerStartDate_action,
+    set_filter_stitchDate_action,
     set_filter_stitcher_action
 } from "../../Global/Actions";
 
@@ -68,11 +69,23 @@ const SearchScreen = function (props) {
     const setFilterStitcher = function (event) {
         props.dispatch(set_filter_stitcher_action(event.target.value))
     }
+    const setFilterStitchDate = function(event){
+        props.dispatch(set_filter_stitchDate_action(event.target.value))
+    }
     const setFilterScaner = function (event) {
         props.dispatch(set_filter_scaner_action(event.target.value))
     }
+    const setFilterScanerDateStart = function(event){
+        props.dispatch(set_filter_scanerStartDate_action(event.target.value))
+    }
+    const setFilterScanerDateFinish = function(event){
+        props.dispatch(set_filter_scanerFinishDate_action(event.target.value))
+    }
     const setFilterJointer = function (event) {
         props.dispatch(set_filter_jointer_action(event.target.value))
+    }
+    const setFilterJointDate = function(event){
+        props.dispatch(set_filter_jointDate_action(event.target.value))
     }
     const setFilterIsDone = function (event) {
         props.dispatch(set_filter_isDone_action(event.target.value))
@@ -145,6 +158,10 @@ const SearchScreen = function (props) {
                                    onChange={setFilterStitcher}/>
                         </div>
                         <div className={s.cell}>дата расшивки
+                            <input type={'text'}
+                                   className={s.input}
+                                   value={props.state.filters.stitchDate}
+                                   onChange={setFilterStitchDate}/>
                         </div>
                     </div>
 
@@ -156,8 +173,16 @@ const SearchScreen = function (props) {
                                    onChange={setFilterScaner}/>
                         </div>
                         <div className={s.cell}>Дата начала
+                            <input type={'text'}
+                                   className={s.input}
+                                   value={props.state.filters.scanerDateStart}
+                                   onChange={setFilterScanerDateStart}/>
                         </div>
                         <div className={s.cell}>Дата окончания
+                            <input type={'text'}
+                                   className={s.input}
+                                   value={props.state.filters.scanerDateFinish}
+                                   onChange={setFilterScanerDateFinish}/>
                         </div>
                     </div>
                     <div className={s.bigcell}>
@@ -174,6 +199,10 @@ const SearchScreen = function (props) {
                                    onChange={setFilterJointer}/>
                         </div>
                         <div className={s.cell}>Дата сшивки
+                            <input type={'text'}
+                                   className={s.input}
+                                   value={props.state.filters.jointDate}
+                                   onChange={setFilterJointDate}/>
                         </div>
                     </div>
                     <div className={s.bigcell}>
