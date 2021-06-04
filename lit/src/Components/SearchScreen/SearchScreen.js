@@ -133,31 +133,31 @@ const SearchScreen = function (props) {
                             <input type={'number'} className={s.input}
                                    value={props.state.filters.act} onChange={setFilterAct}/>
                         </div>
-                        <div className={s.cell}>Дата получения
+                        <div className={s.cell}>Дата отримання
                         </div>
                     </div>
                     <div className={s.bigcell}>
-                        <div className={s.cell}>Дело
+                        <div className={s.cell}>Справа №
                             <input type={'number'} className={s.input}
                                    value={props.state.filters.id} onChange={setFilterId}/>
                         </div>
-                        <div className={s.cell}>Штрих-код
+                        <div className={s.cell}>Баркод
                             <input type={'number'} className={s.input}
                                    value={props.state.filters.index} onChange={setFilterIndex}/>
                         </div>
                     </div>
-                    <div className={s.bigcell}>Адрес
+                    <div className={s.bigcell}>Адреса
                         <input type={'text'} className={s.input}
                                value={props.state.filters.adress} onChange={setFilterAdress}/>
                     </div>
                     <div className={s.bigcell}>
-                        <div className={s.cell}>Расшивщик
+                        <div className={s.cell}>Розшивщик
                             <input type={'number'}
                                    className={s.input}
                                    value={props.state.filters.stitcher}
                                    onChange={setFilterStitcher}/>
                         </div>
-                        <div className={s.cell}>дата расшивки
+                        <div className={s.cell}>Дата розшивки
                             <input type={'text'}
                                    className={s.input}
                                    value={props.state.filters.stitchDate}
@@ -166,19 +166,19 @@ const SearchScreen = function (props) {
                     </div>
 
                     <div className={s.bigcell}>
-                        <div className={s.cell}>Сканировщик
+                        <div className={s.cell}>Сканувальник
                             <input type={'number'}
                                    className={s.input}
                                    value={props.state.filters.scaner}
                                    onChange={setFilterScaner}/>
                         </div>
-                        <div className={s.cell}>Дата начала
+                        <div className={s.cell}>Дата початку
                             <input type={'text'}
                                    className={s.input}
                                    value={props.state.filters.scanerDateStart}
                                    onChange={setFilterScanerDateStart}/>
                         </div>
-                        <div className={s.cell}>Дата окончания
+                        <div className={s.cell}>Дата закінчення
                             <input type={'text'}
                                    className={s.input}
                                    value={props.state.filters.scanerDateFinish}
@@ -186,19 +186,19 @@ const SearchScreen = function (props) {
                         </div>
                     </div>
                     <div className={s.bigcell}>
-                        <div className={s.cell}>кол-во страниц</div>
+                        <div className={s.cell}>сторінок</div>
 
-                        <div className={s.cell}>индекс</div>
+                        <div className={s.cell}>індекс</div>
                     </div>
 
                     <div className={s.bigcell}>
-                        <div className={s.cell}>Сшивщик
+                        <div className={s.cell}>Зшивщик
                             <input type={'number'}
                                    className={s.input}
                                    value={props.state.filters.jointer}
                                    onChange={setFilterJointer}/>
                         </div>
-                        <div className={s.cell}>Дата сшивки
+                        <div className={s.cell}>Дата зшивки
                             <input type={'text'}
                                    className={s.input}
                                    value={props.state.filters.jointDate}
@@ -206,7 +206,7 @@ const SearchScreen = function (props) {
                         </div>
                     </div>
                     <div className={s.bigcell}>
-                        Дата сдачи
+                        Дата здачі в архів
                         <input type={'text'}
                                className={s.input}
                                value={props.state.filters.isDone}
@@ -221,9 +221,9 @@ const SearchScreen = function (props) {
                 {content(props.state.casesForSearch.data)}
             </div>
             <div className={s.footer}>
-                <div>Всего дел в списке: {props.state.casesForSearch.data.length}</div>
-                <div>Подходит под фильтры: {suitableWithFilters}</div>
-                <div>Отображается: {maxCounter}</div>
+                <div>Усього справ у списку: {props.state.casesForSearch.data.length}</div>
+                <div>Підходить під фільтри: {suitableWithFilters}</div>
+                <div>Відображується: {maxCounter}</div>
             </div>
 
 
