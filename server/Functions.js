@@ -599,7 +599,7 @@ module.exports = {
                 return 1
             } else return 0
         })
-        
+
         let holydaysFiller = function(dates){
             let filledByHolydays=[]
             dates.forEach((date,index,arr)=>{
@@ -622,10 +622,10 @@ module.exports = {
                     filledByHolydays.push(date.split(' ')[0]+' '+(currentNumber+i+1)+'th '+date.split(' ')[2])
                     console.log("в статистику влита дата" +date.split(' ')[0]+' '+(currentNumber+i+1)+'th '+date.split(' ')[2] )
                 }
-                
+
             })
             return filledByHolydays
-        } 
+        }
         let datesWithHolydays = holydaysFiller(dates)
         datesWithHolydays.forEach((date) => {
             let dateObj = {}

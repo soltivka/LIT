@@ -55,7 +55,8 @@ const SET_HARDCHANGE_SCANER = 'SET_HARDCHANGE_SCANER';
 const POST_HARDCHANGE = 'POST_HARDCHANGE';
 const SWITCH_STATSOPERATION="SWITCH_STATSOPERATION";
 const PROJECT_STATS_SET_PAGES_VISIBLE="PROJECT_STATS_SET_PAGES_VISIBLE";
-const GET_USERSTATS_BYACTS='GET_USERSTATS_BYACTS';
+const GET_USERSTATS_BYACTS='GET_USERSTATS_BYACTS';// не используется
+const GET_DATA_FOR_DEMO='GET_DATA_FOR_DEMO'
 
 const initialState = {
     operator_cases: {
@@ -127,6 +128,7 @@ const initialState = {
         isDoneDate: ''
     },
     projectStats_pagesVisible:false,
+
 }
 
 
@@ -457,6 +459,9 @@ const main_reducer = function (state, action) {
             case PROJECT_STATS_SET_PAGES_VISIBLE:
                 state.projectStats_pagesVisible=!state.projectStats_pagesVisible
                 console.log(state.projectStats_pagesVisible)
+                break;
+
+            case GET_DATA_FOR_DEMO:
                 break;
 
         }

@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './UserStatsScreen.module.css';
+import s from './allUsersInfo.module.css';
 import SwitchButton from "./switchButton/SwitchButton";
 import moment from 'moment'
 import {getMomentFromDateString} from "../../Global/Functions";

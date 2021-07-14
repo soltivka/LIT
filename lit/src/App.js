@@ -3,14 +3,14 @@ import s from './App.module.css';
 import Header from "./Components/Header/Header";
 import WorkScreen from "./Components/WorkScreen/WorkScreen";
 import AuthScreen from "./Components/AuthScreen/AuthScreen";
-import UserStatsScreen from "./Components/UserStatsScreen/UserStatsScreen";
+import UserStatsScreen from "./Components/UserStatsScreen/allUsersInfo";
 import ProjectScreen from "./Components/ProjectScreen/ProjectScreen";
 import SearchScreen from "./Components/SearchScreen/SearchScreen";
 import HandOverScreen from "./Components/HandOverScreen/HandOverScreen";
 import ProjectStatsScreen from "./Components/ProjectStatsScreen/ProjectStatsScreen";
 import UserStatScreen from "./Components/UserStatScreen/UserStatScreen";
 import UserStatByActs from "./Components/UserStatsByActs/UserStatsByActs";
-
+import DemoScreen from "./Components/DemoScreen/DemoScreen"
 
 function App(props) {
 
@@ -19,7 +19,7 @@ function App(props) {
             return (
                 <div>
                     <WorkScreen dispatch={props.dispatch}
-                                  state={props.state}/>
+                                state={props.state}/>
                 </div>
             )
 
@@ -31,7 +31,7 @@ function App(props) {
                         state={props.state}/>
                 </div>
             )
-        }else if (props.state.currentNav === 'userStats') {
+        } else if (props.state.currentNav === 'userStats') {
             return (
                 <div>
                     <UserStatsScreen
@@ -39,7 +39,7 @@ function App(props) {
                         state={props.state}/>
                 </div>
             )
-        }else if (props.state.currentNav === 'projectSettings') {
+        } else if (props.state.currentNav === 'projectSettings') {
             return (
                 <div>
                     <ProjectScreen
@@ -88,6 +88,15 @@ function App(props) {
             return (
                 <div>
                     <UserStatByActs
+                        dispatch={props.dispatch}
+                        state={props.state}/>
+                </div>
+            )
+        }
+        else if (props.state.currentNav === 'demoScreen') {
+            return (
+                <div>
+                    <DemoScreen
                         dispatch={props.dispatch}
                         state={props.state}/>
                 </div>

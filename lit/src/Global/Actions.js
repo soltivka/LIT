@@ -46,6 +46,7 @@ const GET_USERSTATS2='GET_USERSTATS2';
 const SWITCH_STATSOPERATION='SWITCH_STATSOPERATION';
 const PROJECT_STATS_SET_PAGES_VISIBLE='PROJECT_STATS_SET_PAGES_VISIBLE';
 const GET_USERSTATS_BYACTS = 'GET_USERSTATS_BYACTS';
+const GET_DATA_FOR_DEMO = 'GET_DATA_FOR_DEMO'
 
 
 export const setCurrentNav_action = (button_nav) => ({
@@ -227,6 +228,9 @@ export const switchStatsOperation_action=(value)=>({
 })
 export const setPagesVisible_action=()=>({
     type: PROJECT_STATS_SET_PAGES_VISIBLE
+})
+export const getDataForDemo_action=()=>({
+    type: GET_DATA_FOR_DEMO
 })
 
 
