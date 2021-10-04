@@ -1,0 +1,16 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.square{
+    display: flex;
+    background-color: green;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 20%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}

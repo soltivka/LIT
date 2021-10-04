@@ -1,0 +1,61 @@
+.wrapper{
+    display: flex;
+    background-color: dimgrey;
+    width: 100%;
+    height: 100vh;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.button{
+    display: flex;
+    width: 200px;
+    height: 50px;
+    justify-content: center;
+    cursor: pointer;
+    background-color: darkred;
+    color: white;
+    text-decoration-style: solid ;
+    justify-self: flex-end;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 40vh;
+    border: solid 1px black;
+    margin: 5px;
+}
+.container_header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+.cell{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: dotted 2px black;
+    width: 100%;
+    height: 45px;
+}
+.smallCell{
+    display: flex;
+    align-items: center;
+    margin: 0px 10px 0px 10px;
+}
+.greenButton{
+    display: flex;
+    width: 200px;
+    height: 45px;
+    justify-content: center;
+    cursor: pointer;
+    background-color: darkgreen;
+    color: white;
+    text-decoration-style: solid ;
+    justify-self: center;
+    align-self: center;
+
+}

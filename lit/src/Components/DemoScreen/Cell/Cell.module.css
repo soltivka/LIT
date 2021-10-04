@@ -1,0 +1,18 @@
+.wrapper_2floor{
+    display: flex;
+    justify-content: space-around;
+    min-height: 25px;
+    width:100%;
+    align-items: center;
+    border: solid 1px black;
+    overflow: hidden;
+}
+.wrapper{
+    display:flex;
+    width:100%;
+    align-items: center;
+    justify-content: space-around;
+}
+.displayNone{display:none}
+.inner{
+}

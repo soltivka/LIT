@@ -1,0 +1,88 @@
+.wrapper_new{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 40px 6px white;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wraper_stitch{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 12px 3px goldenrod;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+}
+.wrapper_scanStart{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 10px 3px blueviolet;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_scanFinish{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 10px 3px blue;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_joined{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 12px 3px forestgreen;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+.wrapper_isDone{
+    display: flex;
+    width: 100%;
+    box-shadow: inset 0 0 17px 3px black;
+    margin: 5px 0 5px 0;
+    background-color: lightgray;
+
+}
+
+.bigcell{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: inset 0 0 12px 2px grey;
+    padding: 0 10px 0 10px;
+    animation-duration: 0.5s;
+    animation-name: visualize;
+}
+
+@keyframes visualize {
+    from {
+        opacity:0;
+
+        box-shadow: inset 0 0 20px 5px green;
+    }
+
+    to {
+        opacity:1;
+        box-shadow: inset 0 0 12px 2px grey;
+    }
+}
+.cell{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items:center;
+    justify-content: center;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    margin: 0 2px 0 2px;
+}
+.indexIsWrong{
+    border:solid 2px red;
+    box-shadow: inset 0 0 12px 2px red;
+}
+

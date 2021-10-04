@@ -1,0 +1,71 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: dimgrey;
+    overflow:scroll;
+}
+.header{
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: flex-start;
+}
+.button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width:100px;
+    height:100%;
+    background-color: darkgrey;
+    box-shadow: inset 0 0 15px 5px dimgrey;
+    cursor: pointer;
+}
+.body{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 90vh;
+    width: 100%;
+}
+.tableHeader{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.headerCell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    background-color: darkgrey;
+
+}
+.headerStitcher{
+    background-color: goldenrod;
+}
+.headerScaner{
+    background-color: cornflowerblue;
+}
+.headerJointer{
+    background-color: forestgreen;
+}
+.tableBody{
+    display: flex;
+    flex-direction: column;
+    max-height:80vh;
+    overflow: auto;
+}
+.usersString{
+    display: flex;
+    width: 100%;
+    background-color: darkgrey;
+}
+.cell{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    border: solid 1px dimgrey;
+}

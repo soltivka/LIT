@@ -1,0 +1,122 @@
+.wrapper{
+    overflow:hidden;
+    background-color: #00446c;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.header{
+    display: flex;
+    width: 100%;
+    height:60px;
+    background-color:#0087bb;
+    color:#85caf2;
+    justify-content: space-between;
+    box-shadow: inset 0 0 30px 10px #00446c;
+    align-items: center;
+}
+.body{
+    background-color: #00446c;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    max-height: 58vh;
+}
+.body::-webkit-scrollbar {
+    width: 1em;
+}
+
+.body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px #85caf2;
+}
+
+.body::-webkit-scrollbar-thumb {
+    background-color: #85caf2;
+    border-radius: 10px;
+}
+.smallcell{
+    min-width: 40px;
+    height: 100%;
+}
+.cell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.footer{
+    display: flex;
+    width: 100%;
+    height:60px;
+    background-color:#0087bb;
+    color:#85caf2;
+    justify-content: space-between;
+    box-shadow: inset 0 0 30px 10px #00446c;
+    align-items: center;
+}
+
+
+.input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20px;
+    background-color:#85caf2;
+    outline: none;
+    border: solid #00446c;
+    border-bottom: 3px;
+    box-shadow: inset 0 0 12px 2px #85caf2;
+}
+.input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+.postButton {background-image: linear-gradient(to right, #314755 0%, #26a0da  51%, #314755  100%)}
+.postButton {
+    cursor: pointer;
+    width: 150px;
+    height:50px;
+    margin: 20px;
+
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 5px #eee;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hideButton{
+    display: none;
+}
+
+.postButton:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+.none{
+    display: none;
+}
+
+.pulseNumber {
+    color: #85caf2;
+    animation: pulsing 2s ;
+}
+@keyframes pulsing {
+    0% {
+        -webkit-transform: scale(2);
+        transform: scale(2);
+        color:green;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
